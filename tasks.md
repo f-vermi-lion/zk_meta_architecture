@@ -1,1 +1,2 @@
 - [x] アーキテクチャ文書にarc42を使うか決める
+- [x] 階層的なarc42文書の配置規則を`decisions/architecture_documents.md`に追記する
