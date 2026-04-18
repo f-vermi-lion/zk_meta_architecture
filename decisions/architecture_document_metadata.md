@@ -5,7 +5,6 @@
 
 ## 必須項目
 - `title`
-- `version`
 - `status`
 - `created`
 - `updated`
@@ -14,8 +13,8 @@
 
 ## 記法
 - `title`は文字列にする。
-- `version`は文字列にする。更新ルールはこの文書では定めない。
 - `status`は`draft`、`reviewed`、`published`のいずれかにする。
+- `created`は初回作成日、`updated`は最新版の識別にも使う最新更新日にする。
 - `created`と`updated`は`YYYY-MM-DD`形式にする。
 - `authors`は著者名のYAML配列にする。
 - `language`は`en`または`ja`にする。
@@ -24,7 +23,6 @@
 ```yaml
 ---
 title: System Context
-version: "0.1.0"
 status: draft
 created: 2026-04-18
 updated: 2026-04-18
