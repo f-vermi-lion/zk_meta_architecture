@@ -1,5 +1,3 @@
 - arc42階層文書での相互参照の参照単位とリンク種別を整理する
 - Structurizr DSL の分割単位と `!include` 配置規則を決める
-- arc42章ファイル名の標準slug一覧を決める
-- arc42文書をAsciiDoc形式にしたいので、markdown前提のようなところを書き換えたい。
-- GitHubではAsciiDocのincludeが機能しないので表示はどこかの無料サイトにしてREADME.mdは各文書への入り口として残しておきたい。
+- GitHub Pages 向け AsciiDoc のビルド・公開自動化手順を決める
