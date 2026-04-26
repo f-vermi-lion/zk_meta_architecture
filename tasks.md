@@ -11,3 +11,10 @@
 - [x] arc42本文の標準形式をMarkdownからAsciiDocに改める
 - [x] GitHub Pagesを公開先としREADME.mdを入口にする方針を決める
 - [x] arc42章ファイル名の標準slug一覧を決める
+- [x] docs草稿のパス誤記を修正する
+- [x] docs草稿から既存決定へ反映すべき内容を抽出する
+- [x] docs草稿から新規決定へ反映すべき内容を抽出する
+- [x] docs草稿から未決定事項を抽出してinboxへ逃がす
+- [x] arc42文書の相互参照をAntora xref / include前提に整理する
+- [x] GitHub Pages向けAsciiDoc公開の高レベル自動化手順を決める
+- [x] 文書配置規則をAntora標準構成へ更新する

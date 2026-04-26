@@ -1,6 +1,8 @@
-- arc42階層文書での相互参照の参照単位とリンク種別を整理する
 - Structurizr DSL の分割単位と `!include` 配置規則を決める
-- GitHub Pages 向け AsciiDoc のビルド・公開自動化手順を決める
-- docs/architecture-documentation-publishing-platformの内容から既存の決定に反映すべきことを抽出する
-- docs/architecture-documentation-publishing-platformの内容から新たな決定として反映すべきことを抽出する
-- docs/architecture-documentation-publishing-platformの内容から未決定事項として考えるべきことを抽出する
+- Antora playbookを専用サイトリポジトリに置くか全体概要リポジトリに置くか決める
+- 各ソースリポジトリのpushでサイト再生成をどう起動するか決める
+- Structurizr DSLからSVGを直接生成するかPlantUML / C4-PlantUML経由にするか決める
+- 日本語版・英語版をAntora上でどう表現するか決める
+- private repositoryの文書をpublic GitHub Pagesに出してよいか判断する
+- docToolchainのAntora連携がbetaである点を検証する
+- docs草稿自体をAntora標準構成と章ファイルslug規則に合わせるか決める
