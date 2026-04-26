@@ -1,4 +1,6 @@
 - arc42階層文書での相互参照の参照単位とリンク種別を整理する
 - Structurizr DSL の分割単位と `!include` 配置規則を決める
 - GitHub Pages 向け AsciiDoc のビルド・公開自動化手順を決める
-- 
+- docs/architecture-documentation-publishing-platformの内容から既存の決定に反映すべきことを抽出する
+- docs/architecture-documentation-publishing-platformの内容から新たな決定として反映すべきことを抽出する
+- docs/architecture-documentation-publishing-platformの内容から未決定事項として考えるべきことを抽出する
