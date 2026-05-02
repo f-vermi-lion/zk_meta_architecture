@@ -22,3 +22,4 @@
 - [x] ソースリポジトリのpushからサイト再生成を起動する方式を決める
 - [x] docs草稿をAntora標準構成へ移行する
 - [x] Antora component versionと文書版管理の関係を明記する
+- [x] 日本語版・英語版のAntora上の配置規則を決める

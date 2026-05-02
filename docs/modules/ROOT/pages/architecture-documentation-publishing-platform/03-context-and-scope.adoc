@@ -398,28 +398,32 @@ Structurizr DSL
 | 図の見た目、CI安定性、依存関係に影響する。
 
 | UC-3
-| 日本語版・英語版をAntora上でどう表現するか決める
-| component、version、module、別サイト、同一ページ併記の設計に影響する。
-
-| UC-4
 | private repositoryの文書をpublic GitHub Pagesに出してよいか判断する
 | 情報漏洩リスクとアクセス制御に影響する。
 
-| UC-5
+| UC-4
 | docToolchainのAntora連携がbetaである点を検証する
 | 採用範囲、build手順、代替手段に影響する。
 
-| UC-6
+| UC-5
 | サイト用リポジトリの具体名と作成タイミングを決める
 | repository_dispatchの宛先、権限設定、作業順序に影響する。
 
-| UC-7
+| UC-6
 | サイト再生成用のGitHub Actions権限とトークン管理方針を決める
 | cross-repository workflow、secret管理、セキュリティに影響する。
 
-| UC-8
+| UC-7
 | サイト再生成失敗時の通知・再実行手順を決める
 | 運用負荷、障害発見、復旧手順に影響する。
+
+| UC-8
+| 日英ページ対応の欠落をCIで検出する手順を決める
+| 公開時と版確定時の日英両版必須ルールの検査に影響する。
+
+| UC-9
+| Antora UI上の日英切り替え導線を決める
+| 閲覧者が英語正本と日本語補助版を行き来する操作に影響する。
 |===
 
 == 3.5 現時点の決定
@@ -429,6 +433,8 @@ Structurizr DSL
 ソースリポジトリ側は「文書を書く場所」、専用サイトリポジトリ側は「集めて公開する場所」とする。
 
 各ソースリポジトリの`main`更新後は、サイト用リポジトリへ`repository_dispatch`で再生成を依頼する。サイト用リポジトリの公開workflowは`repository_dispatch`と手動の`workflow_dispatch`を受け付ける。
+
+日本語版・英語版は同一component内のAntora moduleで分ける。英語正本は`ROOT` module、日本語補助版は`ja` moduleに置き、対応するページはmodule配下の相対パスとファイル名を揃える。
 
 最初の実装候補は以下である。
 
@@ -450,6 +456,13 @@ source-repo-a/
           diagrams/
             source/
               workspace.dsl
+      ja/
+        nav.adoc
+        pages/
+          index.adoc
+          01-introduction-and-goals.adoc
+          02-architecture-constraints.adoc
+          03-context-and-scope.adoc
   docToolchainConfig.groovy
   dtcw
 
