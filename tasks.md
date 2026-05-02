@@ -18,3 +18,5 @@
 - [x] arc42文書の相互参照をAntora xref / include前提に整理する
 - [x] GitHub Pages向けAsciiDoc公開の高レベル自動化手順を決める
 - [x] 文書配置規則をAntora標準構成へ更新する
+- [x] Antora playbookの置き場を専用サイトリポジトリに固定する
+- [x] ソースリポジトリのpushからサイト再生成を起動する方式を決める
