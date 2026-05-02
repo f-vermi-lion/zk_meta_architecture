@@ -434,6 +434,8 @@ Structurizr DSL
 
 公開時と版確定時のCIでは、英語正本`docs/modules/ROOT/pages/**/*.adoc`と日本語補助版`docs/modules/ja/pages/**/*.adoc`の対応ページ欠落、および`:lang:`不一致を失敗扱いにする。`meta_architecture`自体は日本語運用のため、この日英必須検査の対象外にする。
 
+日英対応検査の標準コマンドは、専用サイトリポジトリ内の`tools/check-language-pairs`とする。このコマンドは、公開workflowがcontent sourcesを取得した後、Antora buildの前に実行する。
+
 最初の実装候補は以下である。
 
 [source,text]

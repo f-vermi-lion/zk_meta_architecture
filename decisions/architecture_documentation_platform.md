@@ -25,6 +25,7 @@
 - 各ソースリポジトリは、文書本文、図定義、Antora component設定、docToolchain設定、必要な検査workflowを正本として持つ。
 - 各ソースリポジトリは、統合用のAntora playbookを持たない。
 - 専用サイトリポジトリは、Antora playbook、共通UI、公開workflowを持つ。
+- 専用サイトリポジトリは、公開workflowで使う共通検査ツールを持つ。
 - 専用サイトリポジトリは、Antora playbookで複数ソースリポジトリの文書を集約する。
 - GitHub Actionsは、検査、図生成、Antora build、GitHub Pages deployを実行する。
 - GitHub Pagesは、生成済み静的サイトの公開先として扱う。

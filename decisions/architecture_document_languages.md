@@ -19,6 +19,8 @@
 - 検査対象は造智機巧のアーキテクチャ文書とする。
 - `meta_architecture` 自体は日本語運用のため、日英必須検査の対象外にする。
 - 検査単位は、英語正本`docs/modules/ROOT/pages/**/*.adoc`と日本語補助版`docs/modules/ja/pages/**/*.adoc`のmodule配下の相対パスにする。
+- 日英対応検査の標準コマンドは、専用サイトリポジトリ内の`tools/check-language-pairs`とする。
+- このコマンドは、公開workflowがcontent sourcesを取得した後、Antora buildの前に実行する。
 - `ROOT`側のページは`:lang: en`、`ja`側のページは`:lang: ja`を必須にする。
 - 草稿段階では片方のmoduleだけにページが存在してよい。
 - 公開時と版確定時のCIでは、対応ページの欠落と`:lang:`不一致を失敗扱いにする。
