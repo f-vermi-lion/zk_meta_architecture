@@ -5,6 +5,8 @@
 ## 配置規則
 - 各ソースリポジトリのアーキテクチャ文書は、Antora標準構成で`docs/`配下に置く。
 - Antora component descriptorは`docs/antora.yml`に置く。
+- Antoraのナビゲーションファイルは`docs/modules/ROOT/nav.adoc`に置く。
+- 文書に独立した版番号を持たせないcomponentでは、`docs/antora.yml`の`version`に`~`を指定する。
 - arc42本文は`docs/modules/ROOT/pages/`配下にAsciiDocファイルとして置く。
 - 再利用する断片は`docs/modules/ROOT/partials/`配下に置く。
 - 画像や補助ファイルは`docs/modules/ROOT/assets/`配下に置く。

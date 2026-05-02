@@ -1,0 +1,63 @@
+= 2. 制約
+:docstatus: draft
+:created: 2026-04-27
+:revdate: 2026-05-02
+:authors: F; Codex; ChatGPT
+:lang: ja
+
+== 2.1 技術的制約
+
+[cols="1,2",options="header"]
+|===
+| 制約
+| 背景/説明
+
+| arc42型の文書
+|
+
+| AsciiDoc形式の文書ファイル
+|
+
+| Structurizr DSLの図
+|
+
+| 図のコード化
+| Structurizr以外も使いたくなってもコードとして扱える形式に限る。
+
+| StructurizrのDSLからSVGへの変換機能
+|
+
+| docToolchainのarc42・アーキテクチャ文書管理機能
+|
+
+| Antoraの複数リポジトリの文書集約、サイト構築機能
+|
+
+| GitHub Pagesの静的ウェブサイトホスト
+|
+|===
+
+== 2.2 組織的制約
+
+[cols="1,3",options="header"]
+|===
+| 制約
+| 背景/説明
+
+| 製作者
+| FとAIのみ。Fは低経済力で日本語話者。
+
+| 開発ツール
+| VS Code、Codex、ChatGPT。
+|===
+
+== 2.3 慣例
+
+[cols="1,3",options="header"]
+|===
+| 制約
+| 背景/説明
+
+| 日英対応
+| 図を含めて文書は日英対応にする。
+|===

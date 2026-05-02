@@ -1,0 +1,4 @@
+* xref:architecture-documentation-publishing-platform/index.adoc[アーキテクチャ文書公開基盤]
+** xref:architecture-documentation-publishing-platform/01-introduction-and-goals.adoc[1. 導入と目的]
+** xref:architecture-documentation-publishing-platform/02-architecture-constraints.adoc[2. 制約]
+** xref:architecture-documentation-publishing-platform/03-context-and-scope.adoc[3. コンテキストとスコープ]

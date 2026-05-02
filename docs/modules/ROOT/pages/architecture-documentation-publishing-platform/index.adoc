@@ -1,0 +1,14 @@
+= アーキテクチャ文書公開基盤
+:docstatus: draft
+:created: 2026-04-27
+:revdate: 2026-05-02
+:authors: F; Codex; ChatGPT
+:lang: ja
+
+NOTE: 草稿版。特に記載がなければオーナー（F）による案。
+
+== 目次
+
+* xref:architecture-documentation-publishing-platform/01-introduction-and-goals.adoc[1. 導入と目的]
+* xref:architecture-documentation-publishing-platform/02-architecture-constraints.adoc[2. 制約]
+* xref:architecture-documentation-publishing-platform/03-context-and-scope.adoc[3. コンテキストとスコープ]

@@ -3,7 +3,6 @@
 - 日本語版・英語版をAntora上でどう表現するか決める
 - private repositoryの文書をpublic GitHub Pagesに出してよいか判断する
 - docToolchainのAntora連携がbetaである点を検証する
-- docs草稿自体をAntora標準構成と章ファイルslug規則に合わせるか決める
 - サイト用リポジトリの具体名と作成タイミングを決める
 - サイト再生成用のGitHub Actions権限とトークン管理方針を決める
 - サイト再生成失敗時の通知・再実行手順を決める
