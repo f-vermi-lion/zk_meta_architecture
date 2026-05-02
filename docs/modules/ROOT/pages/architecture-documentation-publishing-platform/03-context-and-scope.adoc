@@ -418,10 +418,6 @@ Structurizr DSL
 | 運用負荷、障害発見、復旧手順に影響する。
 
 | UC-8
-| 日英ページ対応の欠落をCIで検出する手順を決める
-| 公開時と版確定時の日英両版必須ルールの検査に影響する。
-
-| UC-9
 | Antora UI上の日英切り替え導線を決める
 | 閲覧者が英語正本と日本語補助版を行き来する操作に影響する。
 |===
@@ -435,6 +431,8 @@ Structurizr DSL
 各ソースリポジトリの`main`更新後は、サイト用リポジトリへ`repository_dispatch`で再生成を依頼する。サイト用リポジトリの公開workflowは`repository_dispatch`と手動の`workflow_dispatch`を受け付ける。
 
 日本語版・英語版は同一component内のAntora moduleで分ける。英語正本は`ROOT` module、日本語補助版は`ja` moduleに置き、対応するページはmodule配下の相対パスとファイル名を揃える。
+
+公開時と版確定時のCIでは、英語正本`docs/modules/ROOT/pages/**/*.adoc`と日本語補助版`docs/modules/ja/pages/**/*.adoc`の対応ページ欠落、および`:lang:`不一致を失敗扱いにする。`meta_architecture`自体は日本語運用のため、この日英必須検査の対象外にする。
 
 最初の実装候補は以下である。
 
