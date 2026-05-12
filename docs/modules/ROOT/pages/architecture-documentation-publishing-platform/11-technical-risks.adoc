@@ -1,0 +1,154 @@
+= 11. 技術的リスク
+:docstatus: draft
+:created: 2026-05-05
+:revdate: 2026-05-05
+:authors: F; ChatGPT
+:lang: ja
+
+
+== 11.1 private repositoryの文書をpublic Pagesへ出すリスク
+
+private repository内の文書をpublic GitHub Pagesへ公開する場合、非公開情報が公開サイトへ混入するリスクがある。
+
+影響するものは以下である。
+
+* ソースコードや設計情報の機密性
+* GitHub Pagesの公開範囲
+* Antora playbookのcontent sources設定
+* build artifactやActions logの公開範囲
+* 図やスクリーンショットに含まれる情報
+
+現時点では、private repositoryの文書をpublic GitHub Pagesに出してよいかは未決定である。
+
+対策候補は以下である。
+
+* public公開してよい文書だけを別リポジトリまたは別pathに分ける。
+* private文書を取り込むplaybookとpublic公開用playbookを分ける。
+* 公開前に機密情報検査を行う。
+* public Pagesではなくprivate閲覧可能な公開先を検討する。
+
+== 11.2 cross-repository workflow / token管理リスク
+
+各ソースリポジトリからサイト用リポジトリへ`repository_dispatch`を送るには、cross-repositoryの権限設定が必要になる。
+
+リスクは以下である。
+
+* tokenの権限が広すぎる。
+* secretの保存場所が増えすぎる。
+* tokenが漏洩した場合に、サイト用リポジトリ以外も操作できてしまう。
+* private repositoryをcontent sourceとして読む権限が不足する。
+* forkや外部貢献者のpull requestから意図しないworkflowが起動する。
+
+現時点では、サイト再生成用のGitHub Actions権限とtoken管理方針は未決定である。
+
+対策候補は以下である。
+
+* 最小権限のfine-grained tokenを使う。
+* `repository_dispatch`を送る専用の権限に限定する。
+* public文書用とprivate文書用の公開経路を分ける。
+* pull request由来のworkflowではdeployやdispatchを実行しない。
+* token管理方針を決定ファイルに反映する。
+
+== 11.3 docToolchain Antora連携がbetaであるリスク
+
+docToolchainはarc42やAsciiDoc文書運用に有用だが、Antora連携は検証対象である。
+
+リスクは以下である。
+
+* Antora buildとの役割分担が曖昧になる。
+* docToolchain側のbeta機能に依存しすぎて、CIが不安定になる。
+* Antora標準構成から外れた補助生成物が増える。
+* 期待した図生成経路や文書生成経路が使えない。
+
+現時点では、docToolchainを全面的な公開基盤として扱わず、arc42文書運用と図連携の補助候補として扱う。
+
+対策候補は以下である。
+
+* Antora buildを公開サイト生成の中心に固定する。
+* docToolchainは必要なtask単位で採用可否を検証する。
+* docToolchainなしでも最小公開できる経路を維持する。
+* 採用するtaskと採用しないtaskを決定として残す。
+
+== 11.4 Structurizr図生成経路が未確定であるリスク
+
+図の正本はStructurizr DSLと決まっているが、公開サイトに載せる画像の生成経路は未確定である。
+
+候補は以下である。
+
+* StructurizrのPNG/SVG exportを使う。
+* docToolchainの`exportStructurizr`を使い、PlantUML / C4-PlantUML経由で画像を生成する。
+
+リスクは以下である。
+
+* CI環境で安定して画像生成できない。
+* 生成画像の見た目が期待と異なる。
+* SVG出力とPNG出力の扱いが混在する。
+* `!include`の分割規則と生成コマンドが噛み合わない。
+* arc42本文から参照する画像パスが不安定になる。
+
+対策候補は以下である。
+
+* 最小のDSLで両経路を試す。
+* 生成コマンド、出力先、参照方法を固定する。
+* 生成失敗時に、DSLファイル、出力先、参照元ページをlogに出す。
+* 図生成経路を決めたら、`decisions/architecture_diagrams.md`へ反映する。
+
+== 11.5 サイト再生成失敗に気づけないリスク
+
+公開workflowが失敗しても、文書作成者が気づけないと、GitHub Pages上の文書が古いままになる。
+
+リスクは以下である。
+
+* `main`更新が公開サイトに反映されない。
+* Actions logを見ないと失敗に気づけない。
+* 日英対応検査や図生成失敗が放置される。
+* 手動再実行手順が決まっておらず復旧が遅れる。
+
+現時点では、サイト再生成失敗時の通知・再実行手順は未決定である。
+
+対策候補は以下である。
+
+* 公開workflowの失敗通知を有効にする。
+* `workflow_dispatch`による手動再実行を標準経路にする。
+* 失敗した検査、ファイル、パスをlogに明確に出す。
+* build artifactを保存する。
+* 公開後確認のチェックリストを6章に従って運用する。
+
+== 11.6 日英対応の同期負荷
+
+英語正本と日本語補助版を持つと、対応ページの欠落、更新漏れ、内容差分が発生する。
+
+リスクは以下である。
+
+* 草稿段階の片方更新が長く残る。
+* 公開時に対応ページ欠落でworkflowが失敗する。
+* 日本語補助版が英語正本の古い内容を説明し続ける。
+* 日英対応検査スクリプトの仕様が曖昧だと、検査結果を信頼しにくい。
+
+対策候補は以下である。
+
+* 草稿段階と公開・版確定時の要求水準を分ける。
+* 対応ページの相対パスとファイル名を揃える。
+* `:lang:`を必須メタデータにする。
+* `tools/check-language-pairs`の入出力仕様を決める。
+* 内容差分の完全検出は初期範囲に含めず、まずページ対応と`:lang:`不一致を検査する。
+
+== 11.7 Antora UIの日英切り替え導線が未確定であるリスク
+
+日英版をAntora moduleで分ける場合、閲覧者が対応ページへ移動する導線を用意する必要がある。
+
+リスクは以下である。
+
+* 英語正本と日本語補助版を行き来しにくい。
+* 同じ対象文書の別言語版が別物に見える。
+* Antora標準UIのままだと、言語切り替えが十分でない可能性がある。
+* module構成とUI表示の関係が分かりにくくなる。
+
+現時点では、Antora UI上の日英切り替え導線は未決定である。
+
+対策候補は以下である。
+
+* ページ上部またはナビゲーションに対応言語ページへのリンクを置く。
+* UIカスタマイズが必要か確認する。
+* 最小構成では、各ページに手動の対応リンクを置く案も検討する。
+* 日英対応検査とリンク生成を連動できるか検討する。

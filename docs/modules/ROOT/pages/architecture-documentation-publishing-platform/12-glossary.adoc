@@ -1,0 +1,88 @@
+= 12. 用語集
+:docstatus: draft
+:created: 2026-05-05
+:revdate: 2026-05-05
+:authors: F; ChatGPT
+:lang: ja
+
+
+[cols="1,3",options="header"]
+|===
+| 用語
+| 説明
+
+| アーキテクチャ文書公開基盤
+| 複数のソースリポジトリに配置されたarc42形式のAsciiDoc文書、Structurizr DSLなどの図定義、関連する補助ファイルを収集・変換し、GitHub Pages上の静的ドキュメントサイトとして公開するための仕組み。
+
+| ソースリポジトリ
+| システム、サブシステム、ライブラリなどのソースコードと、その対象に属するアーキテクチャ文書正本を置くリポジトリ。
+
+| サイト用リポジトリ
+| Antora playbook、共通UI、公開workflow、共通検査ツールを持ち、複数ソースリポジトリの文書を集約してGitHub Pagesへ公開するリポジトリ。
+
+| 正本
+| 後続の編集、検査、生成の基準になる一次成果物。文書本文ではAsciiDoc、図ではStructurizr DSLを指す。
+
+| 補助版
+| 正本の理解や利用を助けるための版。造智機巧本体のアーキテクチャ文書では、日本語版を補助版として扱う。
+
+| 派生成果物
+| 正本から生成される成果物。GitHub Pages上のHTML、生成済みSVG / PNG、build artifactなど。直接編集して正本化しない。
+
+| arc42文書
+| arc42テンプレートの章構成に沿って書くアーキテクチャ文書。全体文書とサブシステム文書を階層的に組み合わせる。
+
+| 章ファイル
+| arc42の各章に対応する`.adoc`ファイル。`NN-chapter-slug.adoc`形式で命名する。
+
+| Antora component
+| Antoraで文書群をまとめる単位。`docs/antora.yml`でcomponent名、title、version、navigation fileなどを定義する。
+
+| Antora module
+| Antora component内の文書区分。英語正本は`ROOT`、日本語補助版は`ja`に置く方針とする。
+
+| Antora page
+| Antoraで公開される単一ページ。通常は`docs/modules/<module>/pages/`配下の`.adoc`ファイル。
+
+| Antora partial
+| 複数ページからincludeする再利用断片。通常は`docs/modules/<module>/partials/`配下に置く。
+
+| Antora asset
+| 画像、CSS、補助ファイルなどの静的資産。通常は`docs/modules/<module>/assets/`配下に置く。
+
+| Antora playbook
+| Antoraサイト生成の設定ファイル。content sources、UI、出力先などを定義する。専用サイトリポジトリに置く。
+
+| content source
+| Antora playbookで指定される文書取得元。Gitリポジトリ、branch、tag、start pathなどで表す。
+
+| navigation file
+| Antoraサイトのナビゲーションを定義するAsciiDocファイル。各moduleの`nav.adoc`などを指す。
+
+| Structurizr DSL
+| C4モデルやアーキテクチャ図をテキストで定義するDSL。この基盤では図の正本として扱う。
+
+| 生成済み図
+| Structurizr DSLなどから生成したSVGまたはPNG。arc42本文から`image::...[]`で参照する。
+
+| `repository_dispatch`
+| あるGitHubリポジトリのworkflowから、別のリポジトリのworkflowをイベントとして起動するために使う方式。この基盤では、ソースリポジトリからサイト用リポジトリへの自動再生成依頼に使う。
+
+| `workflow_dispatch`
+| GitHub Actions workflowを手動実行できるようにする方式。この基盤では、サイト用リポジトリの手動再生成に使う。
+
+| 日英対応検査
+| 英語正本と日本語補助版の対応ページ欠落、および`:lang:`不一致を検出する検査。標準コマンド名は`tools/check-language-pairs`とする。
+
+| `:docstatus:`
+| AsciiDocページの文書状態を表すヘッダ属性。`draft`、`reviewed`、`published`のいずれかにする。
+
+| `:created:`
+| AsciiDocページの初回作成日を表すヘッダ属性。`YYYY-MM-DD`形式にする。
+
+| `:revdate:`
+| AsciiDocページの最新更新日を表すヘッダ属性。`YYYY-MM-DD`形式にする。
+
+| `:lang:`
+| AsciiDocページの言語を表すヘッダ属性。英語は`en`、日本語は`ja`にする。
+|===
