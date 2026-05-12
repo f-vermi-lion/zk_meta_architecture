@@ -1,7 +1,7 @@
 = 6. ランタイムビュー
 :docstatus: draft
 :created: 2026-05-05
-:revdate: 2026-05-05
+:revdate: 2026-05-12
 :authors: F; ChatGPT
 :lang: ja
 
@@ -25,7 +25,7 @@
 . ソースリポジトリ側workflowが、サイト用リポジトリへ`repository_dispatch`を送る。
 . サイト用リポジトリの公開workflowが起動する。
 . 公開workflowがAntora playbookに従ってcontent sourcesを取得する。
-. 公開workflowが`tools/check-language-pairs`などの共通検査を実行する。
+. 公開workflowがcheckout済みcontent rootを引数として`tools/check-language-pairs <content-root>...`などの共通検査を実行する。
 . 公開workflowが必要な図生成または生成済み図の存在確認を行う。
 . 公開workflowがAntora buildを実行する。
 . 公開workflowが生成済み静的サイトをGitHub Pagesへdeployする。
@@ -81,6 +81,8 @@
 
 日英対応検査は、公開workflowがcontent sourcesを取得した後、Antora buildの前に実行する。
 
+標準コマンド形式は、`tools/check-language-pairs <content-root>...`である。`<content-root>`には、`antora.yml`を持つAntora content rootを渡す。
+
 === 6.4.1 失敗条件
 
 日英対応検査は、少なくとも以下の場合に失敗扱いにする。
@@ -92,13 +94,17 @@
 
 ただし、`meta_architecture`自体は日本語運用のため、この必須検査の対象外にする。
 
+検査違反のissue codeは、`missing_ja`、`missing_en`、`missing_lang`、`lang_mismatch`とする。
+
 === 6.4.2 失敗時の扱い
 
 . 公開workflowを失敗させる。
-. 欠落または不一致のある相対パスをlogに出す。
+. 欠落または不一致のある相対パスとissue codeをlogに出す。
 . GitHub Pagesへのdeployは実行しない。
 . 文書作成者が欠落ページまたは`:lang:`を修正する。
 . 修正後、`main`更新または`workflow_dispatch`で再生成する。
+
+終了コードは、問題なしを`0`、検査違反ありを`1`、引数不正やcontent root不正など実行不能を`2`とする。
 
 == 6.5 図生成で失敗する場合
 

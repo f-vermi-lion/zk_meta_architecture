@@ -1,7 +1,7 @@
 = 12. 用語集
 :docstatus: draft
 :created: 2026-05-05
-:revdate: 2026-05-05
+:revdate: 2026-05-12
 :authors: F; ChatGPT
 :lang: ja
 
@@ -72,7 +72,7 @@
 | GitHub Actions workflowを手動実行できるようにする方式。この基盤では、サイト用リポジトリの手動再生成に使う。
 
 | 日英対応検査
-| 英語正本と日本語補助版の対応ページ欠落、および`:lang:`不一致を検出する検査。標準コマンド名は`tools/check-language-pairs`とする。
+| 英語正本と日本語補助版の対応ページ欠落、および`:lang:`不一致を検出する検査。標準コマンド形式は`tools/check-language-pairs <content-root>...`とする。
 
 | `:docstatus:`
 | AsciiDocページの文書状態を表すヘッダ属性。`draft`、`reviewed`、`published`のいずれかにする。

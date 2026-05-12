@@ -1,7 +1,7 @@
 = 10. 品質要求
 :docstatus: draft
 :created: 2026-05-05
-:revdate: 2026-05-05
+:revdate: 2026-05-12
 :authors: F; ChatGPT
 :lang: ja
 
@@ -155,10 +155,10 @@
 | content sources取得後、Antora build前の公開workflowで検査スクリプトを実行できる。
 
 | 応答
-| `tools/check-language-pairs`が、対応ページの欠落と`:lang:`不一致を検出する。
+| `tools/check-language-pairs <content-root>...`が、対応ページの欠落と`:lang:`不一致を検出する。
 
 | 受け入れ条件
-| 欠落または不一致がある場合、公開workflowが失敗し、問題のある相対パスがlogに出る。
+| 欠落または不一致がある場合、公開workflowが失敗し、問題のある相対パスと`missing_ja`、`missing_en`、`missing_lang`、`lang_mismatch`のいずれかのissue codeがlogに出る。
 |===
 
 === 10.2.7 既存ツールを優先して使う

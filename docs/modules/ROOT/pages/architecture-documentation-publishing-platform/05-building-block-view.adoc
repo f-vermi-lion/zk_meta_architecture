@@ -1,7 +1,7 @@
 = 5. ビルディングブロックビュー
 :docstatus: draft
 :created: 2026-05-05
-:revdate: 2026-05-05
+:revdate: 2026-05-12
 :authors: F; ChatGPT
 :lang: ja
 
@@ -181,6 +181,10 @@ content:
 
 現時点で標準化されているコマンド名は、日英対応検査の`tools/check-language-pairs`である。
 
+標準コマンド形式は、`tools/check-language-pairs <content-root>...`とする。
+
+`<content-root>`には、`antora.yml`を持つAntora content rootを渡す。代表例は、checkout済みの`docs`ディレクトリである。
+
 このコマンドは、content sources取得後、Antora build前に実行する。
 
 == 5.4 生成・検査ツール
@@ -225,6 +229,14 @@ Structurizrは、C4図モデルの正本をDSLとして扱い、サイト掲載�
 標準コマンド名は、`tools/check-language-pairs`とする。
 
 検査対象は、造智機巧本体のアーキテクチャ文書であり、`meta_architecture`自体は日本語運用のため対象外とする。
+
+実装言語はPython 3とし、標準ライブラリのみを使う。
+
+検査違反は、`missing_ja`、`missing_en`、`missing_lang`、`lang_mismatch`のいずれかのissue codeを持つ行として出力する。
+
+終了コードは、問題なしを`0`、検査違反ありを`1`、引数不正やcontent root不正など実行不能を`2`とする。
+
+初期範囲では、翻訳内容の差分、更新鮮度、日英リンクの存在は検査しない。
 
 == 5.5 公開成果物
 
