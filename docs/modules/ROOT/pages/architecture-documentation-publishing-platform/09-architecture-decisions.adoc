@@ -1,7 +1,7 @@
 = 9. アーキテクチャ決定
 :docstatus: draft
 :created: 2026-05-05
-:revdate: 2026-05-05
+:revdate: 2026-05-12
 :authors: F; ChatGPT
 :lang: ja
 
@@ -43,7 +43,23 @@
 | 8章、10章、12章
 |===
 
-== 9.2 判断経緯を残した決定記録
+== 9.2 現時点の主要決定要約
+
+対象システムは、「各リポジトリ内の文書正本」と「専用サイトリポジトリのAntora集約・公開設定」からなる文書公開基盤と定義する。
+
+ソースリポジトリ側は「文書を書く場所」、専用サイトリポジトリ側は「集めて公開する場所」とする。
+
+各ソースリポジトリの`main`更新後は、サイト用リポジトリへ`repository_dispatch`で再生成を依頼する。サイト用リポジトリの公開workflowは`repository_dispatch`と手動の`workflow_dispatch`を受け付ける。
+
+日本語版・英語版は同一component内のAntora moduleで分ける。英語正本は`ROOT` module、日本語補助版は`ja` moduleに置き、対応するページはmodule配下の相対パスとファイル名を揃える。
+
+公開時と版確定時のCIでは、英語正本`docs/modules/ROOT/pages/**/*.adoc`と日本語補助版`docs/modules/ja/pages/**/*.adoc`の対応ページ欠落、および`:lang:`不一致を失敗扱いにする。`meta_architecture`自体は日本語運用のため、この日英必須検査の対象外にする。
+
+日英対応検査の標準コマンドは、専用サイトリポジトリ内の`tools/check-language-pairs`とする。このコマンドは、公開workflowがcontent sourcesを取得した後、Antora buildの前に実行する。
+
+標準配置の具体例は、8.2で管理する。
+
+== 9.3 判断経緯を残した決定記録
 
 判断経緯は、リポジトリ内の`decision_records/`に置く。
 
@@ -76,9 +92,9 @@ decision recordは、現在有効な決定そのものではなく、なぜそ�
 | `architecture_document_languages.md`
 |===
 
-== 9.3 未決定事項との関係
+== 9.4 未決定事項との関係
 
-未決定事項は、3章の未決定事項と11章の技術的リスクで管理する。
+未決定事項は、11.8の未決定事項一覧と11章の技術的リスクで管理する。
 
 未決定事項が解決したら、以下のいずれかに反映する。
 
