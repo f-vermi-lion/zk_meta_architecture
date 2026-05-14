@@ -10,3 +10,9 @@
     - decisions/ 決定したことについて入れる。大まかな種類ごとに別ファイルにしておく。
     - decision_records/ 決定記録を入れる。自明なことまで書かなくてよい。
     - supporting_data/  補助的資料。arc42公式テンプレートが入っている。
+
+## LICENSES
+以下のディレクトリの内容を除き、CC-BY-4.0とします。
+除かれたディレクトリのライセンスはそのディレクトリ内のLICENSEファイルを参照してください
+- supporting_data/arc42-template-EN-plain-asciidoc
+- supporting_data/arc42-template-EN-withhelp-asciidoc
