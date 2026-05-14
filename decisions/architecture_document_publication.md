@@ -16,6 +16,12 @@
 - 生成された静的サイトをGitHub Pagesへdeployする。
 - 公開後はGitHub Pages上のページとActions logで結果を確認する。
 
+## 初期build workflow
+- `zouchikikou-docs-site`の初期`.github/workflows/build.yml`は、bootstrap用の手動build workflowとして扱う。
+- 初期`build.yml`は`workflow_dispatch`のみを受け付け、`npm run build`でAntora buildを確認する。
+- 初期`build.yml`は、GitHub Pages deploy、`repository_dispatch`、token / secret利用、`tools/check-language-pairs`実行を含めない。
+- GitHub Pages deployを行う公開workflowは、初期build確認後に別途有効化する。
+
 ## サイト再生成の起動方式
 - 標準トリガーは、各ソースリポジトリの`main`更新後に、`zouchikikou-docs-site`へ`repository_dispatch`で再生成を依頼する方式にする。
 - `zouchikikou-docs-site`の公開workflowは、`repository_dispatch`と手動の`workflow_dispatch`を受け付ける。

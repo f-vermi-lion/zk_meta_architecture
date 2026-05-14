@@ -1,7 +1,7 @@
 = 5. ビルディングブロックビュー
 :docstatus: draft
 :created: 2026-05-05
-:revdate: 2026-05-12
+:revdate: 2026-05-14
 :authors: F; ChatGPT
 :lang: ja
 
@@ -141,7 +141,25 @@ DSLの分割単位と`!include`の詳細規則は未決定である。ただし�
 
 標準名は`zouchikikou-docs-site`とし、この決定後すぐ作成する。
 
+初期リポジトリはpublicな骨組みとして作成する。ただし、private repositoryの文書は初期content sourceに含めない。
+
 各ソースリポジトリに散らばる文書正本を、Antora playbookのcontent sourcesとして取得する。
+
+初期の最小ファイルセットは以下である。
+
+[source,text]
+----
+zouchikikou-docs-site/
+  README.md
+  antora-playbook.yml
+  package.json
+  .gitignore
+  .github/
+    workflows/
+      build.yml
+  tools/
+    README.md
+----
 
 === 5.3.1 Antora playbook
 
@@ -151,7 +169,7 @@ Antora playbookは、どのリポジトリ、ブランチ、start pathから文�
 ----
 content:
   sources:
-    - url: https://github.com/example/source-repo-a.git
+    - url: https://github.com/f-vermi-lion/zk_meta_architecture.git
       branches: main
       start_path: docs
 ----
@@ -161,6 +179,8 @@ content sourceとして取り込む各ソースリポジトリのbranchとstart 
 === 5.3.2 公開workflow
 
 公開workflowは、`repository_dispatch`と`workflow_dispatch`を受け付ける。
+
+ただし、初期`.github/workflows/build.yml`はbootstrap用の手動build workflowとし、`workflow_dispatch`のみを受け付ける。初期workflowは`npm run build`でAntora buildを確認し、GitHub Pages deploy、`repository_dispatch`、token / secret利用、`tools/check-language-pairs`実行は含めない。
 
 公開workflowの主な責務は以下である。
 

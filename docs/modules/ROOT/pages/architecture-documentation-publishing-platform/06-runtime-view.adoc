@@ -1,14 +1,38 @@
 = 6. ランタイムビュー
 :docstatus: draft
 :created: 2026-05-05
-:revdate: 2026-05-12
+:revdate: 2026-05-14
 :authors: F; ChatGPT
 :lang: ja
 
 
+== 6.0 zouchikikou-docs-site初期build確認
+
+このシナリオは、`zouchikikou-docs-site`作成直後に、公開deployなしでAntora buildだけを確認する流れである。
+
+=== 6.0.1 事前条件
+
+* `zouchikikou-docs-site`がpublicな骨組みリポジトリとして作成されている。
+* `README.md`、`antora-playbook.yml`、`package.json`、`.gitignore`、`.github/workflows/build.yml`、`tools/README.md`が配置されている。
+* `antora-playbook.yml`が`https://github.com/f-vermi-lion/zk_meta_architecture.git`の`main` branch、`start_path: docs`をcontent sourceとして参照している。
+
+=== 6.0.2 通常フロー
+
+. Fまたは保守者が、`zouchikikou-docs-site`の`build.yml`を手動実行する。
+. workflowが依存関係をインストールする。
+. workflowが`npm run build`でAntora buildを実行する。
+. Fまたは保守者がActions logとbuild結果を確認する。
+
+=== 6.0.3 結果
+
+* `zouchikikou-docs-site`でAntora buildを実行できる。
+* GitHub Pages deploy、`repository_dispatch`、token / secret利用なしで、最小の集約サイト生成を検証できる。
+
 == 6.1 ソースリポジトリのmain更新から公開まで
 
 このシナリオは、文書作成者がソースリポジトリの`main`へ文書または図定義を反映した後、GitHub Pages上の公開サイトが更新されるまでの標準フローである。
+
+この標準フローは、`zouchikikou-docs-site`の初期build確認後に、Pages deploy、`repository_dispatch`、token / secret管理を有効化してから成立する。
 
 === 6.1.1 事前条件
 

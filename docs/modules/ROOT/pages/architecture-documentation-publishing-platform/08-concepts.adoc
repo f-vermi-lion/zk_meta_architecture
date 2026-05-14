@@ -1,7 +1,7 @@
 = 8. 横断的コンセプト
 :docstatus: draft
 :created: 2026-05-05
-:revdate: 2026-05-12
+:revdate: 2026-05-14
 :authors: F; ChatGPT
 :lang: ja
 
@@ -116,10 +116,15 @@ source-repo-a/
   dtcw
 
 zouchikikou-docs-site/
+  README.md
   antora-playbook.yml
+  package.json
+  .gitignore
   .github/
     workflows/
-      publish.yml
+      build.yml
+  tools/
+    README.md
 ----
 
 この構成なら、arc42文書の正本を各ソースリポジトリに置きつつ、Antoraの複数リポジトリ集約とGitHub Pages公開に自然につなげられる。

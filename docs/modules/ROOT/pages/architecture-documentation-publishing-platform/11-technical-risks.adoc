@@ -1,7 +1,7 @@
 = 11. 技術的リスク
 :docstatus: draft
 :created: 2026-05-05
-:revdate: 2026-05-12
+:revdate: 2026-05-14
 :authors: F; ChatGPT
 :lang: ja
 
@@ -181,26 +181,30 @@ docToolchainはarc42やAsciiDoc文書運用に有用だが、Antora連携は検�
 | 採用範囲、build手順、代替手段に影響する。
 
 | UC-5
-| zouchikikou-docs-siteの初期作成手順と最小構成を決める
-| サイト用リポジトリの初期ファイル、初期workflow、作業順序に影響する。
+| zouchikikou-docs-siteを実際に作成して初期ファイルを投入する
+| 決定済みの初期構成を実リポジトリで検証できるかに影響する。
 
 | UC-6
+| zouchikikou-docs-siteのGitHub Pages deploy有効化手順を決める
+| 生成済みサイトを実際に公開する手順、権限、Pages設定に影響する。
+
+| UC-7
 | サイト再生成用のGitHub Actions権限とトークン管理方針を決める
 | cross-repository workflow、secret管理、セキュリティに影響する。
 
-| UC-7
+| UC-8
 | サイト再生成失敗時の通知・再実行手順を決める
 | 運用負荷、障害発見、復旧手順に影響する。
 
-| UC-8
+| UC-9
 | Antora UI上の日英切り替え導線を決める
 | 閲覧者が英語正本と日本語補助版を行き来する操作に影響する。
 
-| UC-9
+| UC-10
 | サイト用リポジトリ作成後にtools/check-language-pairsを実装する
 | 決定済みの日英対応検査を公開workflowで実行できるかに影響する。
 
-| UC-10
+| UC-11
 | 日英対応ページの内容差分や更新鮮度を検査対象にするか決める
 | 翻訳の古さや内容差分をどこまでCIで扱うかに影響する。
 |===

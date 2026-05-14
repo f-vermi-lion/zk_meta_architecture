@@ -1,7 +1,7 @@
 = 10. 品質要求
 :docstatus: draft
 :created: 2026-05-05
-:revdate: 2026-05-12
+:revdate: 2026-05-14
 :authors: F; ChatGPT
 :lang: ja
 
@@ -31,6 +31,9 @@
 
 | 草稿確認性
 | 公開前または草稿段階でも、表示崩れ、図、リンク、構成を確認できる。
+
+| 初期構築容易性
+| サイト用リポジトリ作成直後に、deployやtoken設定なしでAntora buildを確認できる。
 
 | 日英整合性
 | 英語正本と日本語補助版の対応欠落を検出できる。
@@ -181,6 +184,26 @@
 | 独自実装は、既存ツールで賄えない差分、検査、接続、運用補助に限定される。
 |===
 
+=== 10.2.8 サイト用リポジトリを小さく作り始められる
+
+[cols="1,3",options="header"]
+|===
+| 項目
+| 内容
+
+| 刺激
+| `zouchikikou-docs-site`を初期作成する。
+
+| 環境
+| public repositoryとして骨組みを作成でき、GitHub Actionsで手動workflowを実行できる。
+
+| 応答
+| `workflow_dispatch`で起動する`build.yml`が、`npm run build`でAntora buildを実行する。
+
+| 受け入れ条件
+| Pages deploy、`repository_dispatch`、token / secret利用なしで、`https://github.com/f-vermi-lion/zk_meta_architecture.git`の`main` branch、`start_path: docs`をcontent sourceとしてbuildできる。
+|===
+
 == 10.3 本体文書を書き始められる最低条件
 
 造智機巧本体の文書を書き始める前に、この基盤が完璧である必要はない。
@@ -189,6 +212,7 @@
 
 * ソースリポジトリ側の標準文書配置が決まっている。
 * サイト用リポジトリの責務が決まっている。
+* サイト用リポジトリの初期構成が決まっている。
 * `main`更新から公開workflow起動までの流れが決まっている。
 * 章ファイル名とメタデータ規則が決まっている。
 * 図の正本がStructurizr DSLであることが決まっている。

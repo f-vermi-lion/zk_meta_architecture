@@ -1,7 +1,7 @@
 = 4. ソリューション戦略
 :docstatus: draft
 :created: 2026-05-05
-:revdate: 2026-05-12
+:revdate: 2026-05-14
 :authors: F; ChatGPT
 :lang: ja
 
@@ -51,6 +51,8 @@ GitHub Pages上の公開サイトは、閲覧用の派生成果物であり、�
 各ソースリポジトリは、原則として自分の文書正本と最低限の検査・生成設定を持つ。統合サイト全体の構成、複数リポジトリの取り込み順、GitHub Pagesへのdeployは専用サイトリポジトリ側の責務にする。
 
 この分離により、ソースリポジトリ側は「文書を書く場所」、サイト用リポジトリ側は「集めて公開する場所」として扱える。
+
+`zouchikikou-docs-site`は、まずpublicな骨組みリポジトリとして作成する。初期構成ではprivate repositoryの文書を取り込まず、手動`workflow_dispatch`でAntora buildを確認するところまでに限定する。
 
 == 4.4 AsciiDoc / Antora / arc42 を使う戦略
 
@@ -152,8 +154,9 @@ Structurizr DSLからSVGを直接生成するか、PlantUML / C4-PlantUML経由�
 * Structurizr DSLからSVGを直接生成するか、PlantUML / C4-PlantUML経由にするか
 * private repositoryの文書をpublic GitHub Pagesへ出してよいか
 * docToolchainのAntora連携をどこまで使うか
-* `zouchikikou-docs-site`の初期作成手順と最小構成
 * cross-repository workflowで使うtoken / secret管理
+* `zouchikikou-docs-site`を実際に作成して初期ファイルを投入する
+* `zouchikikou-docs-site`のGitHub Pages deploy有効化手順
 * サイト再生成失敗時の通知・再実行手順
 * Antora UI上の日英切り替え導線
 * サイト用リポジトリ作成後の`tools/check-language-pairs`実装
