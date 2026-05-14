@@ -132,7 +132,7 @@
 | サイト用リポジトリ
 | Antora playbook、UI、公開workflow、共通設定
 | 統合サイト成果物、Pages deploy
-| 全体サイト生成の中心。
+| 全体サイト生成の中心。標準名は`zouchikikou-docs-site`とする。
 
 | GitHub
 | Git push、PR、workflow実行要求

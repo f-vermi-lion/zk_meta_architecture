@@ -115,7 +115,7 @@ source-repo-a/
   docToolchainConfig.groovy
   dtcw
 
-docs-site/
+zouchikikou-docs-site/
   antora-playbook.yml
   .github/
     workflows/

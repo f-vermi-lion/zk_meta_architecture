@@ -181,8 +181,8 @@ docToolchainはarc42やAsciiDoc文書運用に有用だが、Antora連携は検�
 | 採用範囲、build手順、代替手段に影響する。
 
 | UC-5
-| サイト用リポジトリの具体名と作成タイミングを決める
-| repository_dispatchの宛先、権限設定、作業順序に影響する。
+| zouchikikou-docs-siteの初期作成手順と最小構成を決める
+| サイト用リポジトリの初期ファイル、初期workflow、作業順序に影響する。
 
 | UC-6
 | サイト再生成用のGitHub Actions権限とトークン管理方針を決める

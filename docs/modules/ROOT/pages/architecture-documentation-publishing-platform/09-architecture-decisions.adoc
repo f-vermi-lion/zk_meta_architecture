@@ -49,7 +49,9 @@
 
 ソースリポジトリ側は「文書を書く場所」、専用サイトリポジトリ側は「集めて公開する場所」とする。
 
-各ソースリポジトリの`main`更新後は、サイト用リポジトリへ`repository_dispatch`で再生成を依頼する。サイト用リポジトリの公開workflowは`repository_dispatch`と手動の`workflow_dispatch`を受け付ける。
+専用サイトリポジトリの標準名は`zouchikikou-docs-site`とし、この決定後すぐ作成する。
+
+各ソースリポジトリの`main`更新後は、`zouchikikou-docs-site`へ`repository_dispatch`で再生成を依頼する。`zouchikikou-docs-site`の公開workflowは`repository_dispatch`と手動の`workflow_dispatch`を受け付ける。
 
 日本語版・英語版は同一component内のAntora moduleで分ける。英語正本は`ROOT` module、日本語補助版は`ja` moduleに置き、対応するページはmodule配下の相対パスとファイル名を揃える。
 

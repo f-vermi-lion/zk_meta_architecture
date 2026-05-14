@@ -18,7 +18,7 @@
 | システム、サブシステム、ライブラリなどのソースコードと、その対象に属するアーキテクチャ文書正本を置くリポジトリ。
 
 | サイト用リポジトリ
-| Antora playbook、共通UI、公開workflow、共通検査ツールを持ち、複数ソースリポジトリの文書を集約してGitHub Pagesへ公開するリポジトリ。
+| Antora playbook、共通UI、公開workflow、共通検査ツールを持ち、複数ソースリポジトリの文書を集約してGitHub Pagesへ公開するリポジトリ。標準名は`zouchikikou-docs-site`とする。
 
 | 正本
 | 後続の編集、検査、生成の基準になる一次成果物。文書本文ではAsciiDoc、図ではStructurizr DSLを指す。

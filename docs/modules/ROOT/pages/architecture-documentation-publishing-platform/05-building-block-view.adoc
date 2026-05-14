@@ -139,6 +139,8 @@ DSLの分割単位と`!include`の詳細規則は未決定である。ただし�
 
 サイト用リポジトリは、統合サイトを生成してGitHub Pagesへ公開する中心である。
 
+標準名は`zouchikikou-docs-site`とし、この決定後すぐ作成する。
+
 各ソースリポジトリに散らばる文書正本を、Antora playbookのcontent sourcesとして取得する。
 
 === 5.3.1 Antora playbook
@@ -154,7 +156,7 @@ content:
       start_path: docs
 ----
 
-実際のリポジトリ名、branch、start pathは、サイト用リポジトリ作成時に確定する。
+content sourceとして取り込む各ソースリポジトリのbranchとstart pathは、`zouchikikou-docs-site`の初期構成時に確定する。
 
 === 5.3.2 公開workflow
 

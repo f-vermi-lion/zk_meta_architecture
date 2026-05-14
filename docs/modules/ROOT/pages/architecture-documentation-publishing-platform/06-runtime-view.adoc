@@ -13,8 +13,8 @@
 === 6.1.1 事前条件
 
 * ソースリポジトリにarc42文書、Structurizr DSL、Antora component descriptorが配置されている。
-* サイト用リポジトリにAntora playbookと公開workflowが配置されている。
-* サイト用リポジトリの公開workflowが`repository_dispatch`を受け付ける。
+* `zouchikikou-docs-site`にAntora playbookと公開workflowが配置されている。
+* `zouchikikou-docs-site`の公開workflowが`repository_dispatch`を受け付ける。
 * 必要なGitHub Actions権限とtoken / secretが設定されている。
 
 === 6.1.2 通常フロー
@@ -22,8 +22,8 @@
 . 文書作成者が、ソースリポジトリ内の`.adoc`または`.dsl`を更新する。
 . 変更をpull requestまたは直接pushで`main`へ反映する。
 . ソースリポジトリ側workflowが文書検査と必要な図生成を実行する。
-. ソースリポジトリ側workflowが、サイト用リポジトリへ`repository_dispatch`を送る。
-. サイト用リポジトリの公開workflowが起動する。
+. ソースリポジトリ側workflowが、`zouchikikou-docs-site`へ`repository_dispatch`を送る。
+. `zouchikikou-docs-site`の公開workflowが起動する。
 . 公開workflowがAntora playbookに従ってcontent sourcesを取得する。
 . 公開workflowがcheckout済みcontent rootを引数として`tools/check-language-pairs <content-root>...`などの共通検査を実行する。
 . 公開workflowが必要な図生成または生成済み図の存在確認を行う。
