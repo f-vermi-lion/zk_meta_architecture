@@ -3,6 +3,7 @@
 - private repositoryの文書をpublic GitHub Pagesに出してよいか判断する
 - docToolchainのAntora連携がbetaである点を検証する
 - zouchikikou-docs-siteの初期ファイルをcommit/pushする
+- meta_architectureのAntora参照修正をremote mainへ反映してzouchikikou-docs-siteで再確認する
 - zouchikikou-docs-siteのGitHub Pages deploy有効化手順を決める
 - サイト再生成用のGitHub Actions権限とトークン管理方針を決める
 - サイト再生成失敗時の通知・再実行手順を決める
