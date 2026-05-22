@@ -1,7 +1,7 @@
 = 11. 技術的リスク
 :docstatus: draft
 :created: 2026-05-05
-:revdate: 2026-05-14
+:revdate: 2026-05-23
 :authors: F; ChatGPT
 :lang: ja
 
@@ -181,8 +181,8 @@ docToolchainはarc42やAsciiDoc文書運用に有用だが、Antora連携は検�
 | 採用範囲、build手順、代替手段に影響する。
 
 | UC-5
-| zouchikikou-docs-siteを実際に作成して初期ファイルを投入する
-| 決定済みの初期構成を実リポジトリで検証できるかに影響する。
+| zouchikikou-docs-siteの初期ファイルをcommit / pushする
+| 決定済みの初期構成をGitHub上で共有し、Actionsで実行できるかに影響する。
 
 | UC-6
 | zouchikikou-docs-siteのGitHub Pages deploy有効化手順を決める

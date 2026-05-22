@@ -1,7 +1,7 @@
 = 8. 横断的コンセプト
 :docstatus: draft
 :created: 2026-05-05
-:revdate: 2026-05-14
+:revdate: 2026-05-23
 :authors: F; ChatGPT
 :lang: ja
 
@@ -235,7 +235,7 @@ xref:architecture-documentation-publishing-platform/03-context-and-scope.adoc[3.
 
 [source,asciidoc]
 ----
-include::partial$example.adoc[]
+\include::partial$example.adoc[]
 ----
 
 リポジトリ内外のページ参照では、相対パスよりAntoraのresource IDを優先する。

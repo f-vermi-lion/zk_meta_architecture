@@ -48,6 +48,7 @@
 - Antora上のページ間参照は`xref`を基本にする。
 - 再利用断片の取り込みはAntoraのpartialとAsciiDoc includeを基本にする。
 - リポジトリ内外の参照は、相対パスではなくAntoraのresource IDで表すことを優先する。
+- `pages/`配下のサブディレクトリに置いたページを参照する場合は、`xref:architecture-documentation-publishing-platform/index.adoc[]`のように、moduleの`pages/` rootからのresource IDで表す。
 
 ## arc42
 [arc42](https://docs.arc42.org/home/)

@@ -1,7 +1,7 @@
 = 4. ソリューション戦略
 :docstatus: draft
 :created: 2026-05-05
-:revdate: 2026-05-14
+:revdate: 2026-05-23
 :authors: F; ChatGPT
 :lang: ja
 
@@ -155,7 +155,7 @@ Structurizr DSLからSVGを直接生成するか、PlantUML / C4-PlantUML経由�
 * private repositoryの文書をpublic GitHub Pagesへ出してよいか
 * docToolchainのAntora連携をどこまで使うか
 * cross-repository workflowで使うtoken / secret管理
-* `zouchikikou-docs-site`を実際に作成して初期ファイルを投入する
+* `zouchikikou-docs-site`の初期ファイルをcommit / pushする
 * `zouchikikou-docs-site`のGitHub Pages deploy有効化手順
 * サイト再生成失敗時の通知・再実行手順
 * Antora UI上の日英切り替え導線

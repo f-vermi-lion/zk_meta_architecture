@@ -28,3 +28,5 @@
 - [x] 日英対応検査スクリプトの入出力仕様と実装方針を決める
 - [x] サイト用リポジトリ名と作成タイミングを固定する
 - [x] zouchikikou-docs-siteの初期作成手順と最小構成を決める
+- [x] zouchikikou-docs-siteへ初期ファイルを投入する
+- [x] Antora buildで未解決になるxref/includeを修正する
