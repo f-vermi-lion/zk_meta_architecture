@@ -1,7 +1,7 @@
 = 6. ランタイムビュー
 :docstatus: draft
 :created: 2026-05-05
-:revdate: 2026-05-14
+:revdate: 2026-05-23
 :authors: F; ChatGPT
 :lang: ja
 
@@ -15,6 +15,7 @@
 * `zouchikikou-docs-site`がpublicな骨組みリポジトリとして作成されている。
 * `README.md`、`antora-playbook.yml`、`package.json`、`.gitignore`、`.github/workflows/build.yml`、`tools/README.md`が配置されている。
 * `antora-playbook.yml`が`https://github.com/f-vermi-lion/zk_meta_architecture.git`の`main` branch、`start_path: docs`をcontent sourceとして参照している。
+* `antora-playbook.yml`で`runtime.fetch: true`を設定し、remote content sourceの更新をbuild時に取得する。
 
 === 6.0.2 通常フロー
 
