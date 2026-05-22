@@ -30,3 +30,4 @@
 - [x] zouchikikou-docs-siteの初期作成手順と最小構成を決める
 - [x] zouchikikou-docs-siteへ初期ファイルを投入する
 - [x] Antora buildで未解決になるxref/includeを修正する
+- [x] Antoraリンク記法を公式案内に照らして同一ディレクトリ参照へ整理する
