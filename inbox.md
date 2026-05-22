@@ -1,8 +1,11 @@
 - Structurizr DSL の分割単位と `!include` 配置規則を決める
-- Antora playbookを専用サイトリポジトリに置くか全体概要リポジトリに置くか決める
-- 各ソースリポジトリのpushでサイト再生成をどう起動するか決める
 - Structurizr DSLからSVGを直接生成するかPlantUML / C4-PlantUML経由にするか決める
-- 日本語版・英語版をAntora上でどう表現するか決める
 - private repositoryの文書をpublic GitHub Pagesに出してよいか判断する
 - docToolchainのAntora連携がbetaである点を検証する
-- docs草稿自体をAntora標準構成と章ファイルslug規則に合わせるか決める
+- zouchikikou-docs-siteを実際に作成して初期ファイルを投入する
+- zouchikikou-docs-siteのGitHub Pages deploy有効化手順を決める
+- サイト再生成用のGitHub Actions権限とトークン管理方針を決める
+- サイト再生成失敗時の通知・再実行手順を決める
+- Antora UI上の日英切り替え導線を決める
+- サイト用リポジトリ作成後にtools/check-language-pairsを実装する
+- 日英対応ページの内容差分や更新鮮度を検査対象にするか決める

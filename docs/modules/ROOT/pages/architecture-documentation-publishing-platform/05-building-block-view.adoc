@@ -1,0 +1,285 @@
+= 5. ビルディングブロックビュー
+:docstatus: draft
+:created: 2026-05-05
+:revdate: 2026-05-14
+:authors: F; ChatGPT
+:lang: ja
+
+
+== 5.1 Whitebox: アーキテクチャ文書公開基盤
+
+アーキテクチャ文書公開基盤は、複数のソースリポジトリにある文書正本を、専用サイトリポジトリで集約し、GitHub Pagesへ公開する仕組みである。
+
+本章では、対象システム内部の主要な構成要素と責務を整理する。
+
+=== 5.1.1 全体構成図
+
+[source,text]
+----
+┌──────────────────────────────┐
+│        ソースリポジトリ群        │
+│  arc42 / AsciiDoc / DSL / CI  │
+└───────────────┬──────────────┘
+                │ main更新
+                │ repository_dispatch
+                ▼
+┌──────────────────────────────┐
+│       サイト用リポジトリ        │
+│ playbook / UI / publish CI    │
+│ common tools                  │
+└───────────────┬──────────────┘
+                │ content sources取得
+                │ 検査・図生成・Antora build
+                ▼
+┌──────────────────────────────┐
+│       生成・検査ツール群        │
+│ Antora / docToolchain /       │
+│ Structurizr / check scripts   │
+└───────────────┬──────────────┘
+                │ static site / artifacts / logs
+                ▼
+┌──────────────────────────────┐
+│          公開成果物            │
+│ GitHub Pages / generated      │
+│ diagrams / build artifacts    │
+└──────────────────────────────┘
+----
+
+=== 5.1.2 構成要素一覧
+
+[cols="1,2,3",options="header"]
+|===
+| 構成要素
+| 主な責務
+| 備考
+
+| ソースリポジトリ
+| 文書本文、図定義、Antora component descriptor、必要なsource側workflowを保持する。
+| 文書正本の置き場。
+
+| サイト用リポジトリ
+| 複数リポジトリの文書を集約し、公開workflowを実行する。
+| Antora playbookと共通UIの置き場。
+
+| 生成・検査ツール
+| 文書検査、日英対応検査、図生成、Antora buildを行う。
+| 既存ツールを優先して使い、足りない部分だけ補助スクリプトを作る。
+
+| 公開成果物
+| 閲覧者向けの静的サイト、生成済み図、build artifact、logを提供する。
+| 正本ではなく派生成果物。
+|===
+
+== 5.2 ソースリポジトリ
+
+ソースリポジトリは、個々のシステムまたはサブシステムの文書正本を持つ。
+
+ソースリポジトリは、サイト全体の公開構成を決める場所ではなく、そのリポジトリに属する文書・図・補助ファイルを管理する場所である。
+
+=== 5.2.1 arc42文書
+
+arc42文書は、Antora標準構成の`docs/modules/<module>/pages/`配下に置く。
+
+章ファイルは、`NN-chapter-slug.adoc`形式にする。
+
+例:
+
+[source,text]
+----
+docs/modules/ROOT/pages/
+  index.adoc
+  01-introduction-and-goals.adoc
+  02-architecture-constraints.adoc
+  03-context-and-scope.adoc
+----
+
+英語正本と日本語補助版を持つ文書では、同じcomponent内のmoduleで言語を分ける。
+
+[source,text]
+----
+docs/modules/ROOT/pages/  # 英語正本
+docs/modules/ja/pages/    # 日本語補助版
+----
+
+=== 5.2.2 Structurizr DSL
+
+Structurizr DSLは、図モデルの正本としてソースリポジトリに置く。
+
+標準配置は、対応するAntora module配下の`assets/diagrams/source/`とする。
+
+[source,text]
+----
+docs/modules/ROOT/assets/diagrams/source/
+  workspace.dsl
+----
+
+DSLの分割単位と`!include`の詳細規則は未決定である。ただし、`!include`を使う場合は、DSLソースツリー内で相対参照が完結するようにする。
+
+=== 5.2.3 Antora component descriptor
+
+各ソースリポジトリのAntora content rootには、`docs/antora.yml`を置く。
+
+`antora.yml`は、component名、title、version、navigation fileを定義する。
+
+文書に独立した版番号を持たせないcomponentでは、`version: ~`を使う。
+
+=== 5.2.4 ソースリポジトリ側workflow
+
+ソースリポジトリ側workflowは、以下を担う。
+
+* pushまたはpull request時の文書検査
+* 必要に応じた図生成
+* `main`更新後のサイト用リポジトリへの再生成依頼
+
+サイト用リポジトリへの再生成依頼は、`repository_dispatch`を標準にする。
+
+ただし、token / secret管理、権限範囲、private repositoryからpublic Pagesへ公開する場合の扱いは、未決定事項として残る。
+
+== 5.3 サイト用リポジトリ
+
+サイト用リポジトリは、統合サイトを生成してGitHub Pagesへ公開する中心である。
+
+標準名は`zouchikikou-docs-site`とし、この決定後すぐ作成する。
+
+初期リポジトリはpublicな骨組みとして作成する。ただし、private repositoryの文書は初期content sourceに含めない。
+
+各ソースリポジトリに散らばる文書正本を、Antora playbookのcontent sourcesとして取得する。
+
+初期の最小ファイルセットは以下である。
+
+[source,text]
+----
+zouchikikou-docs-site/
+  README.md
+  antora-playbook.yml
+  package.json
+  .gitignore
+  .github/
+    workflows/
+      build.yml
+  tools/
+    README.md
+----
+
+=== 5.3.1 Antora playbook
+
+Antora playbookは、どのリポジトリ、ブランチ、start pathから文書を取得するかを定義する。
+
+[source,yaml]
+----
+content:
+  sources:
+    - url: https://github.com/f-vermi-lion/zk_meta_architecture.git
+      branches: main
+      start_path: docs
+----
+
+content sourceとして取り込む各ソースリポジトリのbranchとstart pathは、`zouchikikou-docs-site`の初期構成時に確定する。
+
+=== 5.3.2 公開workflow
+
+公開workflowは、`repository_dispatch`と`workflow_dispatch`を受け付ける。
+
+ただし、初期`.github/workflows/build.yml`はbootstrap用の手動build workflowとし、`workflow_dispatch`のみを受け付ける。初期workflowは`npm run build`でAntora buildを確認し、GitHub Pages deploy、`repository_dispatch`、token / secret利用、`tools/check-language-pairs`実行は含めない。
+
+公開workflowの主な責務は以下である。
+
+. content sourcesを取得する。
+. 日英対応検査などの共通検査を実行する。
+. 必要な図生成または図生成済み成果物の確認を行う。
+. Antora buildを実行する。
+. 生成済み静的サイトをGitHub Pagesへdeployする。
+. build artifactとlogを残す。
+
+=== 5.3.3 共通UI
+
+共通UIは、Antoraで生成するサイトの見た目とナビゲーションの共通要素を担う。
+
+日英切り替え導線は未決定である。少なくとも、英語正本と日本語補助版の対応ページを行き来できる導線を用意する必要がある。
+
+=== 5.3.4 共通検査ツール
+
+サイト用リポジトリは、複数ソースリポジトリ横断で使う検査ツールを持つ。
+
+現時点で標準化されているコマンド名は、日英対応検査の`tools/check-language-pairs`である。
+
+標準コマンド形式は、`tools/check-language-pairs <content-root>...`とする。
+
+`<content-root>`には、`antora.yml`を持つAntora content rootを渡す。代表例は、checkout済みの`docs`ディレクトリである。
+
+このコマンドは、content sources取得後、Antora build前に実行する。
+
+== 5.4 生成・検査ツール
+
+生成・検査ツールは、既存ツールを優先して使う。
+
+独自実装は、既存ツールで賄えない検査、接続、運用補助に限定する。
+
+=== 5.4.1 Antora
+
+Antoraは、AsciiDoc文書を複数リポジトリから集約し、静的サイトを生成する。
+
+この基盤では、Antoraを以下に使う。
+
+* content sourcesによる複数リポジトリ取り込み
+* component / module / page構造による文書整理
+* `xref`によるページ間参照
+* navigation fileによるサイト内導線
+* GitHub PagesにdeployするHTML生成
+
+=== 5.4.2 docToolchain
+
+docToolchainは、arc42文書運用、AsciiDoc処理、図連携などの補助に使う候補である。
+
+ただし、docToolchainのAntora連携は検証対象であり、現時点ではすべての公開処理をdocToolchainに寄せるとは決めない。
+
+=== 5.4.3 Structurizr
+
+Structurizrは、C4図モデルの正本をDSLとして扱い、サイト掲載用の図を生成するために使う。
+
+図生成経路は未確定である。
+
+候補は以下である。
+
+* StructurizrのPNG/SVG exportを使う。
+* docToolchainの`exportStructurizr`からPlantUML / C4-PlantUML経由で生成する。
+
+=== 5.4.4 日英対応検査スクリプト
+
+日英対応検査スクリプトは、英語正本と日本語補助版の対応関係を検査する。
+
+標準コマンド名は、`tools/check-language-pairs`とする。
+
+検査対象は、造智機巧本体のアーキテクチャ文書であり、`meta_architecture`自体は日本語運用のため対象外とする。
+
+実装言語はPython 3とし、標準ライブラリのみを使う。
+
+検査違反は、`missing_ja`、`missing_en`、`missing_lang`、`lang_mismatch`のいずれかのissue codeを持つ行として出力する。
+
+終了コードは、問題なしを`0`、検査違反ありを`1`、引数不正やcontent root不正など実行不能を`2`とする。
+
+初期範囲では、翻訳内容の差分、更新鮮度、日英リンクの存在は検査しない。
+
+== 5.5 公開成果物
+
+公開成果物は、文書正本ではなく、文書正本から生成される派生成果物である。
+
+=== 5.5.1 GitHub Pagesサイト
+
+GitHub Pagesサイトは、閲覧者向けの公開結果である。
+
+生成済みHTML、CSS、JavaScript、画像などを含む。
+
+=== 5.5.2 生成済み図
+
+生成済み図は、Structurizr DSLなどから生成されるSVGまたはPNGである。
+
+arc42本文からは、AsciiDocの`image::...[]`で参照する。
+
+生成済み図がリポジトリに保存されるか、build artifactとして扱われるかは、図生成経路とCI運用を決める段階で確定する。
+
+=== 5.5.3 build artifact / log
+
+build artifactとlogは、公開結果の確認、失敗時の原因調査、再実行判断に使う。
+
+サイト再生成失敗に気づけないことは技術的リスクであるため、通知・再実行手順と合わせて扱う。

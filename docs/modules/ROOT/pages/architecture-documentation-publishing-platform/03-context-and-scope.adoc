@@ -1,0 +1,323 @@
+= 3. コンテキストとスコープ
+:docstatus: draft
+:created: 2026-04-27
+:revdate: 2026-05-12
+:authors: F; Codex; ChatGPT
+:lang: ja
+
+本章では、対象システムを外部の利用者・隣接システムから区切り、外部インターフェースを業務面と技術面から明らかにする。
+
+本章における対象システムは、仮に「アーキテクチャ文書公開基盤」と呼ぶ。
+
+アーキテクチャ文書公開基盤は、複数のソースリポジトリに配置されたarc42形式のAsciiDoc文書、Structurizr DSLなどの図定義、関連する補助ファイルを収集・変換し、GitHub Pages上の静的ドキュメントサイトとして公開するための仕組みである。
+
+対象システムに含めるものは、主に以下である。
+
+* 各ソースリポジトリ内の文書配置規約
+* arc42 / AsciiDoc / Structurizr DSLの取り扱い規約
+* docToolchain設定
+* Antora component / module構成
+* Antora playbook
+* GitHub Actions workflow
+* GitHub Pagesへ公開するためのビルド・デプロイ設定
+* 日本語版・英語版文書を扱うための文書構成規約
+
+対象システムに含めないものは、以下である。
+
+* GitHubそのもの
+* GitHub Actions実行基盤
+* GitHub Pagesホスティング基盤
+* Antora / docToolchain / Structurizrなどの外部製品本体
+* 各ソースリポジトリで開発されるアプリケーション本体
+* arc42の章立てそのものの改変
+* Codex / ChatGPTなどのAIツール本体
+* AIツールのモデル性能改善
+* 文書内容の完全自動生成
+* 翻訳品質の完全保証
+* 閲覧者のブラウザ
+* GitHub Pages以外の公開基盤対応
+* Confluence、PDF、Wordなどへの本格出力
+
+ただし、docToolchainがPDFやConfluenceなどにも対応しうるため、GitHub Pages以外の出力は将来拡張としては残す。
+
+== 3.1 業務コンテキスト
+
+=== 3.1.1 業務上の境界
+
+アーキテクチャ文書公開基盤は、F、AI、リポジトリ貢献者がソースリポジトリ内で文書を更新したときに、公開サイトへ自動反映するための文書公開システムである。
+
+この基盤の主目的は、文書の内容と図の定義をソースコードと同じリポジトリで管理しつつ、閲覧者には統合されたドキュメントサイトとして提供することである。
+
+文書作成者は、原則として以下だけに集中できることを目指す。
+
+* arc42各章・各節の本文を書く
+* Structurizr DSLなどで図を書く
+* 必要な相互参照を書く
+* 日本語版・英語版の文書を更新する
+* `main`ブランチへ反映する
+
+サイト生成、複数リポジトリからの収集、図の変換、静的サイトの公開は、可能な限り自動化される。
+
+=== 3.1.2 業務コンテキスト図
+
+[source,text]
+----
+                 ┌──────────────┐
+                 │      F       │
+                 │ 文書作成・確認 │
+                 └──────┬───────┘
+                        │
+                        │ 文書・図定義を編集
+                        ▼
+┌──────────────┐   文書改善案・編集支援   ┌──────────────┐
+│    Codex     │ ─────────────────────▶ │              │
+│ リポジトリ内AI │                       │              │
+└──────────────┘                       │              │
+                                       │ アーキテクチャ │
+┌──────────────┐   文書改善案・設計支援   │ 文書公開基盤 │
+│   ChatGPT    │ ─────────────────────▶ │              │
+│ 対話型AI支援  │                       │              │
+└──────────────┘                       │              │
+                                       └──────┬───────┘
+┌──────────────┐                              │
+│ リポジトリ貢献者 │ ─ 文書・図・コード変更 ───────┘
+└──────────────┘
+                                               │
+                                               │ 統合済み文書サイト
+                                               ▼
+                                      ┌──────────────┐
+                                      │ 文書サイト閲覧者 │
+                                      └──────────────┘
+----
+
+=== 3.1.3 外部利用者・隣接システム
+
+[cols="1,2,2,2",options="header"]
+|===
+| 外部要素
+| 入力
+| 出力
+| 備考
+
+| F
+| 文書本文、図定義、レビュー結果、設計判断、公開可否の判断
+| 公開サイト、プレビュー、ビルド結果、エラー情報
+| 主利用者。日本語で読めることを重視する。
+
+| Codex
+| リポジトリ内の文書・コード・タスク指示
+| 文書修正案、英語文書案、構成修正、PRまたは差分
+| ソースと文書が同じリポジトリにあるほど作業しやすい。
+
+| ChatGPT
+| 文書断片、設計相談、構成案、レビュー依頼
+| 設計整理、章立て案、文面案、指摘
+| リポジトリ外からの構想整理・レビュー支援。
+
+| リポジトリ貢献者
+| 文書、図、コード、レビューコメント
+| 統合サイト、文書構成、参照可能な設計情報
+| FとAI以外に将来参加する可能性がある。
+
+| 文書サイト閲覧者
+| Webブラウザからの閲覧要求
+| GitHub Pages上の静的ドキュメントサイト
+| 特定文書への直接リンク、概要から詳細への移動、関連文書への導線を期待する。
+
+| ソースリポジトリ
+| arc42文書、Structurizr DSL、画像、補助ファイル、Antora設定
+| サイト生成時に読み込まれる文書コンテンツ
+| 文書の正本を置く場所。
+
+| サイト用リポジトリ
+| Antora playbook、UI、公開workflow、共通設定
+| 統合サイト成果物、Pages deploy
+| 全体サイト生成の中心。標準名は`zouchikikou-docs-site`とする。
+
+| GitHub
+| Git push、PR、workflow実行要求
+| リポジトリ状態、Actions実行環境、Pages公開先
+| GitHub ActionsとGitHub Pagesは対象システム外の実行・公開基盤。
+|===
+
+=== 3.1.4 業務インターフェース
+
+==== 文書作成インターフェース
+
+文書作成者は、各ソースリポジトリ内でarc42形式のAsciiDocファイルを編集する。章または節ごとにファイルを分割し、必要に応じて上位文書からincludeする。
+
+==== 図作成インターフェース
+
+文書作成者は、Structurizr DSLを図の正本として編集する。
+
+図の最終出力形式は、サイト表示に適したSVGまたは画像ファイルとする。ただし、CIでの変換方式は、StructurizrのPNG/SVG exportを使う案と、docToolchainの`exportStructurizr`によるPlantUML / C4-PlantUML経由案を比較・検証する。
+
+==== サイト閲覧インターフェース
+
+閲覧者は、GitHub Pages上の静的サイトを読む。特定文書への直リンク、関連文書へのリンク、全体概要から詳細文書への移動を行える必要がある。
+
+Antoraでは、ページ間リンクに`xref` macroとresource IDを使う方式が示されているため、リポジトリ内外のページ参照はAntoraの`xref`を基本にする。
+
+==== 再利用・取り込みインターフェース
+
+共通説明、用語定義、横断的概念、上位文書から参照される章・節などは、Antoraのpartialまたはpage includeとして取り込む。
+
+== 3.2 技術コンテキスト
+
+=== 3.2.1 技術上の境界
+
+アーキテクチャ文書公開基盤は、GitHub上の複数リポジトリ、GitHub Actions、Antora、docToolchain、Structurizr、GitHub Pagesを組み合わせて構成される。
+
+技術的には、以下のような流れを想定する。
+
+. 各ソースリポジトリに、arc42 / AsciiDoc / Structurizr DSL / Antora component descriptorを配置する。
+. `main`ブランチへのpushを契機に、文書検査・図生成・サイト再生成を実行する。
+. サイト用リポジトリのAntora playbookが、複数のsource repositoryから文書を取得する。
+. Antoraが統合サイトを生成する。
+. GitHub Actionsが生成済み静的ファイルをGitHub Pagesにデプロイする。
+. 閲覧者はGitHub Pagesから公開済みサイトを読む。
+
+Antoraは、content source repositoriesとして複数のGitリポジトリ、ブランチ、タグ、start pathをplaybookで指定できる。またGitHub Pagesは、pushによるブランチ公開またはGitHub Actions workflowによる公開を選べる。今回のようにAntoraなどの独自ビルド工程がある場合はGitHub Actions workflowによる公開が適する。
+
+=== 3.2.2 技術コンテキスト図
+
+[source,text]
+----
+┌─────────────────────────────┐
+│        Source Repository A   │
+│  code / arc42 / adoc / DSL   │
+│  antora.yml / docToolchain   │
+└──────────────┬──────────────┘
+               │ push main
+               │ repository_dispatch / workflow_dispatch / scheduled build
+               ▼
+┌─────────────────────────────┐
+│        GitHub Actions        │
+│  build / validate / export   │
+└──────────────┬──────────────┘
+               │
+               │ checkout / fetch content sources
+               ▼
+┌─────────────────────────────┐
+│       Site / Playbook Repo   │
+│  antora-playbook.yml         │
+│  UI / common config / CI     │
+└──────────────┬──────────────┘
+               │
+               │ npx antora antora-playbook.yml
+               ▼
+┌─────────────────────────────┐
+│            Antora            │
+│  multi-repo AsciiDoc site    │
+└──────────────┬──────────────┘
+               │ static site
+               ▼
+┌─────────────────────────────┐
+│        GitHub Pages          │
+│  published documentation     │
+└──────────────┬──────────────┘
+               │ HTTPS
+               ▼
+┌─────────────────────────────┐
+│        Web Browser           │
+│  F / contributors / viewers  │
+└─────────────────────────────┘
+
+補助的な変換経路:
+
+Structurizr DSL
+      │
+      ├─ Structurizr PNG/SVG export
+      │
+      └─ docToolchain exportStructurizr → PlantUML / C4-PlantUML → image
+----
+
+=== 3.2.3 外部技術インターフェース
+
+[cols="1,2,3",options="header"]
+|===
+| 隣接システム / ツール
+| 技術インターフェース
+| 対象システムとの関係
+
+| GitHub Repositories
+| Git、branch、tag、pull request、push event
+| 文書正本とサイト設定を保存する。
+
+| GitHub Actions
+| YAML workflow、runner、artifacts、repository events
+| 文書検査、図生成、Antora build、Pages deployを実行する。
+
+| GitHub Pages
+| 静的サイトホスティング、HTTPS
+| 生成済みサイトを公開する。
+
+| Antora
+| `antora-playbook.yml`、`antora.yml`、modules、pages、partials、assets
+| 複数リポジトリのAsciiDocを統合し、Webサイトを生成する。
+
+| docToolchain
+| `dtcw`、`docToolchainConfig.groovy`、Gradle tasks
+| arc42テンプレート、AsciiDoc生成、図連携、補助成果物生成を担う。docToolchainのAntora連携はbetaと明記されているため、採用時は検証対象にする。
+
+| Structurizr
+| `.dsl`、CLI/export、PNG/SVG export、PlantUML export
+| C4図モデルの正本を管理し、サイト掲載用の図を生成する。
+
+| Asciidoctor / AsciiDoc処理系
+| include、xref、attributes、blocks
+| 文書分割、再利用、相互参照、図や生成物の埋め込みに使う。
+
+| Web Browser
+| HTTPS、HTML、CSS、SVG、JavaScript
+| 閲覧者が公開サイトを読む。
+
+| Codex / ChatGPT
+| Git差分、ファイル編集、対話、レビュー
+| 文書作成・修正を支援するが、対象システムの実行基盤ではない。
+|===
+
+=== 3.2.4 業務入出力と技術チャネルの対応
+
+[cols="1,2,2",options="header"]
+|===
+| 業務入出力
+| 技術チャネル
+| 技術形式
+
+| 文書本文の更新
+| Git push / pull request
+| `.adoc`
+
+| 図定義の更新
+| Git push / pull request
+| `.dsl`
+
+| 文書分割・再利用
+| AsciiDoc include / Antora partial include
+| `include::...[]`
+
+| ページ間参照
+| Antora xref
+| `xref:...[]`
+
+| 複数リポジトリ取り込み
+| Antora content sources
+| `antora-playbook.yml`
+
+| 図生成
+| Structurizr export / docToolchain task
+| SVG、PNG、PlantUML、C4-PlantUML
+
+| サイト生成
+| Antora CLI
+| HTML、CSS、JavaScript、assets
+
+| サイト公開
+| GitHub Actions -> GitHub Pages
+| Pages artifact / static site
+
+| 手動確認
+| ローカルビルド / Actions log / Pages preview
+| HTML、log、build artifact
+|===

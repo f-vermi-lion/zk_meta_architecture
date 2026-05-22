@@ -10,7 +10,20 @@
 
 ## 高レベル自動化手順
 - ソースリポジトリで文書、図定義、Antora設定を更新する。
-- GitHub Actionsで文書検査、Structurizr DSLなどからの図生成、Antora buildを実行する。
-- サイト用リポジトリのAntora playbookで複数リポジトリの文書を集約する。
+- ソースリポジトリのGitHub Actionsで、必要な文書検査や図生成を実行する。
+- サイト用リポジトリ`zouchikikou-docs-site`のGitHub Actionsで、content sources取得後にcheckout済みcontent rootを引数として`tools/check-language-pairs <content-root>...`を実行し、必要な検査・生成、Antora buildを実行する。
+- `zouchikikou-docs-site`のAntora playbookで複数リポジトリの文書を集約する。
 - 生成された静的サイトをGitHub Pagesへdeployする。
 - 公開後はGitHub Pages上のページとActions logで結果を確認する。
+
+## 初期build workflow
+- `zouchikikou-docs-site`の初期`.github/workflows/build.yml`は、bootstrap用の手動build workflowとして扱う。
+- 初期`build.yml`は`workflow_dispatch`のみを受け付け、`npm run build`でAntora buildを確認する。
+- 初期`build.yml`は、GitHub Pages deploy、`repository_dispatch`、token / secret利用、`tools/check-language-pairs`実行を含めない。
+- GitHub Pages deployを行う公開workflowは、初期build確認後に別途有効化する。
+
+## サイト再生成の起動方式
+- 標準トリガーは、各ソースリポジトリの`main`更新後に、`zouchikikou-docs-site`へ`repository_dispatch`で再生成を依頼する方式にする。
+- `zouchikikou-docs-site`の公開workflowは、`repository_dispatch`と手動の`workflow_dispatch`を受け付ける。
+- `repository_dispatch`で起動した公開workflowは、content sources取得後にcheckout済みcontent rootを引数として`tools/check-language-pairs <content-root>...`を実行し、必要な検査・生成、Antora build、GitHub Pages deployを実行する。
+- ソースリポジトリ側のpushは文書正本更新の契機であり、GitHub Pages上の公開成果物を正本化するものではない。

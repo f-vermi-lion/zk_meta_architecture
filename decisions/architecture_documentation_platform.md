@@ -22,7 +22,21 @@
 - 閲覧者のブラウザ
 
 ## 基本構成
-- 各ソースリポジトリは、文書本文、図定義、Antora component設定、docToolchain設定を正本として持つ。
-- サイト用リポジトリは、Antora playbookで複数ソースリポジトリの文書を集約する。
+- 各ソースリポジトリは、文書本文、図定義、Antora component設定、docToolchain設定、必要な検査workflowを正本として持つ。
+- 各ソースリポジトリは、統合用のAntora playbookを持たない。
+- 専用サイトリポジトリの標準名は`zouchikikou-docs-site`とする。
+- `zouchikikou-docs-site`は、この決定後すぐ作成する。
+- `zouchikikou-docs-site`は、Antora playbook、共通UI、公開workflow、公開workflowで使う共通検査ツールを持つ。
+- `zouchikikou-docs-site`は、Antora playbookで複数ソースリポジトリの文書を集約する。
 - GitHub Actionsは、検査、図生成、Antora build、GitHub Pages deployを実行する。
 - GitHub Pagesは、生成済み静的サイトの公開先として扱う。
+
+## `zouchikikou-docs-site`の初期構成
+- 初期リポジトリはpublicな骨組みとして作成する。
+- 初期構成では、private repositoryの文書をcontent sourceとして取り込まない。
+- 初期目的は、サイト用リポジトリの骨組みを作り、手動実行でAntora buildできることを確認することに限定する。
+- 初期の最小ファイルセットは、`README.md`、`antora-playbook.yml`、`package.json`、`.gitignore`、`.github/workflows/build.yml`、`tools/README.md`とする。
+- 初期`antora-playbook.yml`は、public content sourceとして`https://github.com/f-vermi-lion/zk_meta_architecture.git`の`main` branch、`start_path: docs`を取り込む。
+- 初期workflowは、手動の`workflow_dispatch`のみを受け付け、依存関係をインストールしてAntora buildを実行する。
+- 初期確認コマンドは`npm run build`とする。
+- 初期workflowには、GitHub Pages deploy、`repository_dispatch`、token / secret利用、`tools/check-language-pairs`実行を含めない。

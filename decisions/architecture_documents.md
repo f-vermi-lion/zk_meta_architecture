@@ -5,9 +5,12 @@
 ## 配置規則
 - 各ソースリポジトリのアーキテクチャ文書は、Antora標準構成で`docs/`配下に置く。
 - Antora component descriptorは`docs/antora.yml`に置く。
-- arc42本文は`docs/modules/ROOT/pages/`配下にAsciiDocファイルとして置く。
-- 再利用する断片は`docs/modules/ROOT/partials/`配下に置く。
-- 画像や補助ファイルは`docs/modules/ROOT/assets/`配下に置く。
+- Antoraのナビゲーションファイルは各moduleの`nav.adoc`に置く。
+- 文書に独立した版番号を持たせないcomponentでは、`docs/antora.yml`の`version`に`~`を指定する。
+- 英語正本のarc42本文は`docs/modules/ROOT/pages/`配下にAsciiDocファイルとして置く。
+- 日本語補助版のarc42本文は`docs/modules/ja/pages/`配下にAsciiDocファイルとして置く。
+- 再利用する断片は、対応するmoduleの`partials/`配下に置く。
+- 画像や補助ファイルは、対応するmoduleの`assets/`配下に置く。
 - GitHub上の`README.md`は入口として残すが、arc42本文の正本としては扱わない。
 - 子文書はAntoraのページ階層またはモジュール構成で表し、親文書から辿れるようにする。
 - 章ファイルはarc42の公式の章番号に対応させ、必要な章だけを置いてよい。

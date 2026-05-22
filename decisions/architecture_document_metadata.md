@@ -20,6 +20,7 @@
 - `:authors:`は著者名を`;`区切りで並べる。
 - `:lang:`は`en`または`ja`にする。
 - 明示的なversion番号は持たないため、`:revnumber:`は使わない。
+- Antora component descriptorの`version`はサイト構成上のcomponent versionであり、文書本文の版番号としては扱わない。
 
 ## 例
 ```adoc

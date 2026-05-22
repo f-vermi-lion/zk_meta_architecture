@@ -1,0 +1,108 @@
+= 9. アーキテクチャ決定
+:docstatus: draft
+:created: 2026-05-05
+:revdate: 2026-05-12
+:authors: F; ChatGPT
+:lang: ja
+
+
+== 9.1 現在有効な決定
+
+現在有効な決定は、リポジトリ内の`decisions/`に置く。
+
+この章は、決定内容の全文を重複して持つのではなく、現在のarc42本文と決定ファイルの対応を示す索引として扱う。
+
+[cols="1,3,2",options="header"]
+|===
+| 決定ファイル
+| 主な決定内容
+| 関連章
+
+| `decisions/architecture_documentation_platform.md`
+| 対象システム名、含むもの、含まないもの、基本構成。
+| 3章、4章、5章
+
+| `decisions/architecture_documents.md`
+| arc42、Antora標準構成、章ファイル命名規則、相互参照方針。
+| 4章、5章、8章、12章
+
+| `decisions/architecture_document_publication.md`
+| GitHub Pages公開、専用サイトリポジトリ、repository_dispatch / workflow_dispatch。
+| 4章、5章、6章、10章、11章
+
+| `decisions/architecture_diagrams.md`
+| Structurizr DSLを図の正本にする方針、生成画像の配置、`!include`の大枠。
+| 4章、5章、6章、8章、11章
+
+| `decisions/architecture_document_languages.md`
+| 英語正本・日本語補助版、Antora moduleによる日英分離、日英対応検査。
+| 4章、5章、6章、8章、10章、11章
+
+| `decisions/architecture_document_metadata.md`
+| AsciiDocヘッダ属性としての文書メタデータ、必須項目、記法。
+| 8章、10章、12章
+|===
+
+== 9.2 現時点の主要決定要約
+
+対象システムは、「各リポジトリ内の文書正本」と「専用サイトリポジトリのAntora集約・公開設定」からなる文書公開基盤と定義する。
+
+ソースリポジトリ側は「文書を書く場所」、専用サイトリポジトリ側は「集めて公開する場所」とする。
+
+専用サイトリポジトリの標準名は`zouchikikou-docs-site`とし、この決定後すぐ作成する。
+
+各ソースリポジトリの`main`更新後は、`zouchikikou-docs-site`へ`repository_dispatch`で再生成を依頼する。`zouchikikou-docs-site`の公開workflowは`repository_dispatch`と手動の`workflow_dispatch`を受け付ける。
+
+日本語版・英語版は同一component内のAntora moduleで分ける。英語正本は`ROOT` module、日本語補助版は`ja` moduleに置き、対応するページはmodule配下の相対パスとファイル名を揃える。
+
+公開時と版確定時のCIでは、英語正本`docs/modules/ROOT/pages/**/*.adoc`と日本語補助版`docs/modules/ja/pages/**/*.adoc`の対応ページ欠落、および`:lang:`不一致を失敗扱いにする。`meta_architecture`自体は日本語運用のため、この日英必須検査の対象外にする。
+
+日英対応検査の標準コマンドは、専用サイトリポジトリ内の`tools/check-language-pairs`とする。このコマンドは、公開workflowがcontent sourcesを取得した後、Antora buildの前に実行する。
+
+標準配置の具体例は、8.2で管理する。
+
+== 9.3 判断経緯を残した決定記録
+
+判断経緯は、リポジトリ内の`decision_records/`に置く。
+
+decision recordは、現在有効な決定そのものではなく、なぜその決定にしたかを説明する履歴である。
+
+[cols="1,3,2",options="header"]
+|===
+| 決定記録ファイル
+| 主な内容
+| 関連する現在有効な決定
+
+| `decision_records/architecture_document_format_revision.md`
+| arc42本文をMarkdown前提からAsciiDocとGitHub Pages前提へ改めた理由。
+| `architecture_documents.md`, `architecture_document_publication.md`
+
+| `decision_records/architecture_document_layout_revision.md`
+| arc42文書ディレクトリの連番をやめ、章番号を章ファイルへ移した理由。
+| `architecture_documents.md`
+
+| `decision_records/architecture_documentation_platform_from_docs.md`
+| docs草稿からアーキテクチャ文書公開基盤の方針へ進めた理由。
+| `architecture_documentation_platform.md`, `architecture_document_publication.md`
+
+| `decision_records/architecture_document_languages.md`
+| 造智機巧のアーキテクチャ文書を英語正本・日本語補助版にした理由。
+| `architecture_document_languages.md`
+
+| `decision_records/architecture_document_language_antora_modules.md`
+| 日英版をAntora moduleで分ける理由。
+| `architecture_document_languages.md`
+|===
+
+== 9.4 未決定事項との関係
+
+未決定事項は、11.8の未決定事項一覧と11章の技術的リスクで管理する。
+
+未決定事項が解決したら、以下のいずれかに反映する。
+
+* 現在有効な方針として`decisions/`へ反映する。
+* 判断経緯を残す価値が高い場合は`decision_records/`を追加する。
+* arc42本文の関連章を更新する。
+* 必要なら`inbox.md`または`tasks.md`から該当項目を削除・完了にする。
+
+この章では、未決定事項を決定済みのように扱わない。
