@@ -228,7 +228,7 @@ Antora上のページ間参照は、`xref`を基本にする。
 
 [source,asciidoc]
 ----
-xref:./03-context-and-scope.adoc[3. コンテキストとスコープ]
+xref:architecture-documentation-publishing-platform/03-context-and-scope.adoc[3. コンテキストとスコープ]
 ----
 
 再利用する断片は、対応するmoduleの`partials/`配下に置き、AsciiDoc includeで取り込む。

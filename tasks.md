@@ -31,3 +31,4 @@
 - [x] zouchikikou-docs-siteへ初期ファイルを投入する
 - [x] Antora buildで未解決になるxref/includeを修正する
 - [x] Antoraリンク記法を公式案内に照らして同一ディレクトリ参照へ整理する
+- [x] Antora buildエラー再修正としてxref標準とfetch設定を整理する

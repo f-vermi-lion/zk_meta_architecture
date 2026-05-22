@@ -37,6 +37,7 @@
 - 初期目的は、サイト用リポジトリの骨組みを作り、手動実行でAntora buildできることを確認することに限定する。
 - 初期の最小ファイルセットは、`README.md`、`antora-playbook.yml`、`package.json`、`.gitignore`、`.github/workflows/build.yml`、`tools/README.md`とする。
 - 初期`antora-playbook.yml`は、public content sourceとして`https://github.com/f-vermi-lion/zk_meta_architecture.git`の`main` branch、`start_path: docs`を取り込む。
+- 初期`antora-playbook.yml`では、remote content sourceのキャッシュが古いまま使われないように`runtime.fetch: true`を設定する。
 - 初期workflowは、手動の`workflow_dispatch`のみを受け付け、依存関係をインストールしてAntora buildを実行する。
 - 初期確認コマンドは`npm run build`とする。
 - 初期workflowには、GitHub Pages deploy、`repository_dispatch`、token / secret利用、`tools/check-language-pairs`実行を含めない。
