@@ -28,6 +28,8 @@
 - workflowは`npm run build`で生成した`build/site`をPages artifactとしてuploadし、そのartifactをGitHub Pagesへdeployする。
 - Pages deploy workflowには、`contents: read`、`pages: write`、`id-token: write`の最小権限を設定する。
 - Pages deployでは、GitHub公式の`actions/configure-pages@v5`、`actions/upload-pages-artifact@v4`、`actions/deploy-pages@v4`を使う。
+- Antoraが生成するGitHub Pages向けサイトには`.nojekyll`を含め、GitHub PagesがJekyllとして処理しないようにする。
+- 初回公開用のworkflowは、`zouchikikou-docs-site`の`.github/workflows/publish.yml`に置く。
 - 初回有効化では、`repository_dispatch`、cross-repository token / secret、private repositoryのcontent source、`tools/check-language-pairs`実行はまだ含めない。
 - GitHub Pagesで公開されたHTMLは派生成果物であり、正本は引き続き各ソースリポジトリと`zouchikikou-docs-site`の設定に置く。
 

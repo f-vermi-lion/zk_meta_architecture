@@ -35,3 +35,4 @@
 - [x] meta_architectureのAntora参照修正をremote mainへ反映してzouchikikou-docs-siteで再確認する
 - [x] zouchikikou-docs-siteの初期ファイルをcommit/pushする
 - [x] zouchikikou-docs-siteのGitHub Pages deploy有効化手順を決める
+- [x] zouchikikou-docs-siteのGitHub Pages deploy workflowを実装して初回公開前の状態を整える

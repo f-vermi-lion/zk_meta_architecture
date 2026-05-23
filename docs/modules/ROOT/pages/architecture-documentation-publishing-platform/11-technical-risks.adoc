@@ -181,8 +181,8 @@ docToolchainはarc42やAsciiDoc文書運用に有用だが、Antora連携は検�
 | 採用範囲、build手順、代替手段に影響する。
 
 | UC-5
-| zouchikikou-docs-siteのGitHub Pages deploy workflowを実装して初回公開する
-| 決定済みの有効化手順に従って、生成済みサイトを実際に公開できるかに影響する。
+| GitHub Pages初回公開後に公開URLと確認結果を記録する
+| 公開されたサイトを後続のREADME、決定文書、運用手順から参照できるかに影響する。
 
 | UC-6
 | サイト再生成用のGitHub Actions権限とトークン管理方針を決める

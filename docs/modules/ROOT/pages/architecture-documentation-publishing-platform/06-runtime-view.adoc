@@ -32,7 +32,7 @@
 === 6.0.4 初期build確認後のPages deploy有効化
 
 . Fまたは保守者が、`zouchikikou-docs-site`のGitHub Pages publishing sourceをGitHub Actionsにする。
-. Fまたは保守者が、`build/site`をPages artifactとしてuploadし、GitHub Pagesへdeployするworkflowを追加する。
+. Fまたは保守者が、`.github/workflows/publish.yml`を`main`へ反映する。
 . 初回deploy workflowは`workflow_dispatch`で手動実行する。
 . workflowが`npm run build`でAntora buildを実行する。
 . workflowが`actions/configure-pages@v5`でGitHub Pagesのdeployメタデータを設定する。
@@ -40,7 +40,7 @@
 . workflowが`actions/deploy-pages@v4`でGitHub Pagesへdeployする。
 . Fまたは保守者が、公開URLとActions logを確認する。
 
-初回有効化では、`repository_dispatch`、cross-repository token / secret、private repositoryのcontent source、`tools/check-language-pairs`実行は含めない。
+Antora playbookは`.nojekyll`を生成物に含める。初回有効化では、`repository_dispatch`、cross-repository token / secret、private repositoryのcontent source、`tools/check-language-pairs`実行は含めない。
 
 == 6.1 ソースリポジトリのmain更新から公開まで
 
