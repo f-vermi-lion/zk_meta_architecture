@@ -22,6 +22,15 @@
 - 初期`build.yml`は、GitHub Pages deploy、`repository_dispatch`、token / secret利用、`tools/check-language-pairs`実行を含めない。
 - GitHub Pages deployを行う公開workflowは、初期build確認後に別途有効化する。
 
+## GitHub Pages deploy有効化手順
+- 初期build確認後、`zouchikikou-docs-site`のGitHub Pages publishing sourceはGitHub Actionsにする。
+- 初回のPages deploy workflowは`workflow_dispatch`で手動起動する。
+- workflowは`npm run build`で生成した`build/site`をPages artifactとしてuploadし、そのartifactをGitHub Pagesへdeployする。
+- Pages deploy workflowには、`contents: read`、`pages: write`、`id-token: write`の最小権限を設定する。
+- Pages deployでは、GitHub公式の`actions/configure-pages@v5`、`actions/upload-pages-artifact@v4`、`actions/deploy-pages@v4`を使う。
+- 初回有効化では、`repository_dispatch`、cross-repository token / secret、private repositoryのcontent source、`tools/check-language-pairs`実行はまだ含めない。
+- GitHub Pagesで公開されたHTMLは派生成果物であり、正本は引き続き各ソースリポジトリと`zouchikikou-docs-site`の設定に置く。
+
 ## サイト再生成の起動方式
 - 標準トリガーは、各ソースリポジトリの`main`更新後に、`zouchikikou-docs-site`へ`repository_dispatch`で再生成を依頼する方式にする。
 - `zouchikikou-docs-site`の公開workflowは、`repository_dispatch`と手動の`workflow_dispatch`を受け付ける。

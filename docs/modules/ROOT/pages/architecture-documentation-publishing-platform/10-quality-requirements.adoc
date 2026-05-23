@@ -1,7 +1,7 @@
 = 10. 品質要求
 :docstatus: draft
 :created: 2026-05-05
-:revdate: 2026-05-14
+:revdate: 2026-05-23
 :authors: F; ChatGPT
 :lang: ja
 
@@ -202,6 +202,26 @@
 
 | 受け入れ条件
 | Pages deploy、`repository_dispatch`、token / secret利用なしで、`https://github.com/f-vermi-lion/zk_meta_architecture.git`の`main` branch、`start_path: docs`をcontent sourceとしてbuildできる。
+|===
+
+=== 10.2.9 初期build結果をGitHub Pagesへ公開できる
+
+[cols="1,3",options="header"]
+|===
+| 項目
+| 内容
+
+| 刺激
+| `zouchikikou-docs-site`で初期Antora buildが成功した。
+
+| 環境
+| `zouchikikou-docs-site`のGitHub Pages publishing sourceをGitHub Actionsにできる。
+
+| 応答
+| 手動`workflow_dispatch`で起動するPages deploy workflowが、`build/site`をPages artifactとしてuploadし、GitHub Pagesへdeployする。
+
+| 受け入れ条件
+| `repository_dispatch`、cross-repository token / secret、private repositoryのcontent sourceなしで、publicな初期文書サイトをGitHub Pages上で確認できる。
 |===
 
 == 10.3 本体文書を書き始められる最低条件
