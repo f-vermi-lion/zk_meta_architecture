@@ -49,3 +49,4 @@
 - 初回公開用のworkflowは、`zouchikikou-docs-site`の`.github/workflows/publish.yml`に置く。
 - Antora playbookは、GitHub PagesでJekyll処理を避けるために`.nojekyll`を生成物へ含める。
 - `repository_dispatch`による自動再生成、cross-repository token / secret、private repositoryの取り込み、共通検査ツールの実行は別段階で有効化する。
+- 初回公開URLは、https://f-vermi-lion.github.io/zouchikikou-docs-site/meta-architecture/architecture-documentation-publishing-platform/index.html とする。

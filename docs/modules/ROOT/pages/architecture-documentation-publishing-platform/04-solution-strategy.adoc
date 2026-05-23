@@ -155,7 +155,6 @@ Structurizr DSLからSVGを直接生成するか、PlantUML / C4-PlantUML経由�
 * private repositoryの文書をpublic GitHub Pagesへ出してよいか
 * docToolchainのAntora連携をどこまで使うか
 * cross-repository workflowで使うtoken / secret管理
-* GitHub Pages初回公開後に公開URLと確認結果を記録する
 * サイト再生成失敗時の通知・再実行手順
 * Antora UI上の日英切り替え導線
 * サイト用リポジトリ作成後の`tools/check-language-pairs`実装

@@ -42,6 +42,10 @@
 
 Antora playbookは`.nojekyll`を生成物に含める。初回有効化では、`repository_dispatch`、cross-repository token / secret、private repositoryのcontent source、`tools/check-language-pairs`実行は含めない。
 
+2026-05-23に初回公開を行った。公開URLは、https://f-vermi-lion.github.io/zouchikikou-docs-site/meta-architecture/architecture-documentation-publishing-platform/index.html である。
+
+Fの確認では、公開ページはローカルbuild結果と大きな差がない。
+
 == 6.1 ソースリポジトリのmain更新から公開まで
 
 このシナリオは、文書作成者がソースリポジトリの`main`へ文書または図定義を反映した後、GitHub Pages上の公開サイトが更新されるまでの標準フローである。

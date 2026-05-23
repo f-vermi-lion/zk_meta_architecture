@@ -33,6 +33,12 @@
 - 初回有効化では、`repository_dispatch`、cross-repository token / secret、private repositoryのcontent source、`tools/check-language-pairs`実行はまだ含めない。
 - GitHub Pagesで公開されたHTMLは派生成果物であり、正本は引き続き各ソースリポジトリと`zouchikikou-docs-site`の設定に置く。
 
+## 初回公開結果
+- 初回公開日は2026-05-23とする。
+- 初回公開URLは、https://f-vermi-lion.github.io/zouchikikou-docs-site/meta-architecture/architecture-documentation-publishing-platform/index.html とする。
+- 初回確認では、公開ページはローカルbuild結果と大きな差がないことをFが確認した。
+- 初回公開後の公開URLと確認結果は、以後のREADME、公開手順、確認手順の参照先として扱う。
+
 ## サイト再生成の起動方式
 - 標準トリガーは、各ソースリポジトリの`main`更新後に、`zouchikikou-docs-site`へ`repository_dispatch`で再生成を依頼する方式にする。
 - `zouchikikou-docs-site`の公開workflowは、`repository_dispatch`と手動の`workflow_dispatch`を受け付ける。
