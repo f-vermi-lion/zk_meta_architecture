@@ -2,7 +2,7 @@
 - Structurizr DSLからSVGを直接生成するかPlantUML / C4-PlantUML経由にするか決める
 - private repositoryの文書をpublic GitHub Pagesに出してよいか判断する
 - docToolchainのAntora連携がbetaである点を検証する
-- zouchikikou-docs-siteのGitHub Pages deploy workflowを実装して初回公開する
+- GitHub Pages初回公開後に公開URLと確認結果を記録する
 - サイト再生成用のGitHub Actions権限とトークン管理方針を決める
 - サイト再生成失敗時の通知・再実行手順を決める
 - Antora UI上の日英切り替え導線を決める

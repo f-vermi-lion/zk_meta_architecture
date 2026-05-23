@@ -53,7 +53,7 @@
 
 各ソースリポジトリの`main`更新後は、`zouchikikou-docs-site`へ`repository_dispatch`で再生成を依頼する。`zouchikikou-docs-site`の公開workflowは`repository_dispatch`と手動の`workflow_dispatch`を受け付ける。
 
-初回のGitHub Pages deployは、`zouchikikou-docs-site`の`workflow_dispatch`で手動実行する。workflowはAntora build結果の`build/site`を`actions/upload-pages-artifact@v4`でPages artifactとしてuploadし、`actions/deploy-pages@v4`でGitHub Pagesへdeployする。`repository_dispatch`、cross-repository token / secret、private repositoryの取り込み、共通検査ツール実行は別段階で有効化する。
+初回のGitHub Pages deployは、`zouchikikou-docs-site`の`.github/workflows/publish.yml`を`workflow_dispatch`で手動実行する。workflowはAntora build結果の`build/site`を`actions/upload-pages-artifact@v4`でPages artifactとしてuploadし、`actions/deploy-pages@v4`でGitHub Pagesへdeployする。Antora playbookは`.nojekyll`を生成物に含める。`repository_dispatch`、cross-repository token / secret、private repositoryの取り込み、共通検査ツール実行は別段階で有効化する。
 
 日本語版・英語版は同一component内のAntora moduleで分ける。英語正本は`ROOT` module、日本語補助版は`ja` moduleに置き、対応するページはmodule配下の相対パスとファイル名を揃える。
 

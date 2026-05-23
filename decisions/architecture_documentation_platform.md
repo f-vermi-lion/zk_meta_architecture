@@ -46,4 +46,6 @@
 - 初期build確認後、`zouchikikou-docs-site`はGitHub Actionsをpublishing sourceとしてGitHub Pages deployを有効化する。
 - 最初のdeploy workflowは、手動の`workflow_dispatch`で起動する。
 - Pages deploy workflowは、Antora build結果の`build/site`を`actions/upload-pages-artifact@v4`でPages artifactとしてuploadし、`actions/deploy-pages@v4`でGitHub Pagesへdeployする。
+- 初回公開用のworkflowは、`zouchikikou-docs-site`の`.github/workflows/publish.yml`に置く。
+- Antora playbookは、GitHub PagesでJekyll処理を避けるために`.nojekyll`を生成物へ含める。
 - `repository_dispatch`による自動再生成、cross-repository token / secret、private repositoryの取り込み、共通検査ツールの実行は別段階で有効化する。

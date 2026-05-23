@@ -182,9 +182,11 @@ content sourceとして取り込む各ソースリポジトリのbranchとstart 
 
 ただし、初期`.github/workflows/build.yml`はbootstrap用の手動build workflowとし、`workflow_dispatch`のみを受け付ける。初期workflowは`npm run build`でAntora buildを確認し、GitHub Pages deploy、`repository_dispatch`、token / secret利用、`tools/check-language-pairs`実行は含めない。
 
-初期build確認後のPages deploy workflowは、`workflow_dispatch`で手動起動する。workflowは`npm run build`で生成した`build/site`をPages artifactとしてuploadし、GitHub Pagesへdeployする。
+初期build確認後のPages deploy workflowは、`.github/workflows/publish.yml`に置き、`workflow_dispatch`で手動起動する。workflowは`npm run build`で生成した`build/site`をPages artifactとしてuploadし、GitHub Pagesへdeployする。
 
 Pages deployには、GitHub公式の`actions/configure-pages@v5`、`actions/upload-pages-artifact@v4`、`actions/deploy-pages@v4`を使う。初回有効化では、`repository_dispatch`、cross-repository token / secret、private repositoryのcontent source、`tools/check-language-pairs`実行は含めない。
+
+GitHub PagesがAntora生成物をJekyllとして処理しないよう、Antora playbookから`.nojekyll`を生成物に含める。
 
 公開workflowの主な責務は以下である。
 

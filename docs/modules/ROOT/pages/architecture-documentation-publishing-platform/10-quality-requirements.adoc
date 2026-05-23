@@ -218,7 +218,7 @@
 | `zouchikikou-docs-site`のGitHub Pages publishing sourceをGitHub Actionsにできる。
 
 | 応答
-| 手動`workflow_dispatch`で起動するPages deploy workflowが、`build/site`をPages artifactとしてuploadし、GitHub Pagesへdeployする。
+| 手動`workflow_dispatch`で起動する`.github/workflows/publish.yml`が、`.nojekyll`を含む`build/site`をPages artifactとしてuploadし、GitHub Pagesへdeployする。
 
 | 受け入れ条件
 | `repository_dispatch`、cross-repository token / secret、private repositoryのcontent sourceなしで、publicな初期文書サイトをGitHub Pages上で確認できる。
