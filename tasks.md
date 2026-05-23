@@ -32,3 +32,4 @@
 - [x] Antora buildで未解決になるxref/includeを修正する
 - [x] Antoraリンク記法を公式案内に照らして同一ディレクトリ参照へ整理する
 - [x] Antora buildエラー再修正としてxref標準とfetch設定を整理する
+- [x] meta_architectureのAntora参照修正をremote mainへ反映してzouchikikou-docs-siteで再確認する
