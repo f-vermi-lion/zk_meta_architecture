@@ -10,7 +10,7 @@
 
 ## 高レベル自動化手順
 - ソースリポジトリで文書、図定義、Antora設定を更新する。
-- ソースリポジトリのGitHub Actionsで、必要な文書検査や図生成を実行する。
+- ソースリポジトリのGitHub Actionsで、必要な文書検査やStructurizr直接SVG生成を実行する。
 - サイト用リポジトリ`zouchikikou-docs-site`のGitHub Actionsで、content sources取得後にcheckout済みcontent rootを引数として`tools/check-language-pairs <content-root>...`を実行し、必要な検査・生成、Antora buildを実行する。
 - `zouchikikou-docs-site`のAntora playbookで複数リポジトリの文書を集約する。
 - 生成された静的サイトをGitHub Pagesへdeployする。

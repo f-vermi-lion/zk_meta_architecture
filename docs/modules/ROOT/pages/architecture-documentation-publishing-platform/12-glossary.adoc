@@ -1,7 +1,7 @@
 = 12. 用語集
 :docstatus: draft
 :created: 2026-05-05
-:revdate: 2026-05-12
+:revdate: 2026-05-25
 :authors: F; ChatGPT
 :lang: ja
 
@@ -27,7 +27,7 @@
 | 正本の理解や利用を助けるための版。造智機巧本体のアーキテクチャ文書では、日本語版を補助版として扱う。
 
 | 派生成果物
-| 正本から生成される成果物。GitHub Pages上のHTML、生成済みSVG / PNG、build artifactなど。直接編集して正本化しない。
+| 正本から生成される成果物。GitHub Pages上のHTML、生成済みSVG、build artifactなど。直接編集して正本化しない。
 
 | arc42文書
 | arc42テンプレートの章構成に沿って書くアーキテクチャ文書。全体文書とサブシステム文書を階層的に組み合わせる。
@@ -63,7 +63,7 @@
 | C4モデルやアーキテクチャ図をテキストで定義するDSL。この基盤では図の正本として扱う。
 
 | 生成済み図
-| Structurizr DSLなどから生成したSVGまたはPNG。arc42本文から`image::...[]`で参照する。
+| Structurizr DSL/JSONから`export -format svg`で直接生成したSVG。arc42本文から`image::...[]`で参照する。
 
 | `repository_dispatch`
 | あるGitHubリポジトリのworkflowから、別のリポジトリのworkflowをイベントとして起動するために使う方式。この基盤では、ソースリポジトリからサイト用リポジトリへの自動再生成依頼に使う。

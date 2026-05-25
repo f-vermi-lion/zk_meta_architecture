@@ -1,7 +1,7 @@
 = 11. 技術的リスク
 :docstatus: draft
 :created: 2026-05-05
-:revdate: 2026-05-23
+:revdate: 2026-05-25
 :authors: F; ChatGPT
 :lang: ja
 
@@ -69,29 +69,26 @@ docToolchainはarc42やAsciiDoc文書運用に有用だが、Antora連携は検�
 * docToolchainなしでも最小公開できる経路を維持する。
 * 採用するtaskと採用しないtaskを決定として残す。
 
-== 11.4 Structurizr図生成経路が未確定であるリスク
+== 11.4 Structurizr直接SVG生成のCI手順が未確定であるリスク
 
-図の正本はStructurizr DSLと決まっているが、公開サイトに載せる画像の生成経路は未確定である。
+図の正本はStructurizr DSLとし、公開サイトに載せる標準生成物はStructurizrの`export -format svg`で直接生成するSVGとする。
 
-候補は以下である。
-
-* StructurizrのPNG/SVG exportを使う。
-* docToolchainの`exportStructurizr`を使い、PlantUML / C4-PlantUML経由で画像を生成する。
+ただし、CIで使う具体的なコマンド、Docker image tag、成果物配置手順、レイアウト情報の管理方法は未確定である。
 
 リスクは以下である。
 
 * CI環境で安定して画像生成できない。
-* 生成画像の見た目が期待と異なる。
-* SVG出力とPNG出力の扱いが混在する。
+* Playwright依存を含むStructurizr実行環境を用意できない。
+* 手動レイアウトを使う場合に、DSLとJSONのどちらを正本として扱うかが曖昧になる。
 * `!include`の分割規則と生成コマンドが噛み合わない。
 * arc42本文から参照する画像パスが不安定になる。
 
 対策候補は以下である。
 
-* 最小のDSLで両経路を試す。
-* 生成コマンド、出力先、参照方法を固定する。
+* 最小のDSL/JSONで直接SVG生成を試す。
+* CIコマンド、Docker image tag、出力先、参照方法を固定する。
+* レイアウト情報の管理方針を決める。
 * 生成失敗時に、DSLファイル、出力先、参照元ページをlogに出す。
-* 図生成経路を決めたら、`decisions/architecture_diagrams.md`へ反映する。
 
 == 11.5 サイト再生成失敗に気づけないリスク
 
@@ -169,34 +166,38 @@ docToolchainはarc42やAsciiDoc文書運用に有用だが、Antora連携は検�
 | DSLソースツリー、再利用範囲、検査単位に影響する。
 
 | UC-2
-| Structurizr DSLからSVGを直接生成するかPlantUML / C4-PlantUML経由にするか決める
-| 図の見た目、CI安定性、依存関係に影響する。
-
-| UC-3
 | private repositoryの文書をpublic GitHub Pagesに出してよいか判断する
 | 情報漏洩リスクとアクセス制御に影響する。
 
-| UC-4
+| UC-3
 | docToolchainのAntora連携がbetaである点を検証する
 | 採用範囲、build手順、代替手段に影響する。
 
-| UC-5
+| UC-4
 | サイト再生成用のGitHub Actions権限とトークン管理方針を決める
 | cross-repository workflow、secret管理、セキュリティに影響する。
 
-| UC-6
+| UC-5
 | サイト再生成失敗時の通知・再実行手順を決める
 | 運用負荷、障害発見、復旧手順に影響する。
 
-| UC-7
+| UC-6
 | Antora UI上の日英切り替え導線を決める
 | 閲覧者が英語正本と日本語補助版を行き来する操作に影響する。
 
-| UC-8
+| UC-7
 | publish workflowでtools/check-language-pairsに渡すcontent root取得手順を決める
 | 実装済みの日英対応検査を公開workflowで実行できるかに影響する。
 
-| UC-9
+| UC-8
 | 日英対応ページの内容差分や更新鮮度を検査対象にするか決める
 | 翻訳の古さや内容差分をどこまでCIで扱うかに影響する。
+
+| UC-9
+| Structurizr直接SVG生成のCIコマンドと成果物配置手順を決める
+| Playwright依存を含む実行環境、出力先、Antora asset参照に影響する。
+
+| UC-10
+| Structurizr図のレイアウト情報をDSLとJSONのどちらで管理するか決める
+| 手動レイアウトの再現性と、図定義の正本範囲に影響する。
 |===

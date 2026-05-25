@@ -1,7 +1,7 @@
 = 9. アーキテクチャ決定
 :docstatus: draft
 :created: 2026-05-05
-:revdate: 2026-05-23
+:revdate: 2026-05-25
 :authors: F; ChatGPT
 :lang: ja
 
@@ -31,7 +31,7 @@
 | 4章、5章、6章、10章、11章
 
 | `decisions/architecture_diagrams.md`
-| Structurizr DSLを図の正本にする方針、生成画像の配置、`!include`の大枠。
+| Structurizr DSLを図の正本にする方針、直接SVG生成、生成画像の配置、`!include`の大枠。
 | 4章、5章、6章、8章、11章
 
 | `decisions/architecture_document_languages.md`
@@ -62,6 +62,8 @@
 公開時と版確定時のCIでは、英語正本`docs/modules/ROOT/pages/**/*.adoc`と日本語補助版`docs/modules/ja/pages/**/*.adoc`の対応ページ欠落、および`:lang:`不一致を失敗扱いにする。`meta_architecture`自体は日本語運用のため、この日英必須検査の対象外にする。
 
 日英対応検査の標準コマンドは、専用サイトリポジトリ内の`tools/check-language-pairs`とする。このコマンドは、公開workflowがcontent sourcesを取得した後、Antora buildの前に実行する。
+
+図の標準生成経路は、Structurizr DSL/JSONからStructurizrの`export -format svg`で直接SVGを生成する方式にする。PlantUML / C4-PlantUML経由は標準経路にしない。
 
 標準配置の具体例は、8.2で管理する。
 
@@ -96,6 +98,10 @@ decision recordは、現在有効な決定そのものではなく、なぜそ�
 | `decision_records/architecture_document_language_antora_modules.md`
 | 日英版をAntora moduleで分ける理由。
 | `architecture_document_languages.md`
+
+| `decision_records/structurizr_direct_svg_generation.md`
+| Structurizr直接SVG生成を標準経路にする理由。
+| `architecture_diagrams.md`
 |===
 
 == 9.4 未決定事項との関係

@@ -1,5 +1,4 @@
 - Structurizr DSL の分割単位と `!include` 配置規則を決める
-- Structurizr DSLからSVGを直接生成するかPlantUML / C4-PlantUML経由にするか決める
 - private repositoryの文書をpublic GitHub Pagesに出してよいか判断する
 - docToolchainのAntora連携がbetaである点を検証する
 - サイト再生成用のGitHub Actions権限とトークン管理方針を決める
@@ -7,3 +6,5 @@
 - Antora UI上の日英切り替え導線を決める
 - publish workflowでtools/check-language-pairsに渡すcontent root取得手順を決める
 - 日英対応ページの内容差分や更新鮮度を検査対象にするか決める
+- Structurizr直接SVG生成のCIコマンドと成果物配置手順を決める
+- Structurizr図のレイアウト情報をDSLとJSONのどちらで管理するか決める

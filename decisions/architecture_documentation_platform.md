@@ -28,7 +28,7 @@
 - `zouchikikou-docs-site`は、この決定後すぐ作成する。
 - `zouchikikou-docs-site`は、Antora playbook、共通UI、公開workflow、公開workflowで使う共通検査ツールを持つ。
 - `zouchikikou-docs-site`は、Antora playbookで複数ソースリポジトリの文書を集約する。
-- GitHub Actionsは、検査、図生成、Antora build、GitHub Pages deployを実行する。
+- GitHub Actionsは、検査、Structurizr直接SVG生成、Antora build、GitHub Pages deployを実行する。
 - GitHub Pagesは、生成済み静的サイトの公開先として扱う。
 
 ## `zouchikikou-docs-site`の初期構成

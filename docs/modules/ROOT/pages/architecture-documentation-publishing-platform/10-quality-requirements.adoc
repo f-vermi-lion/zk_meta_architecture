@@ -1,7 +1,7 @@
 = 10. 品質要求
 :docstatus: draft
 :created: 2026-05-05
-:revdate: 2026-05-23
+:revdate: 2026-05-25
 :authors: F; ChatGPT
 :lang: ja
 
@@ -237,7 +237,7 @@ publish workflowへの組み込みは、checkout済みcontent rootの取得手�
 * サイト用リポジトリの初期構成が決まっている。
 * `main`更新から公開workflow起動までの流れが決まっている。
 * 章ファイル名とメタデータ規則が決まっている。
-* 図の正本がStructurizr DSLであることが決まっている。
+* 図の正本がStructurizr DSLであり、標準生成経路がStructurizr直接SVG生成であることが決まっている。
 * 日英対応の検査方針が決まっている。
 * 未決定事項と技術的リスクが11章に逃がされている。
 

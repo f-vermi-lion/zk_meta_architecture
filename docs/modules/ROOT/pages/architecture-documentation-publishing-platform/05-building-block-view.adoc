@@ -1,7 +1,7 @@
 = 5. ビルディングブロックビュー
 :docstatus: draft
 :created: 2026-05-05
-:revdate: 2026-05-23
+:revdate: 2026-05-25
 :authors: F; ChatGPT
 :lang: ja
 
@@ -243,12 +243,11 @@ docToolchainは、arc42文書運用、AsciiDoc処理、図連携などの補助�
 
 Structurizrは、C4図モデルの正本をDSLとして扱い、サイト掲載用の図を生成するために使う。
 
-図生成経路は未確定である。
+標準生成経路は、Structurizr DSL/JSONからStructurizrの`export -format svg`で直接SVGを生成する方式にする。
 
-候補は以下である。
+この経路では、Structurizrのブラウザベースレンダラで見た目を決め、生成したSVGをAntora assetsとして配置する。
 
-* StructurizrのPNG/SVG exportを使う。
-* docToolchainの`exportStructurizr`からPlantUML / C4-PlantUML経由で生成する。
+CI上の標準実行環境は、Playwright依存を含むStructurizr Docker imageを第一候補にする。
 
 === 5.4.4 日英対応検査スクリプト
 
@@ -286,11 +285,13 @@ GitHub Pagesサイトは、閲覧者向けの公開結果である。
 
 === 5.5.2 生成済み図
 
-生成済み図は、Structurizr DSLなどから生成されるSVGまたはPNGである。
+生成済み図は、Structurizr DSL/JSONから直接生成されるSVGである。
 
 arc42本文からは、AsciiDocの`image::...[]`で参照する。
 
-生成済み図がリポジトリに保存されるか、build artifactとして扱われるかは、図生成経路とCI運用を決める段階で確定する。
+PNGは必要時の補助出力に留める。
+
+生成済み図がリポジトリに保存されるか、build artifactとして扱われるかは、CIコマンドと成果物配置手順を決める段階で確定する。
 
 === 5.5.3 build artifact / log
 

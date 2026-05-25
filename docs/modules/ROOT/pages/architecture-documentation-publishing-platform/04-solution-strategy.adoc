@@ -1,7 +1,7 @@
 = 4. ソリューション戦略
 :docstatus: draft
 :created: 2026-05-05
-:revdate: 2026-05-23
+:revdate: 2026-05-25
 :authors: F; ChatGPT
 :lang: ja
 
@@ -90,14 +90,14 @@ arc42本文には、Structurizr DSLそのものを主たる図表現として直
 | Structurizr DSL
 | 図モデルの正本。変更はまずDSLに入れる。
 
-| 生成済みSVG / PNG
-| 公開サイトで閲覧するための派生成果物。
+| 生成済みSVG
+| 公開サイトで閲覧するための標準派生成果物。PNGは必要時の補助出力に留める。
 
 | arc42本文
 | 図を説明し、生成済み画像を参照する文書。
 |===
 
-Structurizr DSLからSVGを直接生成するか、PlantUML / C4-PlantUML経由にするかは未決定であり、11章の技術的リスクとして扱う。
+標準生成経路は、Structurizr DSL/JSONからStructurizrの`export -format svg`で直接SVGを生成する方式にする。PlantUML / C4-PlantUML経由は、生成される図の見た目が目的に合わないため標準経路にしない。
 
 == 4.6 英語正本・日本語補助版の運用戦略
 
@@ -151,7 +151,8 @@ Structurizr DSLからSVGを直接生成するか、PlantUML / C4-PlantUML経由�
 以下は、現時点では戦略として固定せず、未決定事項または技術的リスクとして管理する。
 
 * Structurizr DSLの分割単位と`!include`配置規則
-* Structurizr DSLからSVGを直接生成するか、PlantUML / C4-PlantUML経由にするか
+* Structurizr直接SVG生成のCIコマンドと成果物配置手順
+* Structurizr図のレイアウト情報をDSLとJSONのどちらで管理するか
 * private repositoryの文書をpublic GitHub Pagesへ出してよいか
 * docToolchainのAntora連携をどこまで使うか
 * cross-repository workflowで使うtoken / secret管理

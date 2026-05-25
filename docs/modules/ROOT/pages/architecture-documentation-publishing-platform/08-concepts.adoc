@@ -1,7 +1,7 @@
 = 8. 横断的コンセプト
 :docstatus: draft
 :created: 2026-05-05
-:revdate: 2026-05-23
+:revdate: 2026-05-25
 :authors: F; ChatGPT
 :lang: ja
 
@@ -52,10 +52,10 @@
 | いいえ
 | 利用者向けの公開結果。正本ではない。
 
-| 生成済みSVG / PNG / PlantUML
+| 生成済みSVG
 | build出力またはassets
 | いいえ
-| DSLなどから生成される派生成果物。
+| Structurizr DSL/JSONから直接生成される派生成果物。
 |===
 
 GitHub Pages上の公開結果や生成済み画像を直接編集して正本化しない。
@@ -217,6 +217,8 @@ arc42本文は、章ごとのファイルに分ける。
 docs/modules/<module>/assets/diagrams/source/  # DSL source
 docs/modules/<module>/assets/diagrams/         # generated diagrams
 ----
+
+標準生成経路は、Structurizr DSL/JSONからStructurizrの`export -format svg`で直接SVGを生成する方式にする。
 
 arc42本文では、生成済み画像をAsciiDocの`image::...[]`で参照する。
 
