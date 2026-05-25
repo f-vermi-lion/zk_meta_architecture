@@ -31,7 +31,7 @@
 | 4章、5章、6章、10章、11章
 
 | `decisions/architecture_diagrams.md`
-| Structurizr DSLを図の正本にする方針、直接SVG生成、生成画像の配置、`!include`の大枠。
+| Structurizr DSLを図のモデル正本にする方針、JSON workspaceによるレイアウト管理、直接SVG生成、生成画像の配置、`!include`の大枠。
 | 4章、5章、6章、8章、11章
 
 | `decisions/architecture_document_languages.md`
@@ -63,7 +63,7 @@
 
 日英対応検査の標準コマンドは、専用サイトリポジトリ内の`tools/check-language-pairs`とする。このコマンドは、公開workflowがcontent sourcesを取得した後、Antora buildの前に実行する。
 
-図の標準生成経路は、Structurizr DSL/JSONからStructurizrの`export -format svg`で直接SVGを生成する方式にする。PlantUML / C4-PlantUML経由は標準経路にしない。
+図の標準生成経路は、Structurizr DSL/JSONからStructurizrの`export -format svg`で直接SVGを生成する方式にする。PlantUML / C4-PlantUML経由は標準経路にしない。モデル変更の出発点は`workspace.dsl`とし、手動レイアウトを再現する場合は`workspace.json`をexport入力として管理する。
 
 標準配置の具体例は、8.2で管理する。
 
@@ -101,6 +101,10 @@ decision recordは、現在有効な決定そのものではなく、なぜそ�
 
 | `decision_records/structurizr_direct_svg_generation.md`
 | Structurizr直接SVG生成を標準経路にする理由。
+| `architecture_diagrams.md`
+
+| `decision_records/structurizr_diagram_layout_json.md`
+| Structurizr図のレイアウト情報をJSONで管理する理由。
 | `architecture_diagrams.md`
 |===
 

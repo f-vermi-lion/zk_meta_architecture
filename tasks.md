@@ -39,3 +39,4 @@
 - [x] GitHub Pages初回公開URLと確認結果を記録する
 - [x] tools/check-language-pairsを実装する
 - [x] Structurizr DSLから直接SVGを生成する方針を決める
+- [x] Structurizr図のレイアウト情報をDSL正本とJSON配置で管理する方針を決める

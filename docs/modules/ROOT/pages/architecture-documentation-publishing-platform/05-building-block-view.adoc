@@ -101,7 +101,7 @@ docs/modules/ROOT/pages/  # 英語正本
 docs/modules/ja/pages/    # 日本語補助版
 ----
 
-=== 5.2.2 Structurizr DSL
+=== 5.2.2 Structurizr DSL / JSON workspace
 
 Structurizr DSLは、図モデルの正本としてソースリポジトリに置く。
 
@@ -111,9 +111,14 @@ Structurizr DSLは、図モデルの正本としてソースリポジトリに�
 ----
 docs/modules/ROOT/assets/diagrams/source/
   workspace.dsl
+  workspace.json
 ----
 
+`workspace.json`は、手動レイアウトを含むStructurizr JSON workspaceである。モデル正本ではなく、Structurizrの見た目を再現するためのレイアウト付きexport入力として管理する。
+
 DSLの分割単位と`!include`の詳細規則は未決定である。ただし、`!include`を使う場合は、DSLソースツリー内で相対参照が完結するようにする。
+
+DSL変更をJSONレイアウトworkspaceへ反映する同期手順は未決定である。
 
 === 5.2.3 Antora component descriptor
 
@@ -245,7 +250,7 @@ Structurizrは、C4図モデルの正本をDSLとして扱い、サイト掲載�
 
 標準生成経路は、Structurizr DSL/JSONからStructurizrの`export -format svg`で直接SVGを生成する方式にする。
 
-この経路では、Structurizrのブラウザベースレンダラで見た目を決め、生成したSVGをAntora assetsとして配置する。
+この経路では、Structurizrのブラウザベースレンダラで見た目を決め、生成したSVGをAntora assetsとして配置する。手動レイアウトを再現する場合は、`workspace.json`を`export -format svg -workspace <path>`の入力にする。
 
 CI上の標準実行環境は、Playwright依存を含むStructurizr Docker imageを第一候補にする。
 
@@ -290,6 +295,8 @@ GitHub Pagesサイトは、閲覧者向けの公開結果である。
 arc42本文からは、AsciiDocの`image::...[]`で参照する。
 
 PNGは必要時の補助出力に留める。
+
+生成済みSVGは派生成果物であり、直接編集して正本化しない。
 
 生成済み図がリポジトリに保存されるか、build artifactとして扱われるかは、CIコマンドと成果物配置手順を決める段階で確定する。
 

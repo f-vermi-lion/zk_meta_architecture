@@ -6,11 +6,16 @@
 ## 配置
 - 図の生成物は、対応するAntora module配下の`assets/diagrams/`に置く。
 - Structurizr DSLのソースは、対応するAntora module配下の`assets/diagrams/source/`に置く。
-- 1つの図を更新するときは、まずDSLソースを更新し、その結果として生成画像を更新する。
+- 標準のモデル正本は、対応するAntora module配下の`assets/diagrams/source/workspace.dsl`とする。
+- 手動レイアウトを含むStructurizr JSON workspaceは、対応するAntora module配下の`assets/diagrams/source/workspace.json`に置く。
+- `workspace.json`はモデル正本ではなく、Structurizrの見た目を再現するためのレイアウト付きexport入力として扱う。
+- 生成SVGは、対応するAntora module配下の`assets/diagrams/`に置く。
+- 1つの図を更新するときは、まずDSLソースを更新し、必要に応じてJSON workspaceへ反映し、その結果として生成画像を更新する。
 
 ## 埋め込み形式
 - arc42文書へ埋め込む図の標準形式は`svg`とする。
 - 標準生成経路は、`Structurizr DSL/JSON -> Structurizr export -format svg -> Antora assets -> image::...[]`とする。
+- 手動レイアウトを再現するSVG生成では、`workspace.json`を`export -format svg -workspace <path>`の入力にする。
 - PlantUML / C4-PlantUML経由は、生成される図の見た目が目的に合わないため標準経路にしない。
 - SVGを標準生成物とし、PNGは必要時の補助出力に留める。
 - CI上の標準実行環境は、Playwright依存を含むStructurizr Docker imageを第一候補にする。

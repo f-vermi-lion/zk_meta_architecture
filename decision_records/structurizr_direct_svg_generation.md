@@ -12,7 +12,7 @@
 
 ## 残した論点
 - CIで使う具体的なコマンド、Docker image tag、成果物配置手順は別途決める。
-- 手動レイアウトを維持する場合に、レイアウト情報をDSLとJSONのどちらで管理するかは別途決める。
+- 手動レイアウトを維持する場合のレイアウト情報管理は、`decision_records/structurizr_diagram_layout_json.md`で後続決定として扱う。
 
 ## 参考
 - https://docs.structurizr.com/export/png-and-svg

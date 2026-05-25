@@ -115,7 +115,8 @@ Fの確認では、公開ページはローカルbuild結果と大きな差が�
 
 . `.dsl`ファイルが更新される。
 . Structurizr DSLの構文またはモデル整合性を検査する。
-. Structurizrの`export -format svg`でサイト掲載用SVGを生成する。
+. 手動レイアウトを使う図では、DSL変更が`workspace.json`に反映されていることを確認する。
+. Structurizrの`export -format svg`でサイト掲載用SVGを生成する。手動レイアウトを再現する場合は`workspace.json`を入力にする。
 . arc42本文から参照される画像パスが存在することを確認する。
 . Antora buildで画像が取り込まれることを確認する。
 
@@ -154,7 +155,7 @@ issue出力形式は、`issue_code<TAB>content_root<TAB>module<TAB>relative_path
 
 == 6.5 図生成で失敗する場合
 
-図生成は、Structurizr DSL/JSON、Playwrightを含む実行環境、出力先、参照パスのいずれかが壊れると失敗する。
+図生成は、Structurizr DSL/JSON、DSLからJSONへの同期状態、Playwrightを含む実行環境、出力先、参照パスのいずれかが壊れると失敗する。
 
 === 6.5.1 失敗条件
 
@@ -162,6 +163,7 @@ issue出力形式は、`issue_code<TAB>content_root<TAB>module<TAB>relative_path
 
 * Structurizr DSLの構文が不正である。
 * `!include`の参照先が存在しない。
+* 手動レイアウトを使う図で、`workspace.json`がDSL変更を反映していない。
 * 期待するSVGを生成できない。
 * arc42本文が参照する画像パスに生成物がない。
 * Antora buildで画像が取り込めない。

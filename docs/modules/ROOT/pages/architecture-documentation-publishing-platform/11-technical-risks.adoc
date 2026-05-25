@@ -71,15 +71,15 @@ docToolchainはarc42やAsciiDoc文書運用に有用だが、Antora連携は検�
 
 == 11.4 Structurizr直接SVG生成のCI手順が未確定であるリスク
 
-図の正本はStructurizr DSLとし、公開サイトに載せる標準生成物はStructurizrの`export -format svg`で直接生成するSVGとする。
+図のモデル正本はStructurizr DSLとし、公開サイトに載せる標準生成物はStructurizrの`export -format svg`で直接生成するSVGとする。
 
-ただし、CIで使う具体的なコマンド、Docker image tag、成果物配置手順、レイアウト情報の管理方法は未確定である。
+手動レイアウトはStructurizr JSON workspaceで管理する。ただし、CIで使う具体的なコマンド、Docker image tag、成果物配置手順、DSL変更をJSON workspaceへ反映する同期手順は未確定である。
 
 リスクは以下である。
 
 * CI環境で安定して画像生成できない。
 * Playwright依存を含むStructurizr実行環境を用意できない。
-* 手動レイアウトを使う場合に、DSLとJSONのどちらを正本として扱うかが曖昧になる。
+* DSL変更をJSON workspaceへ反映し忘れ、モデルとレイアウト付きexport入力がずれる。
 * `!include`の分割規則と生成コマンドが噛み合わない。
 * arc42本文から参照する画像パスが不安定になる。
 
@@ -87,7 +87,7 @@ docToolchainはarc42やAsciiDoc文書運用に有用だが、Antora連携は検�
 
 * 最小のDSL/JSONで直接SVG生成を試す。
 * CIコマンド、Docker image tag、出力先、参照方法を固定する。
-* レイアウト情報の管理方針を決める。
+* DSL変更をJSON workspaceへ反映する同期手順を決める。
 * 生成失敗時に、DSLファイル、出力先、参照元ページをlogに出す。
 
 == 11.5 サイト再生成失敗に気づけないリスク
@@ -198,6 +198,6 @@ docToolchainはarc42やAsciiDoc文書運用に有用だが、Antora連携は検�
 | Playwright依存を含む実行環境、出力先、Antora asset参照に影響する。
 
 | UC-10
-| Structurizr図のレイアウト情報をDSLとJSONのどちらで管理するか決める
-| 手動レイアウトの再現性と、図定義の正本範囲に影響する。
+| DSL変更をJSONレイアウトworkspaceへ反映する同期手順を決める
+| モデル正本とレイアウト付きexport入力の同期、SVG生成の再現性に影響する。
 |===

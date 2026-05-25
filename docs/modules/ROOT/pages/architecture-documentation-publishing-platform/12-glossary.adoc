@@ -21,7 +21,7 @@
 | Antora playbook、共通UI、公開workflow、共通検査ツールを持ち、複数ソースリポジトリの文書を集約してGitHub Pagesへ公開するリポジトリ。標準名は`zouchikikou-docs-site`とする。
 
 | 正本
-| 後続の編集、検査、生成の基準になる一次成果物。文書本文ではAsciiDoc、図ではStructurizr DSLを指す。
+| 後続の編集、検査、生成の基準になる一次成果物。文書本文ではAsciiDoc、図モデルではStructurizr DSLを指す。
 
 | 補助版
 | 正本の理解や利用を助けるための版。造智機巧本体のアーキテクチャ文書では、日本語版を補助版として扱う。
@@ -61,6 +61,9 @@
 
 | Structurizr DSL
 | C4モデルやアーキテクチャ図をテキストで定義するDSL。この基盤では図の正本として扱う。
+
+| Structurizr JSON workspace
+| Structurizr workspaceをJSONで表したファイル。この基盤では、手動レイアウトを含むSVG export用の管理対象として扱うが、モデル正本にはしない。
 
 | 生成済み図
 | Structurizr DSL/JSONから`export -format svg`で直接生成したSVG。arc42本文から`image::...[]`で参照する。
