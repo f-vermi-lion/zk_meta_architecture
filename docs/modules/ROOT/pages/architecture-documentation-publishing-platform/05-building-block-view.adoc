@@ -260,9 +260,17 @@ Structurizrは、C4図モデルの正本をDSLとして扱い、サイト掲載�
 
 実装言語はPython 3とし、標準ライブラリのみを使う。
 
+`zouchikikou-docs-site`の`tools/check-language-pairs`として実装済みである。
+
+`antora.yml`の`name`が`meta-architecture`であるcontent rootは、検査対象外としてskipする。
+
 検査違反は、`missing_ja`、`missing_en`、`missing_lang`、`lang_mismatch`のいずれかのissue codeを持つ行として出力する。
 
+issue出力形式は、`issue_code<TAB>content_root<TAB>module<TAB>relative_path<TAB>message`のタブ区切り行とする。
+
 終了コードは、問題なしを`0`、検査違反ありを`1`、引数不正やcontent root不正など実行不能を`2`とする。
+
+publish workflowでこのコマンドへ渡すcontent rootの取得手順は未決定であり、11章の未決定事項として扱う。
 
 初期範囲では、翻訳内容の差分、更新鮮度、日英リンクの存在は検査しない。
 

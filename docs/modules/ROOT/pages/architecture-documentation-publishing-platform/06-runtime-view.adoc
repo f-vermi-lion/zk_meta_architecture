@@ -125,6 +125,8 @@ Fの確認では、公開ページはローカルbuild結果と大きな差が�
 
 標準コマンド形式は、`tools/check-language-pairs <content-root>...`である。`<content-root>`には、`antora.yml`を持つAntora content rootを渡す。
 
+このコマンド本体は`zouchikikou-docs-site`に実装済みである。ただし、publish workflowでこのコマンドに渡すcheckout済みcontent rootをどう取得するかは未決定である。
+
 === 6.4.1 失敗条件
 
 日英対応検査は、少なくとも以下の場合に失敗扱いにする。
@@ -137,6 +139,8 @@ Fの確認では、公開ページはローカルbuild結果と大きな差が�
 ただし、`meta_architecture`自体は日本語運用のため、この必須検査の対象外にする。
 
 検査違反のissue codeは、`missing_ja`、`missing_en`、`missing_lang`、`lang_mismatch`とする。
+
+issue出力形式は、`issue_code<TAB>content_root<TAB>module<TAB>relative_path<TAB>message`のタブ区切り行とする。
 
 === 6.4.2 失敗時の扱い
 

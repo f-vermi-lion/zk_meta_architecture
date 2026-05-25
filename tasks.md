@@ -37,3 +37,4 @@
 - [x] zouchikikou-docs-siteのGitHub Pages deploy有効化手順を決める
 - [x] zouchikikou-docs-siteのGitHub Pages deploy workflowを実装して初回公開前の状態を整える
 - [x] GitHub Pages初回公開URLと確認結果を記録する
+- [x] tools/check-language-pairsを実装する

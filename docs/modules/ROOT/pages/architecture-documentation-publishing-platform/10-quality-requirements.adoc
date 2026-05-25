@@ -161,8 +161,10 @@
 | `tools/check-language-pairs <content-root>...`が、対応ページの欠落と`:lang:`不一致を検出する。
 
 | 受け入れ条件
-| 欠落または不一致がある場合、公開workflowが失敗し、問題のある相対パスと`missing_ja`、`missing_en`、`missing_lang`、`lang_mismatch`のいずれかのissue codeがlogに出る。
+| 欠落または不一致がある場合、コマンドが終了コード`1`で失敗し、`issue_code<TAB>content_root<TAB>module<TAB>relative_path<TAB>message`形式のlogを出す。
 |===
+
+publish workflowへの組み込みは、checkout済みcontent rootの取得手順を決めてから行う。
 
 === 10.2.7 既存ツールを優先して使う
 

@@ -24,9 +24,11 @@
 - `<content-root>`には、`antora.yml`を持つAntora content rootを渡す。代表例は、checkout済みの`docs`ディレクトリである。
 - 実装言語はPython 3とし、標準ライブラリのみを使う。
 - このコマンドは、公開workflowがcontent sourcesを取得した後、Antora buildの前に実行する。
+- `antora.yml`の`name`が`meta-architecture`であるcontent rootは、`meta_architecture`自体が日本語運用であるため検査対象外として扱う。
 - `ROOT`側のページは`:lang: en`、`ja`側のページは`:lang: ja`を必須にする。
 - 草稿段階では片方のmoduleだけにページが存在してよい。
 - 公開時と版確定時のCIでは、対応ページの欠落と`:lang:`不一致を失敗扱いにする。
 - 検査違反は、`missing_ja`、`missing_en`、`missing_lang`、`lang_mismatch`のいずれかのissue codeを持つ行として出力する。
+- issue出力形式は、`issue_code<TAB>content_root<TAB>module<TAB>relative_path<TAB>message`のタブ区切り行とする。
 - 終了コードは、問題なしを`0`、検査違反ありを`1`、引数不正やcontent root不正など実行不能を`2`とする。
 - 初期範囲では、翻訳内容の差分、更新鮮度、日英リンクの存在は検査しない。

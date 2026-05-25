@@ -5,5 +5,5 @@
 - サイト再生成用のGitHub Actions権限とトークン管理方針を決める
 - サイト再生成失敗時の通知・再実行手順を決める
 - Antora UI上の日英切り替え導線を決める
-- サイト用リポジトリ作成後にtools/check-language-pairsを実装する
+- publish workflowでtools/check-language-pairsに渡すcontent root取得手順を決める
 - 日英対応ページの内容差分や更新鮮度を検査対象にするか決める

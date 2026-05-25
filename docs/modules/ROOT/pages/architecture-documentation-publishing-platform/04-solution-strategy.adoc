@@ -157,5 +157,5 @@ Structurizr DSLからSVGを直接生成するか、PlantUML / C4-PlantUML経由�
 * cross-repository workflowで使うtoken / secret管理
 * サイト再生成失敗時の通知・再実行手順
 * Antora UI上の日英切り替え導線
-* サイト用リポジトリ作成後の`tools/check-language-pairs`実装
+* publish workflowで`tools/check-language-pairs`に渡すcontent root取得手順
 * 日英対応ページの内容差分や更新鮮度の検査要否

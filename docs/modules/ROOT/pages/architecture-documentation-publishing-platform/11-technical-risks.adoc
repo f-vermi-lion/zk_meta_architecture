@@ -123,7 +123,7 @@ docToolchainはarc42やAsciiDoc文書運用に有用だが、Antora連携は検�
 * 草稿段階の片方更新が長く残る。
 * 公開時に対応ページ欠落でworkflowが失敗する。
 * 日本語補助版が英語正本の古い内容を説明し続ける。
-* 日英対応検査スクリプトが未実装だと、決定済みの検査方針をCIで強制できない。
+* 日英対応検査スクリプトをpublish workflowへ組み込まないと、決定済みの検査方針をCIで強制できない。
 * 翻訳内容の差分や更新鮮度までは、初期の検査範囲では検出できない。
 
 対策候補は以下である。
@@ -131,7 +131,7 @@ docToolchainはarc42やAsciiDoc文書運用に有用だが、Antora連携は検�
 * 草稿段階と公開・版確定時の要求水準を分ける。
 * 対応ページの相対パスとファイル名を揃える。
 * `:lang:`を必須メタデータにする。
-* サイト用リポジトリ作成後に`tools/check-language-pairs`を実装する。
+* `tools/check-language-pairs`をpublish workflowへ組み込む。
 * 内容差分の完全検出は初期範囲に含めず、まずページ対応と`:lang:`不一致を検査する。
 
 == 11.7 Antora UIの日英切り替え導線が未確定であるリスク
@@ -193,8 +193,8 @@ docToolchainはarc42やAsciiDoc文書運用に有用だが、Antora連携は検�
 | 閲覧者が英語正本と日本語補助版を行き来する操作に影響する。
 
 | UC-8
-| サイト用リポジトリ作成後にtools/check-language-pairsを実装する
-| 決定済みの日英対応検査を公開workflowで実行できるかに影響する。
+| publish workflowでtools/check-language-pairsに渡すcontent root取得手順を決める
+| 実装済みの日英対応検査を公開workflowで実行できるかに影響する。
 
 | UC-9
 | 日英対応ページの内容差分や更新鮮度を検査対象にするか決める
