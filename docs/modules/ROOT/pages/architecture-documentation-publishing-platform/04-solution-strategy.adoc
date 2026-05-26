@@ -102,6 +102,12 @@ arc42本文には、Structurizr DSLそのものを主たる図表現として直
 
 標準生成経路は、Structurizr DSL/JSONからStructurizrの`export -format svg`で直接SVGを生成する方式にする。手動レイアウトを再現する場合は`workspace.json`を入力にする。PlantUML / C4-PlantUML経由は、生成される図の見た目が目的に合わないため標準経路にしない。
 
+モデル変更は必ず`workspace.dsl`から始める。手動レイアウトを使う図では、既存`workspace.json`のレイアウトを反映した状態で`workspace.json`を更新し、DSL変更とJSON更新を同じ変更単位で扱う。
+
+レイアウトだけを調整する場合は`workspace.json`の変更だけを許容する。ただし、`workspace.json`は手編集せず、StructurizrのUIまたは公式ツールのmerge/export結果として更新する。
+
+レイアウト保持のため、Structurizr viewsには明示的で安定したview keyを付ける。
+
 == 4.6 英語正本・日本語補助版の運用戦略
 
 造智機巧本体のアーキテクチャ文書は、英語版を正本、日本語版を補助版として扱う。
@@ -155,7 +161,7 @@ arc42本文には、Structurizr DSLそのものを主たる図表現として直
 
 * Structurizr DSLの分割単位と`!include`配置規則
 * Structurizr直接SVG生成のCIコマンドと成果物配置手順
-* DSL変更をJSONレイアウトworkspaceへ反映する同期手順
+* Structurizr view keyの命名規則
 * private repositoryの文書をpublic GitHub Pagesへ出してよいか
 * docToolchainのAntora連携をどこまで使うか
 * cross-repository workflowで使うtoken / secret管理

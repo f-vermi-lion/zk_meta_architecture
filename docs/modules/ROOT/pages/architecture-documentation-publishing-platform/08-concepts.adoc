@@ -229,6 +229,12 @@ docs/modules/<module>/assets/diagrams/                       # generated diagram
 
 `workspace.json`は、手動レイアウトを再現するためのレイアウト付きexport入力として管理する。モデル変更の出発点は引き続き`workspace.dsl`にする。
 
+モデル変更時は`workspace.dsl`を更新し、既存`workspace.json`のレイアウトを反映した状態で`workspace.json`を更新する。レイアウトだけを調整する場合は、`workspace.json`の変更だけを許容する。
+
+`workspace.json`は手編集せず、StructurizrのUIまたは公式ツールのmerge/export結果として更新する。
+
+レイアウト保持のため、Structurizr viewsには明示的で安定したview keyを付ける。
+
 arc42本文では、生成済み画像をAsciiDocの`image::...[]`で参照する。
 
 DSL断片をarc42本文へ主たる図表現として直接埋め込まない。

@@ -118,7 +118,11 @@ docs/modules/ROOT/assets/diagrams/source/
 
 DSLの分割単位と`!include`の詳細規則は未決定である。ただし、`!include`を使う場合は、DSLソースツリー内で相対参照が完結するようにする。
 
-DSL変更をJSONレイアウトworkspaceへ反映する同期手順は未決定である。
+モデル変更は必ず`workspace.dsl`から始める。手動レイアウトを使う図では、既存`workspace.json`のレイアウトを反映した状態で`workspace.json`を更新し、DSL変更とJSON更新を同じ変更単位で扱う。
+
+レイアウトだけを調整する場合は、`workspace.json`の変更だけを許容する。ただし、`workspace.json`は手編集せず、StructurizrのUIまたは公式ツールのmerge/export結果として更新する。
+
+レイアウト保持のため、Structurizr viewsには明示的で安定したview keyを付ける。view keyの命名規則は未決定である。
 
 === 5.2.3 Antora component descriptor
 

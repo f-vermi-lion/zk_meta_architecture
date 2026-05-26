@@ -10,7 +10,12 @@
 - 手動レイアウトを含むStructurizr JSON workspaceは、対応するAntora module配下の`assets/diagrams/source/workspace.json`に置く。
 - `workspace.json`はモデル正本ではなく、Structurizrの見た目を再現するためのレイアウト付きexport入力として扱う。
 - 生成SVGは、対応するAntora module配下の`assets/diagrams/`に置く。
-- 1つの図を更新するときは、まずDSLソースを更新し、必要に応じてJSON workspaceへ反映し、その結果として生成画像を更新する。
+- 1つの図のモデルを更新するときは、まずDSLソースを更新し、既存`workspace.json`のレイアウトを反映した状態で`workspace.json`を更新し、その結果として生成SVGを更新する。
+- 手動レイアウトを使う図では、DSL変更と対応する`workspace.json`更新を同じ変更単位で扱う。
+- レイアウトだけを調整する場合は、`workspace.json`の変更だけを許容する。
+- モデル変更は必ず`workspace.dsl`から始める。
+- `workspace.json`は手編集しない。StructurizrのUIまたは公式ツールのmerge/export結果として更新する。
+- レイアウト保持のため、Structurizr viewsには明示的で安定したview keyを付ける。
 
 ## 埋め込み形式
 - arc42文書へ埋め込む図の標準形式は`svg`とする。
