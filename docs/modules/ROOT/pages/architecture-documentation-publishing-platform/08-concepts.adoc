@@ -1,7 +1,7 @@
 = 8. 横断的コンセプト
 :docstatus: draft
 :created: 2026-05-05
-:revdate: 2026-05-25
+:revdate: 2026-05-27
 :authors: F; ChatGPT
 :lang: ja
 
@@ -233,7 +233,19 @@ docs/modules/<module>/assets/diagrams/                       # generated diagram
 
 `workspace.json`は手編集せず、StructurizrのUIまたは公式ツールのmerge/export結果として更新する。
 
-レイアウト保持のため、Structurizr viewsには明示的で安定したview keyを付ける。
+レイアウト保持のため、Structurizr viewsには明示的で安定したview keyを付ける。形式は`<view-type>-<target>[-<purpose>]`の英小文字kebab-caseにする。
+
+`view-type`の標準語彙は、`system-context`、`container`、`component`、`dynamic`、`deployment`、`filtered`、`image`、`custom`である。`target`と`purpose`は安定したslugにし、arc42章番号や一時的な表示名は含めない。
+
+例:
+
+[source,text]
+----
+system-context-docs-site
+container-docs-site
+dynamic-publish-flow
+deployment-docs-site-production
+----
 
 arc42本文では、生成済み画像をAsciiDocの`image::...[]`で参照する。
 

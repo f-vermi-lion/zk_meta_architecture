@@ -1,7 +1,7 @@
 = 12. 用語集
 :docstatus: draft
 :created: 2026-05-05
-:revdate: 2026-05-25
+:revdate: 2026-05-27
 :authors: F; ChatGPT
 :lang: ja
 
@@ -64,6 +64,9 @@
 
 | Structurizr JSON workspace
 | Structurizr workspaceをJSONで表したファイル。この基盤では、手動レイアウトを含むSVG export用の管理対象として扱うが、モデル正本にはしない。
+
+| Structurizr view key
+| Structurizr viewを識別し、JSON workspace上の手動レイアウトを安定して対応付けるためのkey。この基盤では`<view-type>-<target>[-<purpose>]`形式の英小文字kebab-caseにする。
 
 | 生成済み図
 | Structurizr DSL/JSONから`export -format svg`で直接生成したSVG。arc42本文から`image::...[]`で参照する。

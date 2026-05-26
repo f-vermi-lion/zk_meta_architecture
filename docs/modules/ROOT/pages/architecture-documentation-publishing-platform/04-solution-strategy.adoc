@@ -1,7 +1,7 @@
 = 4. ソリューション戦略
 :docstatus: draft
 :created: 2026-05-05
-:revdate: 2026-05-25
+:revdate: 2026-05-27
 :authors: F; ChatGPT
 :lang: ja
 
@@ -106,7 +106,9 @@ arc42本文には、Structurizr DSLそのものを主たる図表現として直
 
 レイアウトだけを調整する場合は`workspace.json`の変更だけを許容する。ただし、`workspace.json`は手編集せず、StructurizrのUIまたは公式ツールのmerge/export結果として更新する。
 
-レイアウト保持のため、Structurizr viewsには明示的で安定したview keyを付ける。
+レイアウト保持のため、Structurizr viewsには明示的で安定したview keyを付ける。view keyは`<view-type>-<target>[-<purpose>]`形式の英小文字kebab-caseにし、`view-type`には`system-context`、`container`、`component`、`dynamic`、`deployment`、`filtered`、`image`、`custom`を使う。
+
+例は`system-context-docs-site`、`container-docs-site`、`dynamic-publish-flow`、`deployment-docs-site-production`である。arc42章番号や一時的な表示名はview keyに入れない。
 
 == 4.6 英語正本・日本語補助版の運用戦略
 
@@ -161,7 +163,7 @@ arc42本文には、Structurizr DSLそのものを主たる図表現として直
 
 * Structurizr DSLの分割単位と`!include`配置規則
 * Structurizr直接SVG生成のCIコマンドと成果物配置手順
-* Structurizr view keyの命名規則
+* Structurizr view keyを変更する場合のJSONレイアウト移行手順
 * private repositoryの文書をpublic GitHub Pagesへ出してよいか
 * docToolchainのAntora連携をどこまで使うか
 * cross-repository workflowで使うtoken / secret管理

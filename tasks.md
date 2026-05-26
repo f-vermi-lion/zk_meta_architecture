@@ -41,3 +41,4 @@
 - [x] Structurizr DSLから直接SVGを生成する方針を決める
 - [x] Structurizr図のレイアウト情報をDSL正本とJSON配置で管理する方針を決める
 - [x] DSL変更をJSONレイアウトworkspaceへ反映する同期手順を決める
+- [x] Structurizr view key の命名規則を決める

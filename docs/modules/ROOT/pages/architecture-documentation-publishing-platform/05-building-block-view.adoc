@@ -1,7 +1,7 @@
 = 5. ビルディングブロックビュー
 :docstatus: draft
 :created: 2026-05-05
-:revdate: 2026-05-25
+:revdate: 2026-05-27
 :authors: F; ChatGPT
 :lang: ja
 
@@ -122,7 +122,13 @@ DSLの分割単位と`!include`の詳細規則は未決定である。ただし�
 
 レイアウトだけを調整する場合は、`workspace.json`の変更だけを許容する。ただし、`workspace.json`は手編集せず、StructurizrのUIまたは公式ツールのmerge/export結果として更新する。
 
-レイアウト保持のため、Structurizr viewsには明示的で安定したview keyを付ける。view keyの命名規則は未決定である。
+レイアウト保持のため、Structurizr viewsには明示的で安定したview keyを付ける。
+
+view keyは`<view-type>-<target>[-<purpose>]`形式の英小文字kebab-caseにする。`view-type`の標準語彙は、`system-context`、`container`、`component`、`dynamic`、`deployment`、`filtered`、`image`、`custom`である。
+
+`target`と`purpose`は、対象システム、コンテナ、シナリオなどを表す安定したslugにする。例は`system-context-docs-site`、`container-docs-site`、`dynamic-publish-flow`、`deployment-docs-site-production`である。arc42章番号や一時的な表示名はview keyに入れない。
+
+既存view keyの変更は、`workspace.json`に保持した手動レイアウトを失うリスクがあるため原則として避ける。
 
 === 5.2.3 Antora component descriptor
 

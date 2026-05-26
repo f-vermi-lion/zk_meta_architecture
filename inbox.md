@@ -7,4 +7,4 @@
 - publish workflowでtools/check-language-pairsに渡すcontent root取得手順を決める
 - 日英対応ページの内容差分や更新鮮度を検査対象にするか決める
 - Structurizr直接SVG生成のCIコマンドと成果物配置手順を決める
-- Structurizr view key の命名規則を決める
+- Structurizr view key を変更する場合のJSONレイアウト移行手順を決める

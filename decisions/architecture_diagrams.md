@@ -16,6 +16,12 @@
 - モデル変更は必ず`workspace.dsl`から始める。
 - `workspace.json`は手編集しない。StructurizrのUIまたは公式ツールのmerge/export結果として更新する。
 - レイアウト保持のため、Structurizr viewsには明示的で安定したview keyを付ける。
+- view keyは`<view-type>-<target>[-<purpose>]`形式の英小文字kebab-caseにする。
+- `view-type`の標準語彙は、`system-context`、`container`、`component`、`dynamic`、`deployment`、`filtered`、`image`、`custom`とする。
+- `target`と`purpose`は、対象システム、コンテナ、シナリオなどを表す安定したslugにする。
+- 例は、`system-context-docs-site`、`container-docs-site`、`dynamic-publish-flow`、`deployment-docs-site-production`とする。
+- arc42章番号や一時的な表示名はview keyに入れない。
+- 既存view keyの変更は、`workspace.json`に保持した手動レイアウトを失うリスクがあるため原則として避ける。
 
 ## 埋め込み形式
 - arc42文書へ埋め込む図の標準形式は`svg`とする。

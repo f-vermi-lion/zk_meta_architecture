@@ -1,7 +1,7 @@
 = 11. 技術的リスク
 :docstatus: draft
 :created: 2026-05-05
-:revdate: 2026-05-25
+:revdate: 2026-05-27
 :authors: F; ChatGPT
 :lang: ja
 
@@ -73,14 +73,15 @@ docToolchainはarc42やAsciiDoc文書運用に有用だが、Antora連携は検�
 
 図のモデル正本はStructurizr DSLとし、公開サイトに載せる標準生成物はStructurizrの`export -format svg`で直接生成するSVGとする。
 
-手動レイアウトはStructurizr JSON workspaceで管理する。DSL変更後は、既存`workspace.json`のレイアウトを反映した状態で`workspace.json`を更新する。ただし、CIで使う具体的なコマンド、Docker image tag、成果物配置手順、view keyの命名規則は未確定である。
+手動レイアウトはStructurizr JSON workspaceで管理する。DSL変更後は、既存`workspace.json`のレイアウトを反映した状態で`workspace.json`を更新する。view keyは`<view-type>-<target>[-<purpose>]`形式で明示する。ただし、CIで使う具体的なコマンド、Docker image tag、成果物配置手順、view key変更時のJSONレイアウト移行手順は未確定である。
 
 リスクは以下である。
 
 * CI環境で安定して画像生成できない。
 * Playwright依存を含むStructurizr実行環境を用意できない。
 * DSL変更をJSON workspaceへ反映し忘れ、モデルとレイアウト付きexport入力がずれる。
-* view keyが暗黙生成のままで、レイアウトを安定して対応付けられない。
+* view keyが暗黙生成のまま、または命名規則に沿っておらず、レイアウトを安定して対応付けられない。
+* 既存view keyを不用意に変更し、`workspace.json`に保持した手動レイアウトとの対応が壊れる。
 * `!include`の分割規則と生成コマンドが噛み合わない。
 * arc42本文から参照する画像パスが不安定になる。
 
@@ -88,7 +89,7 @@ docToolchainはarc42やAsciiDoc文書運用に有用だが、Antora連携は検�
 
 * 最小のDSL/JSONで直接SVG生成を試す。
 * CIコマンド、Docker image tag、出力先、参照方法を固定する。
-* view keyの命名規則を決める。
+* view keyの命名規則を守り、既存view keyを変更する場合はJSONレイアウト移行手順を別途定める。
 * 生成失敗時に、DSLファイル、出力先、参照元ページをlogに出す。
 
 == 11.5 サイト再生成失敗に気づけないリスク
@@ -199,6 +200,6 @@ docToolchainはarc42やAsciiDoc文書運用に有用だが、Antora連携は検�
 | Playwright依存を含む実行環境、出力先、Antora asset参照に影響する。
 
 | UC-10
-| Structurizr view keyの命名規則を決める
-| レイアウトの安定対応、命名の一貫性、レビューしやすさに影響する。
+| Structurizr view keyを変更する場合のJSONレイアウト移行手順を決める
+| 既存view key変更時に、手動レイアウトを失わず移行できるかに影響する。
 |===
