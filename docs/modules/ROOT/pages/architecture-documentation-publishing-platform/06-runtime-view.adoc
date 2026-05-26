@@ -119,7 +119,8 @@ Fの確認では、公開ページはローカルbuild結果と大きな差が�
 . DSL変更と対応する`workspace.json`更新が同じ変更単位に含まれていることを確認する。
 . Structurizr viewsに明示的で安定したview keyがあることを確認する。
 . view keyが`<view-type>-<target>[-<purpose>]`形式の英小文字kebab-caseであり、章番号や一時的な表示名を含まないことを確認する。
-. Structurizrの`export -format svg`でサイト掲載用SVGを生成する。手動レイアウトを再現する場合は`workspace.json`を入力にする。
+. `structurizr/structurizr:2026.05.22-playwright`で`workspace.json`を入力にし、Structurizrの`export -format svg`でサイト掲載用SVGを生成する。
+. 生成SVGが`docs/modules/<module>/assets/diagrams/`に置かれ、同じ変更単位に含まれていることを確認する。
 . arc42本文から参照される画像パスが存在することを確認する。
 . Antora buildで画像が取り込まれることを確認する。
 
@@ -169,6 +170,7 @@ issue出力形式は、`issue_code<TAB>content_root<TAB>module<TAB>relative_path
 * 手動レイアウトを使う図で、`workspace.json`がDSL変更を反映していない。
 * view keyが暗黙生成のまま、または命名規則に沿っておらず、レイアウトを安定して対応付けられない。
 * 期待するSVGを生成できない。
+* 再生成されたSVGに未反映の差分が残っている。
 * arc42本文が参照する画像パスに生成物がない。
 * Antora buildで画像が取り込めない。
 

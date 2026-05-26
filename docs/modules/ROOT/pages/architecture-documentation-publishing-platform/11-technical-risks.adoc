@@ -69,19 +69,20 @@ docToolchainはarc42やAsciiDoc文書運用に有用だが、Antora連携は検�
 * docToolchainなしでも最小公開できる経路を維持する。
 * 採用するtaskと採用しないtaskを決定として残す。
 
-== 11.4 Structurizr直接SVG生成のCI手順が未確定であるリスク
+== 11.4 Structurizr直接SVG生成のCI実装詳細が未確定であるリスク
 
 図のモデル正本はStructurizr DSLとし、公開サイトに載せる標準生成物はStructurizrの`export -format svg`で直接生成するSVGとする。
 
-手動レイアウトはStructurizr JSON workspaceで管理する。DSL変更後は、既存`workspace.json`のレイアウトを反映した状態で`workspace.json`を更新する。view keyは`<view-type>-<target>[-<purpose>]`形式で明示する。ただし、CIで使う具体的なコマンド、Docker image tag、成果物配置手順、view key変更時のJSONレイアウト移行手順は未確定である。
+手動レイアウトはStructurizr JSON workspaceで管理する。DSL変更後は、既存`workspace.json`のレイアウトを反映した状態で`workspace.json`を更新する。view keyは`<view-type>-<target>[-<purpose>]`形式で明示する。CIで使う標準Docker imageは`structurizr/structurizr:2026.05.22-playwright`、標準入力は`workspace.json`、出力先は`docs/modules/<module>/assets/diagrams/`とする。生成SVGはAntora assetとしてリポジトリ管理する。ただし、再生成差分を検出する具体実装、Docker image tagの更新方針、view key変更時のJSONレイアウト移行手順は未確定である。
 
 リスクは以下である。
 
 * CI環境で安定して画像生成できない。
-* Playwright依存を含むStructurizr実行環境を用意できない。
+* 固定したDocker image tagが古くなり、更新判断が遅れる。
 * DSL変更をJSON workspaceへ反映し忘れ、モデルとレイアウト付きexport入力がずれる。
 * view keyが暗黙生成のまま、または命名規則に沿っておらず、レイアウトを安定して対応付けられない。
 * 既存view keyを不用意に変更し、`workspace.json`に保持した手動レイアウトとの対応が壊れる。
+* 生成SVGの再生成差分を検出できず、リポジトリ管理された派生成果物が古くなる。
 * `!include`の分割規則と生成コマンドが噛み合わない。
 * arc42本文から参照する画像パスが不安定になる。
 
@@ -89,6 +90,7 @@ docToolchainはarc42やAsciiDoc文書運用に有用だが、Antora連携は検�
 
 * 最小のDSL/JSONで直接SVG生成を試す。
 * CIコマンド、Docker image tag、出力先、参照方法を固定する。
+* 再生成差分を検出する具体実装とDocker image tag更新方針を別途決める。
 * view keyの命名規則を守り、既存view keyを変更する場合はJSONレイアウト移行手順を別途定める。
 * 生成失敗時に、DSLファイル、出力先、参照元ページをlogに出す。
 
@@ -196,10 +198,14 @@ docToolchainはarc42やAsciiDoc文書運用に有用だが、Antora連携は検�
 | 翻訳の古さや内容差分をどこまでCIで扱うかに影響する。
 
 | UC-9
-| Structurizr直接SVG生成のCIコマンドと成果物配置手順を決める
-| Playwright依存を含む実行環境、出力先、Antora asset参照に影響する。
+| Structurizr生成SVGの再生成差分をCIで検出する具体実装を決める
+| リポジトリ管理する生成SVGが、DSL/JSON変更と同期しているかに影響する。
 
 | UC-10
+| Structurizr Docker image tagの更新方針を決める
+| 固定したStructurizr実行環境をいつ更新するかに影響する。
+
+| UC-11
 | Structurizr view keyを変更する場合のJSONレイアウト移行手順を決める
 | 既存view key変更時に、手動レイアウトを失わず移行できるかに影響する。
 |===

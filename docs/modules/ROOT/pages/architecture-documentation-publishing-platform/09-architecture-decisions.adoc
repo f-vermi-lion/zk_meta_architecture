@@ -63,7 +63,7 @@
 
 日英対応検査の標準コマンドは、専用サイトリポジトリ内の`tools/check-language-pairs`とする。このコマンドは、公開workflowがcontent sourcesを取得した後、Antora buildの前に実行する。
 
-図の標準生成経路は、Structurizr DSL/JSONからStructurizrの`export -format svg`で直接SVGを生成する方式にする。PlantUML / C4-PlantUML経由は標準経路にしない。モデル変更の出発点は`workspace.dsl`とし、手動レイアウトを再現する場合は`workspace.json`をexport入力として管理する。view keyは`<view-type>-<target>[-<purpose>]`形式の英小文字kebab-caseにし、手動レイアウト保持の安定識別子として扱う。
+図の標準生成経路は、Structurizr DSL/JSONからStructurizrの`export -format svg`で直接SVGを生成する方式にする。PlantUML / C4-PlantUML経由は標準経路にしない。モデル変更の出発点は`workspace.dsl`とし、手動レイアウトを再現する場合は`workspace.json`をexport入力として管理する。view keyは`<view-type>-<target>[-<purpose>]`形式の英小文字kebab-caseにし、手動レイアウト保持の安定識別子として扱う。CI上の標準Docker imageは`structurizr/structurizr:2026.05.22-playwright`とし、生成SVGはAntora assetとしてリポジトリ管理する。
 
 標準配置の具体例は、8.2で管理する。
 

@@ -10,8 +10,10 @@
 - 手動レイアウトを含むStructurizr JSON workspaceは、対応するAntora module配下の`assets/diagrams/source/workspace.json`に置く。
 - `workspace.json`はモデル正本ではなく、Structurizrの見た目を再現するためのレイアウト付きexport入力として扱う。
 - 生成SVGは、対応するAntora module配下の`assets/diagrams/`に置く。
+- 生成SVGは派生成果物だが、公開サイトでAntoraが読むassetとしてリポジトリ管理する。
 - 1つの図のモデルを更新するときは、まずDSLソースを更新し、既存`workspace.json`のレイアウトを反映した状態で`workspace.json`を更新し、その結果として生成SVGを更新する。
 - 手動レイアウトを使う図では、DSL変更と対応する`workspace.json`更新を同じ変更単位で扱う。
+- 生成SVGの変更も、対応するDSL/JSON変更と同じ変更単位で扱う。
 - レイアウトだけを調整する場合は、`workspace.json`の変更だけを許容する。
 - モデル変更は必ず`workspace.dsl`から始める。
 - `workspace.json`は手編集しない。StructurizrのUIまたは公式ツールのmerge/export結果として更新する。
@@ -35,6 +37,19 @@
 - AntoraページではAsciiDocの`image::...[]`で生成画像を埋め込む。
 - `README.md`では必要な代表図だけを扱ってよい。
 - 必要なら対応するDSLソースへのリンクを併記してよい。
+
+## CIでの標準生成手順
+- 実行位置は各ソースリポジトリのrootとする。
+- 標準Docker imageは`structurizr/structurizr:2026.05.22-playwright`とする。
+- 標準コマンドは次とする。
+
+```sh
+docker run --rm -v "$PWD:/usr/local/structurizr" structurizr/structurizr:2026.05.22-playwright export -format svg -workspace docs/modules/<module>/assets/diagrams/source/workspace.json -output docs/modules/<module>/assets/diagrams
+```
+
+- 手動レイアウト再現を標準にするため、CIの入力は`workspace.json`に固定する。
+- CIではSVGを再生成できることを確認し、生成SVGに差分がある場合は文書変更に含める。
+- 再生成差分をCIで検出する具体実装は別途決める。
 
 ## `!include` の扱い
 - `!include`を使う場合は、対応するAntora moduleの`assets/diagrams/source/`配下のDSLソースツリー内で相対参照が完結するように構成する。

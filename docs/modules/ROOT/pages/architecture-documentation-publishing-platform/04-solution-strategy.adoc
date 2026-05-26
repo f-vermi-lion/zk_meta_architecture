@@ -102,6 +102,8 @@ arc42本文には、Structurizr DSLそのものを主たる図表現として直
 
 標準生成経路は、Structurizr DSL/JSONからStructurizrの`export -format svg`で直接SVGを生成する方式にする。手動レイアウトを再現する場合は`workspace.json`を入力にする。PlantUML / C4-PlantUML経由は、生成される図の見た目が目的に合わないため標準経路にしない。
 
+CI上の標準実行環境は`structurizr/structurizr:2026.05.22-playwright`とし、各ソースリポジトリrootで`workspace.json`から`docs/modules/<module>/assets/diagrams/`へSVGを生成する。生成SVGは派生成果物だが、Antora assetとしてリポジトリ管理する。
+
 モデル変更は必ず`workspace.dsl`から始める。手動レイアウトを使う図では、既存`workspace.json`のレイアウトを反映した状態で`workspace.json`を更新し、DSL変更とJSON更新を同じ変更単位で扱う。
 
 レイアウトだけを調整する場合は`workspace.json`の変更だけを許容する。ただし、`workspace.json`は手編集せず、StructurizrのUIまたは公式ツールのmerge/export結果として更新する。
@@ -162,7 +164,8 @@ arc42本文には、Structurizr DSLそのものを主たる図表現として直
 以下は、現時点では戦略として固定せず、未決定事項または技術的リスクとして管理する。
 
 * Structurizr DSLの分割単位と`!include`配置規則
-* Structurizr直接SVG生成のCIコマンドと成果物配置手順
+* Structurizr生成SVGの再生成差分をCIで検出する具体実装
+* Structurizr Docker image tagの更新方針
 * Structurizr view keyを変更する場合のJSONレイアウト移行手順
 * private repositoryの文書をpublic GitHub Pagesへ出してよいか
 * docToolchainのAntora連携をどこまで使うか
