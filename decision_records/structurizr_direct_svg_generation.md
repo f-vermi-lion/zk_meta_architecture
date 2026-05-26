@@ -5,8 +5,10 @@
 - PlantUML / C4-PlantUML経由は標準経路にしない。
 - CI上の標準Docker imageは`structurizr/structurizr:2026.05.22-playwright`とする。
 - CIの標準入力は、手動レイアウトを含む`workspace.json`とする。
+- CIの標準検出対象は、`find docs/modules -path '*/examples/diagrams/workspace.json' -type f -print`で得られるAntora module配下のworkspaceとする。
+- 対象`workspace.json`が0件の場合は、図生成対象なしとして成功扱いにする。
 - 生成SVGは、Antora assetとしてリポジトリ管理する。
-- SVG再生成後の未反映差分は、`git status --porcelain -- docs/modules/<module>/assets/diagrams`で検出する。
+- SVG再生成後の未反映差分は、`git status --porcelain -- docs/modules/<module>/assets/images/diagrams`で検出する。
 
 ## 理由
 - PlantUML / C4-PlantUML経由で生成した図の見た目は、Fの利用目的では許容範囲外だった。
@@ -19,7 +21,6 @@
 
 ## 残した論点
 - Structurizr Docker image tagの更新方針は別途決める。
-- 生成対象`workspace.json`の自動検出手順は別途決める。
 
 ## 参考
 - https://docs.structurizr.com/export/png-and-svg

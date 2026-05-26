@@ -2,8 +2,9 @@
 
 ## 決定
 - Structurizr図のモデル正本は`workspace.dsl`とする。
-- 手動レイアウトを含むStructurizr JSON workspaceは、`workspace.json`として管理する。
+- `workspace.dsl`と、手動レイアウトを含むStructurizr JSON workspaceの`workspace.json`は、対応するAntora moduleの`examples/diagrams/`に置く。
 - SVG生成時は、手動レイアウトを再現するために`workspace.json`を`export -format svg -workspace <path>`の入力にする。
+- 生成SVGは、対応するAntora moduleの`assets/images/diagrams/`に置く。
 - DSL変更後は、既存`workspace.json`のレイアウト情報を反映した状態で`workspace.json`を更新する。
 - レイアウト保持のため、Structurizr viewsには明示的で安定したview keyを付ける。
 - view keyは`<view-type>-<target>[-<purpose>]`形式の英小文字kebab-caseにする。
@@ -21,7 +22,6 @@
 ## 残した論点
 - view keyを変更する場合のJSONレイアウト移行手順は別途決める。
 - Structurizr Docker image tagの更新方針は別途決める。
-- 生成対象`workspace.json`の自動検出手順は別途決める。
 
 ## 参考
 - https://docs.structurizr.com/export/png-and-svg

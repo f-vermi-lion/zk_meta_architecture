@@ -6,6 +6,6 @@
 - Antora UI上の日英切り替え導線を決める
 - publish workflowでtools/check-language-pairsに渡すcontent root取得手順を決める
 - 日英対応ページの内容差分や更新鮮度を検査対象にするか決める
-- Structurizr生成対象workspace.jsonの自動検出手順を決める
 - Structurizr Docker image tagの更新方針を決める
 - Structurizr view key を変更する場合のJSONレイアウト移行手順を決める
+- Structurizr図生成CI workflowの配置と起動条件を決める

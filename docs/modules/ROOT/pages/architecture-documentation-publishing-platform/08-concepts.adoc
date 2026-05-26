@@ -106,11 +106,14 @@ source-repo-a/
           02-architecture-constraints.adoc
           03-context-and-scope.adoc
         partials/
-      assets/
-        diagrams/
-          source/
+        examples/
+          diagrams/
             workspace.dsl
             workspace.json
+        assets/
+          images/
+            diagrams/
+              system-context-docs-site.svg
       ja/
         nav.adoc
         pages/
@@ -220,9 +223,9 @@ arc42本文は、章ごとのファイルに分ける。
 
 [source,text]
 ----
-docs/modules/<module>/assets/diagrams/source/workspace.dsl   # model source
-docs/modules/<module>/assets/diagrams/source/workspace.json  # layout workspace
-docs/modules/<module>/assets/diagrams/                       # generated diagrams
+docs/modules/<module>/examples/diagrams/workspace.dsl        # model source
+docs/modules/<module>/examples/diagrams/workspace.json       # layout workspace
+docs/modules/<module>/assets/images/diagrams/                # generated diagrams
 ----
 
 標準生成経路は、Structurizr DSL/JSONからStructurizrの`export -format svg`で直接SVGを生成する方式にする。
@@ -231,24 +234,31 @@ docs/modules/<module>/assets/diagrams/                       # generated diagram
 
 [source,sh]
 ----
-docker run --rm -v "$PWD:/usr/local/structurizr" structurizr/structurizr:2026.05.22-playwright export -format svg -workspace docs/modules/<module>/assets/diagrams/source/workspace.json -output docs/modules/<module>/assets/diagrams
+docker run --rm -v "$PWD:/usr/local/structurizr" structurizr/structurizr:2026.05.22-playwright export -format svg -workspace docs/modules/<module>/examples/diagrams/workspace.json -output docs/modules/<module>/assets/images/diagrams
 ----
 
-生成SVGは派生成果物だが、Antora assetとしてリポジトリ管理する。
+生成対象は以下で自動検出する。対象が0件の場合は、図生成対象なしとして成功扱いにする。
+
+[source,sh]
+----
+find docs/modules -path '*/examples/diagrams/workspace.json' -type f -print
+----
+
+生成SVGは派生成果物だが、Antora assetとしてリポジトリ管理する。Antoraページからは`image::diagrams/<file>.svg[]`で参照する。
 
 再生成後の未反映差分は以下で検出する。
 
 [source,sh]
 ----
-git status --porcelain -- docs/modules/<module>/assets/diagrams
+git status --porcelain -- docs/modules/<module>/assets/images/diagrams
 ----
 
 出力が空なら成功、空でなければ未反映差分ありとしてCIを失敗させる。失敗時は以下をlogに出す。
 
 [source,sh]
 ----
-git status --short -- docs/modules/<module>/assets/diagrams
-git diff -- docs/modules/<module>/assets/diagrams
+git status --short -- docs/modules/<module>/assets/images/diagrams
+git diff -- docs/modules/<module>/assets/images/diagrams
 ----
 
 `workspace.json`は、手動レイアウトを再現するためのレイアウト付きexport入力として管理する。モデル変更の出発点は引き続き`workspace.dsl`にする。
@@ -271,7 +281,7 @@ dynamic-publish-flow
 deployment-docs-site-production
 ----
 
-arc42本文では、生成済み画像をAsciiDocの`image::...[]`で参照する。
+arc42本文では、生成済み画像をAsciiDocの`image::diagrams/<file>.svg[]`で参照する。
 
 DSL断片をarc42本文へ主たる図表現として直接埋め込まない。
 

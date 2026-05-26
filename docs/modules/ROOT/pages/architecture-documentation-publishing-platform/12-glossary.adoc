@@ -69,10 +69,10 @@
 | Structurizr viewを識別し、JSON workspace上の手動レイアウトを安定して対応付けるためのkey。この基盤では`<view-type>-<target>[-<purpose>]`形式の英小文字kebab-caseにする。
 
 | 生成済み図
-| Structurizr DSL/JSONから`export -format svg`で直接生成したSVG。派生成果物だが、Antora assetとしてリポジトリ管理し、arc42本文から`image::...[]`で参照する。
+| Structurizr DSL/JSONから`export -format svg`で直接生成したSVG。派生成果物だが、Antora assetとしてリポジトリ管理し、arc42本文から`image::diagrams/<file>.svg[]`で参照する。
 
 | 未反映差分
-| 正本やexport入力から再生成した派生成果物が、リポジトリに反映されていない状態。生成SVGでは`git status --porcelain -- docs/modules/<module>/assets/diagrams`で検出する。
+| 正本やexport入力から再生成した派生成果物が、リポジトリに反映されていない状態。生成SVGでは`git status --porcelain -- docs/modules/<module>/assets/images/diagrams`で検出する。
 
 | `repository_dispatch`
 | あるGitHubリポジトリのworkflowから、別のリポジトリのworkflowをイベントとして起動するために使う方式。この基盤では、ソースリポジトリからサイト用リポジトリへの自動再生成依頼に使う。

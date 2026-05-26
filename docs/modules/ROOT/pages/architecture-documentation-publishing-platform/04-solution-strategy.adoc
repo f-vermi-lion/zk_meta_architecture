@@ -102,9 +102,9 @@ arc42本文には、Structurizr DSLそのものを主たる図表現として直
 
 標準生成経路は、Structurizr DSL/JSONからStructurizrの`export -format svg`で直接SVGを生成する方式にする。手動レイアウトを再現する場合は`workspace.json`を入力にする。PlantUML / C4-PlantUML経由は、生成される図の見た目が目的に合わないため標準経路にしない。
 
-CI上の標準実行環境は`structurizr/structurizr:2026.05.22-playwright`とし、各ソースリポジトリrootで`workspace.json`から`docs/modules/<module>/assets/diagrams/`へSVGを生成する。生成SVGは派生成果物だが、Antora assetとしてリポジトリ管理する。
+CI上の標準実行環境は`structurizr/structurizr:2026.05.22-playwright`とし、各ソースリポジトリrootで`docs/modules/<module>/examples/diagrams/workspace.json`から`docs/modules/<module>/assets/images/diagrams/`へSVGを生成する。生成SVGは派生成果物だが、Antora assetとしてリポジトリ管理する。
 
-生成後は`git status --porcelain -- docs/modules/<module>/assets/diagrams`で未反映差分を検出する。出力がある場合は、生成SVGが変更単位に含まれていないためCI失敗にする。
+生成対象は`find docs/modules -path '*/examples/diagrams/workspace.json' -type f -print`で自動検出する。対象が0件の場合は、図生成対象なしとして成功扱いにする。生成後は`git status --porcelain -- docs/modules/<module>/assets/images/diagrams`で未反映差分を検出する。出力がある場合は、生成SVGが変更単位に含まれていないためCI失敗にする。
 
 モデル変更は必ず`workspace.dsl`から始める。手動レイアウトを使う図では、既存`workspace.json`のレイアウトを反映した状態で`workspace.json`を更新し、DSL変更とJSON更新を同じ変更単位で扱う。
 
@@ -166,7 +166,6 @@ CI上の標準実行環境は`structurizr/structurizr:2026.05.22-playwright`と�
 以下は、現時点では戦略として固定せず、未決定事項または技術的リスクとして管理する。
 
 * Structurizr DSLの分割単位と`!include`配置規則
-* Structurizr生成対象workspace.jsonの自動検出手順
 * Structurizr Docker image tagの更新方針
 * Structurizr view keyを変更する場合のJSONレイアウト移行手順
 * private repositoryの文書をpublic GitHub Pagesへ出してよいか

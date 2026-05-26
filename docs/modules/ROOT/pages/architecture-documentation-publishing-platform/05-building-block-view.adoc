@@ -105,11 +105,11 @@ docs/modules/ja/pages/    # 日本語補助版
 
 Structurizr DSLは、図モデルの正本としてソースリポジトリに置く。
 
-標準配置は、対応するAntora module配下の`assets/diagrams/source/`とする。
+標準配置は、対応するAntora module配下の`examples/diagrams/`とする。
 
 [source,text]
 ----
-docs/modules/ROOT/assets/diagrams/source/
+docs/modules/ROOT/examples/diagrams/
   workspace.dsl
   workspace.json
 ----
@@ -268,12 +268,14 @@ CI上の標準実行環境は、Playwright依存を含むStructurizr Docker imag
 
 [source,sh]
 ----
-docker run --rm -v "$PWD:/usr/local/structurizr" structurizr/structurizr:2026.05.22-playwright export -format svg -workspace docs/modules/<module>/assets/diagrams/source/workspace.json -output docs/modules/<module>/assets/diagrams
+docker run --rm -v "$PWD:/usr/local/structurizr" structurizr/structurizr:2026.05.22-playwright export -format svg -workspace docs/modules/<module>/examples/diagrams/workspace.json -output docs/modules/<module>/assets/images/diagrams
 ----
 
-生成SVGは、`docs/modules/<module>/assets/diagrams/`に置き、Antora assetとしてリポジトリ管理する。
+生成対象は`find docs/modules -path '*/examples/diagrams/workspace.json' -type f -print`で自動検出する。対象が0件の場合は、図生成対象なしとして成功扱いにする。
 
-SVG export後の未反映差分は、`git status --porcelain -- docs/modules/<module>/assets/diagrams`で検出する。出力がある場合、CIは失敗扱いにし、`git status --short -- docs/modules/<module>/assets/diagrams`と`git diff -- docs/modules/<module>/assets/diagrams`をlogに出す。
+生成SVGは、`docs/modules/<module>/assets/images/diagrams/`に置き、Antora assetとしてリポジトリ管理する。arc42本文からは`image::diagrams/<file>.svg[]`で参照する。
+
+SVG export後の未反映差分は、`git status --porcelain -- docs/modules/<module>/assets/images/diagrams`で検出する。出力がある場合、CIは失敗扱いにし、`git status --short -- docs/modules/<module>/assets/images/diagrams`と`git diff -- docs/modules/<module>/assets/images/diagrams`をlogに出す。
 
 === 5.4.4 日英対応検査スクリプト
 
@@ -313,7 +315,7 @@ GitHub Pagesサイトは、閲覧者向けの公開結果である。
 
 生成済み図は、Structurizr DSL/JSONから直接生成されるSVGである。
 
-arc42本文からは、AsciiDocの`image::...[]`で参照する。
+arc42本文からは、AsciiDocの`image::diagrams/<file>.svg[]`で参照する。
 
 PNGは必要時の補助出力に留める。
 
@@ -321,7 +323,7 @@ PNGは必要時の補助出力に留める。
 
 生成済み図は、公開サイトでAntoraが読むassetとしてリポジトリ管理する。図モデルまたはレイアウトを変更した場合は、対応する生成SVGも同じ変更単位に含める。
 
-未反映差分はソースリポジトリ側CIの`git status --porcelain -- docs/modules/<module>/assets/diagrams`で検出する。
+未反映差分はソースリポジトリ側CIの`git status --porcelain -- docs/modules/<module>/assets/images/diagrams`で検出する。
 
 === 5.5.3 build artifact / log
 
