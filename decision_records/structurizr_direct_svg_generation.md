@@ -6,6 +6,7 @@
 - CI上の標準Docker imageは`structurizr/structurizr:2026.05.22-playwright`とする。
 - CIの標準入力は、手動レイアウトを含む`workspace.json`とする。
 - 生成SVGは、Antora assetとしてリポジトリ管理する。
+- SVG再生成後の未反映差分は、`git status --porcelain -- docs/modules/<module>/assets/diagrams`で検出する。
 
 ## 理由
 - PlantUML / C4-PlantUML経由で生成した図の見た目は、Fの利用目的では許容範囲外だった。
@@ -14,10 +15,11 @@
 - PNG/SVG exportはPlaywright依存を持つため、CIではPlaywright依存を含むStructurizr Docker imageを第一候補にする。
 - `2026.05.22-playwright`はPlaywright依存を含む公式Docker tagであり、初期のCI標準として固定しやすい。
 - 生成SVGをリポジトリ管理すると、Antora build時に外部生成手順へ依存せず、レビュー時に図の差分も確認しやすい。
+- `git status --porcelain`を使うと、専用スクリプトを増やさずに変更済みSVGとuntracked SVGを検出できる。
 
 ## 残した論点
 - Structurizr Docker image tagの更新方針は別途決める。
-- 生成SVGの再生成差分をCIで検出する具体実装は別途決める。
+- 生成対象`workspace.json`の自動検出手順は別途決める。
 
 ## 参考
 - https://docs.structurizr.com/export/png-and-svg

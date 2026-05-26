@@ -13,6 +13,7 @@
 - ソースリポジトリのGitHub Actionsで、必要な文書検査やStructurizr直接SVG生成を実行する。
 - Structurizr直接SVG生成では、`structurizr/structurizr:2026.05.22-playwright`を使い、`workspace.json`から`docs/modules/<module>/assets/diagrams/`へSVGを再生成する。
 - 生成SVGは派生成果物だがAntora assetとしてリポジトリ管理し、再生成差分がある場合は文書変更に含める。
+- ソースリポジトリ側CIは、SVG再生成後に`git status --porcelain -- docs/modules/<module>/assets/diagrams`を実行し、未反映差分があれば失敗扱いにする。
 - サイト用リポジトリ`zouchikikou-docs-site`のGitHub Actionsで、content sources取得後にcheckout済みcontent rootを引数として`tools/check-language-pairs <content-root>...`を実行し、必要な検査・生成、Antora buildを実行する。
 - `zouchikikou-docs-site`のAntora playbookで複数リポジトリの文書を集約する。
 - 生成された静的サイトをGitHub Pagesへdeployする。

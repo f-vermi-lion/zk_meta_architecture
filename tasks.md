@@ -43,3 +43,4 @@
 - [x] DSL変更をJSONレイアウトworkspaceへ反映する同期手順を決める
 - [x] Structurizr view key の命名規則を決める
 - [x] Structurizr直接SVG生成のCIコマンドと成果物配置手順を決める
+- [x] Structurizr生成SVGの再生成差分をCIで検出する具体実装を決める

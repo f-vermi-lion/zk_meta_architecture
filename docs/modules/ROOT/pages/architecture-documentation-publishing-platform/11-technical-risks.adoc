@@ -73,7 +73,7 @@ docToolchainはarc42やAsciiDoc文書運用に有用だが、Antora連携は検�
 
 図のモデル正本はStructurizr DSLとし、公開サイトに載せる標準生成物はStructurizrの`export -format svg`で直接生成するSVGとする。
 
-手動レイアウトはStructurizr JSON workspaceで管理する。DSL変更後は、既存`workspace.json`のレイアウトを反映した状態で`workspace.json`を更新する。view keyは`<view-type>-<target>[-<purpose>]`形式で明示する。CIで使う標準Docker imageは`structurizr/structurizr:2026.05.22-playwright`、標準入力は`workspace.json`、出力先は`docs/modules/<module>/assets/diagrams/`とする。生成SVGはAntora assetとしてリポジトリ管理する。ただし、再生成差分を検出する具体実装、Docker image tagの更新方針、view key変更時のJSONレイアウト移行手順は未確定である。
+手動レイアウトはStructurizr JSON workspaceで管理する。DSL変更後は、既存`workspace.json`のレイアウトを反映した状態で`workspace.json`を更新する。view keyは`<view-type>-<target>[-<purpose>]`形式で明示する。CIで使う標準Docker imageは`structurizr/structurizr:2026.05.22-playwright`、標準入力は`workspace.json`、出力先は`docs/modules/<module>/assets/diagrams/`とする。生成SVGはAntora assetとしてリポジトリ管理する。再生成後の未反映差分は`git status --porcelain -- docs/modules/<module>/assets/diagrams`で検出する。ただし、生成対象`workspace.json`の自動検出手順、Docker image tagの更新方針、view key変更時のJSONレイアウト移行手順は未確定である。
 
 リスクは以下である。
 
@@ -82,7 +82,7 @@ docToolchainはarc42やAsciiDoc文書運用に有用だが、Antora連携は検�
 * DSL変更をJSON workspaceへ反映し忘れ、モデルとレイアウト付きexport入力がずれる。
 * view keyが暗黙生成のまま、または命名規則に沿っておらず、レイアウトを安定して対応付けられない。
 * 既存view keyを不用意に変更し、`workspace.json`に保持した手動レイアウトとの対応が壊れる。
-* 生成SVGの再生成差分を検出できず、リポジトリ管理された派生成果物が古くなる。
+* workflow側で対象`workspace.json`の明示列挙が漏れ、図生成が実行されない。
 * `!include`の分割規則と生成コマンドが噛み合わない。
 * arc42本文から参照する画像パスが不安定になる。
 
@@ -90,7 +90,8 @@ docToolchainはarc42やAsciiDoc文書運用に有用だが、Antora連携は検�
 
 * 最小のDSL/JSONで直接SVG生成を試す。
 * CIコマンド、Docker image tag、出力先、参照方法を固定する。
-* 再生成差分を検出する具体実装とDocker image tag更新方針を別途決める。
+* 再生成差分は`git status --porcelain`で検出する。
+* 生成対象`workspace.json`の自動検出手順とDocker image tag更新方針を別途決める。
 * view keyの命名規則を守り、既存view keyを変更する場合はJSONレイアウト移行手順を別途定める。
 * 生成失敗時に、DSLファイル、出力先、参照元ページをlogに出す。
 
@@ -198,8 +199,8 @@ docToolchainはarc42やAsciiDoc文書運用に有用だが、Antora連携は検�
 | 翻訳の古さや内容差分をどこまでCIで扱うかに影響する。
 
 | UC-9
-| Structurizr生成SVGの再生成差分をCIで検出する具体実装を決める
-| リポジトリ管理する生成SVGが、DSL/JSON変更と同期しているかに影響する。
+| Structurizr生成対象workspace.jsonの自動検出手順を決める
+| 図生成対象の明示列挙漏れを防げるかに影響する。
 
 | UC-10
 | Structurizr Docker image tagの更新方針を決める

@@ -121,6 +121,7 @@ Fの確認では、公開ページはローカルbuild結果と大きな差が�
 . view keyが`<view-type>-<target>[-<purpose>]`形式の英小文字kebab-caseであり、章番号や一時的な表示名を含まないことを確認する。
 . `structurizr/structurizr:2026.05.22-playwright`で`workspace.json`を入力にし、Structurizrの`export -format svg`でサイト掲載用SVGを生成する。
 . 生成SVGが`docs/modules/<module>/assets/diagrams/`に置かれ、同じ変更単位に含まれていることを確認する。
+. `git status --porcelain -- docs/modules/<module>/assets/diagrams`の出力が空であることを確認する。
 . arc42本文から参照される画像パスが存在することを確認する。
 . Antora buildで画像が取り込まれることを確認する。
 
@@ -170,14 +171,14 @@ issue出力形式は、`issue_code<TAB>content_root<TAB>module<TAB>relative_path
 * 手動レイアウトを使う図で、`workspace.json`がDSL変更を反映していない。
 * view keyが暗黙生成のまま、または命名規則に沿っておらず、レイアウトを安定して対応付けられない。
 * 期待するSVGを生成できない。
-* 再生成されたSVGに未反映の差分が残っている。
+* `git status --porcelain -- docs/modules/<module>/assets/diagrams`に出力があり、再生成されたSVGに未反映の差分が残っている。
 * arc42本文が参照する画像パスに生成物がない。
 * Antora buildで画像が取り込めない。
 
 === 6.5.2 失敗時の扱い
 
 . 公開workflowを失敗させる。
-. 失敗したDSLファイル、生成コマンド、出力先、参照元ページをlogに出す。
+. 失敗したDSLファイル、生成コマンド、出力先、参照元ページ、`git status --short`と`git diff`の結果をlogに出す。
 . GitHub Pagesへのdeployは実行しない。
 . 文書作成者がDSL、include、出力先、参照パスを修正する。
 . 修正後、`main`更新または`workflow_dispatch`で再生成する。

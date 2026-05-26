@@ -21,7 +21,7 @@
 ## 残した論点
 - view keyを変更する場合のJSONレイアウト移行手順は別途決める。
 - Structurizr Docker image tagの更新方針は別途決める。
-- 生成SVGの再生成差分をCIで検出する具体実装は別途決める。
+- 生成対象`workspace.json`の自動検出手順は別途決める。
 
 ## 参考
 - https://docs.structurizr.com/export/png-and-svg

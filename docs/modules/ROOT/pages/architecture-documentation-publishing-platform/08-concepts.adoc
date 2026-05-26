@@ -236,6 +236,21 @@ docker run --rm -v "$PWD:/usr/local/structurizr" structurizr/structurizr:2026.05
 
 生成SVGは派生成果物だが、Antora assetとしてリポジトリ管理する。
 
+再生成後の未反映差分は以下で検出する。
+
+[source,sh]
+----
+git status --porcelain -- docs/modules/<module>/assets/diagrams
+----
+
+出力が空なら成功、空でなければ未反映差分ありとしてCIを失敗させる。失敗時は以下をlogに出す。
+
+[source,sh]
+----
+git status --short -- docs/modules/<module>/assets/diagrams
+git diff -- docs/modules/<module>/assets/diagrams
+----
+
 `workspace.json`は、手動レイアウトを再現するためのレイアウト付きexport入力として管理する。モデル変更の出発点は引き続き`workspace.dsl`にする。
 
 モデル変更時は`workspace.dsl`を更新し、既存`workspace.json`のレイアウトを反映した状態で`workspace.json`を更新する。レイアウトだけを調整する場合は、`workspace.json`の変更だけを許容する。

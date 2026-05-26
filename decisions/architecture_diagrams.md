@@ -49,7 +49,11 @@ docker run --rm -v "$PWD:/usr/local/structurizr" structurizr/structurizr:2026.05
 
 - 手動レイアウト再現を標準にするため、CIの入力は`workspace.json`に固定する。
 - CIではSVGを再生成できることを確認し、生成SVGに差分がある場合は文書変更に含める。
-- 再生成差分をCIで検出する具体実装は別途決める。
+- 初期標準では、CI workflow側で対象`docs/modules/<module>/assets/diagrams/source/workspace.json`を明示列挙する。
+- SVG export後に`git status --porcelain -- docs/modules/<module>/assets/diagrams`を実行し、出力があれば未反映差分としてCIを失敗させる。
+- 失敗時は、`git status --short -- docs/modules/<module>/assets/diagrams`と`git diff -- docs/modules/<module>/assets/diagrams`をlogに出す。
+- untracked SVGも検出対象にする。
+- 生成対象`workspace.json`の自動検出手順は別途決める。
 
 ## `!include` の扱い
 - `!include`を使う場合は、対応するAntora moduleの`assets/diagrams/source/`配下のDSLソースツリー内で相対参照が完結するように構成する。

@@ -273,6 +273,8 @@ docker run --rm -v "$PWD:/usr/local/structurizr" structurizr/structurizr:2026.05
 
 生成SVGは、`docs/modules/<module>/assets/diagrams/`に置き、Antora assetとしてリポジトリ管理する。
 
+SVG export後の未反映差分は、`git status --porcelain -- docs/modules/<module>/assets/diagrams`で検出する。出力がある場合、CIは失敗扱いにし、`git status --short -- docs/modules/<module>/assets/diagrams`と`git diff -- docs/modules/<module>/assets/diagrams`をlogに出す。
+
 === 5.4.4 日英対応検査スクリプト
 
 日英対応検査スクリプトは、英語正本と日本語補助版の対応関係を検査する。
@@ -318,6 +320,8 @@ PNGは必要時の補助出力に留める。
 生成済みSVGは派生成果物であり、直接編集して正本化しない。
 
 生成済み図は、公開サイトでAntoraが読むassetとしてリポジトリ管理する。図モデルまたはレイアウトを変更した場合は、対応する生成SVGも同じ変更単位に含める。
+
+未反映差分はソースリポジトリ側CIの`git status --porcelain -- docs/modules/<module>/assets/diagrams`で検出する。
 
 === 5.5.3 build artifact / log
 
