@@ -1,7 +1,7 @@
 = 6. ランタイムビュー
 :docstatus: draft
 :created: 2026-05-05
-:revdate: 2026-05-27
+:revdate: 2026-05-28
 :authors: F; ChatGPT
 :lang: ja
 
@@ -63,12 +63,13 @@ Fの確認では、公開ページはローカルbuild結果と大きな差が�
 
 . 文書作成者が、ソースリポジトリ内の`.adoc`または`.dsl`を更新する。
 . 変更をpull requestまたは直接pushで`main`へ反映する。
-. ソースリポジトリ側workflowが文書検査と必要な図生成を実行する。
-. ソースリポジトリ側workflowが、`zouchikikou-docs-site`へ`repository_dispatch`を送る。
+. ソースリポジトリ側workflowが文書検査を実行する。
+. ソースリポジトリ側の`.github/workflows/diagrams.yml`が、必要な図生成と生成SVGの未反映差分検出を実行する。
+. ソースリポジトリ側workflowが、図生成CI成功後に`zouchikikou-docs-site`へ`repository_dispatch`を送る。
 . `zouchikikou-docs-site`の公開workflowが起動する。
 . 公開workflowがAntora playbookに従ってcontent sourcesを取得する。
 . 公開workflowがcheckout済みcontent rootを引数として`tools/check-language-pairs <content-root>...`などの共通検査を実行する。
-. 公開workflowが必要な図生成または生成済み図の存在確認を行う。
+. 公開workflowが生成済み図の存在確認を行う。
 . 公開workflowがAntora buildを実行する。
 . 公開workflowが生成済み静的サイトをGitHub Pagesへdeployする。
 . 文書サイト閲覧者がGitHub Pages上の更新済みページを読む。
@@ -92,7 +93,7 @@ Fの確認では、公開ページはローカルbuild結果と大きな差が�
 
 . Fまたは保守者が、サイト用リポジトリの公開workflowを手動実行する。
 . 公開workflowが最新のcontent sourcesを取得する。
-. 公開workflowが日英対応検査、図生成確認、Antora build、GitHub Pages deployを実行する。
+. 公開workflowが日英対応検査、生成済み図の存在確認、Antora build、GitHub Pages deployを実行する。
 . Fまたは保守者が、Actions logと公開サイトを確認する。
 
 === 6.2.3 結果

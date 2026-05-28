@@ -239,6 +239,8 @@ docs/modules/<module>/assets/images/diagrams/                # generated diagram
 
 標準生成経路は、Structurizr DSL/JSONからStructurizrの`export -format svg`で直接SVGを生成する方式にする。
 
+Structurizr図生成CI workflowは、図を持つ各ソースリポジトリの`.github/workflows/diagrams.yml`に置く。起動条件は、`pull_request`、`main`への`push`、手動の`workflow_dispatch`とする。初期標準では`paths` filterを使わず、workflow内のworkspace自動検出で図生成対象なしを成功扱いにする。
+
 標準Docker imageは`structurizr/structurizr:2026.05.22-playwright`とする。標準コマンドは以下である。
 
 [source,sh]

@@ -46,5 +46,5 @@
 - [x] Structurizr生成SVGの再生成差分をCIで検出する具体実装を決める
 - [x] Antora標準に合わせてStructurizr図資産配置と自動検出手順を決める
 - [x] Structurizr DSL の分割単位と `!include` 配置規則を決める
-- [ ] Structurizr図生成CI workflowの配置と起動条件を決める
+- [x] Structurizr図生成CI workflowの配置と起動条件を決める
 - [ ] Structurizr Docker image tagの更新方針を決める

@@ -8,3 +8,4 @@
 - Structurizr view key を変更する場合のJSONレイアウト移行手順を決める
 - 1 module内に複数Structurizr workspaceを置く必要が出た場合の命名規則を決める
 - DSL分割後にStructurizr JSON workspaceへ再同期する具体コマンド手順を決める
+- Structurizr図生成CI workflowのYAMLテンプレートを作成する

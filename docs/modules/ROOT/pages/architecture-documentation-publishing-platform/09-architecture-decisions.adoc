@@ -63,7 +63,7 @@
 
 日英対応検査の標準コマンドは、専用サイトリポジトリ内の`tools/check-language-pairs`とする。このコマンドは、公開workflowがcontent sourcesを取得した後、Antora buildの前に実行する。
 
-図の標準生成経路は、Structurizr DSL/JSONからStructurizrの`export -format svg`で直接SVGを生成する方式にする。PlantUML / C4-PlantUML経由は標準経路にしない。モデル変更の出発点は`workspace.dsl`とし、手動レイアウトを再現する場合は`workspace.json`をexport入力として管理する。`workspace.dsl`と`workspace.json`は`docs/modules/<module>/examples/diagrams/`に置き、生成SVGは`docs/modules/<module>/assets/images/diagrams/`に置く。標準では1 Antora moduleにつき1 Structurizr workspaceとし、`workspace.dsl`を入口にする。DSL分割が必要な場合は、同じ`examples/diagrams/`配下の`model.dsl`、`views.dsl`、`styles.dsl`を`workspace.dsl`から`!include`する。view keyは`<view-type>-<target>[-<purpose>]`形式の英小文字kebab-caseにし、手動レイアウト保持の安定識別子として扱う。CI上の標準Docker imageは`structurizr/structurizr:2026.05.22-playwright`とし、生成SVGはAntora assetとしてリポジトリ管理する。生成対象は`find docs/modules -path '*/examples/diagrams/workspace.json' -type f -print`で自動検出し、対象が0件なら成功扱いにする。再生成後の未反映差分は`git status --porcelain -- docs/modules/<module>/assets/images/diagrams`で検出する。
+図の標準生成経路は、Structurizr DSL/JSONからStructurizrの`export -format svg`で直接SVGを生成する方式にする。PlantUML / C4-PlantUML経由は標準経路にしない。モデル変更の出発点は`workspace.dsl`とし、手動レイアウトを再現する場合は`workspace.json`をexport入力として管理する。`workspace.dsl`と`workspace.json`は`docs/modules/<module>/examples/diagrams/`に置き、生成SVGは`docs/modules/<module>/assets/images/diagrams/`に置く。標準では1 Antora moduleにつき1 Structurizr workspaceとし、`workspace.dsl`を入口にする。DSL分割が必要な場合は、同じ`examples/diagrams/`配下の`model.dsl`、`views.dsl`、`styles.dsl`を`workspace.dsl`から`!include`する。view keyは`<view-type>-<target>[-<purpose>]`形式の英小文字kebab-caseにし、手動レイアウト保持の安定識別子として扱う。Structurizr図生成CI workflowは各ソースリポジトリの`.github/workflows/diagrams.yml`に置き、`pull_request`、`main`への`push`、`workflow_dispatch`で起動する。CI上の標準Docker imageは`structurizr/structurizr:2026.05.22-playwright`とし、生成SVGはAntora assetとしてリポジトリ管理する。生成対象は`find docs/modules -path '*/examples/diagrams/workspace.json' -type f -print`で自動検出し、対象が0件なら成功扱いにする。再生成後の未反映差分は`git status --porcelain -- docs/modules/<module>/assets/images/diagrams`で検出する。
 
 標準配置の具体例は、8.2で管理する。
 
@@ -110,6 +110,10 @@ decision recordは、現在有効な決定そのものではなく、なぜそ�
 | `decision_records/structurizr_dsl_include_structure.md`
 | Structurizr DSLの分割単位と`!include`配置規則を決めた理由。
 | `architecture_diagrams.md`
+
+| `decision_records/structurizr_diagram_ci_workflow.md`
+| Structurizr図生成CI workflowの配置と起動条件を決めた理由。
+| `architecture_diagrams.md`, `architecture_document_publication.md`
 |===
 
 == 9.4 未決定事項との関係
