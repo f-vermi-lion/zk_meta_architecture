@@ -1,7 +1,7 @@
 = 5. ビルディングブロックビュー
 :docstatus: draft
 :created: 2026-05-05
-:revdate: 2026-05-27
+:revdate: 2026-05-28
 :authors: F; ChatGPT
 :lang: ja
 
@@ -112,11 +112,16 @@ Structurizr DSLは、図モデルの正本としてソースリポジトリに�
 docs/modules/ROOT/examples/diagrams/
   workspace.dsl
   workspace.json
+  model.dsl   # optional
+  views.dsl   # optional
+  styles.dsl  # optional
 ----
 
 `workspace.json`は、手動レイアウトを含むStructurizr JSON workspaceである。モデル正本ではなく、Structurizrの見た目を再現するためのレイアウト付きexport入力として管理する。
 
-DSLの分割単位と`!include`の詳細規則は未決定である。ただし、`!include`を使う場合は、DSLソースツリー内で相対参照が完結するようにする。
+標準では、1つのAntora moduleにつき1つのStructurizr workspaceを置く。標準入口は`workspace.dsl`である。小規模なうちはDSLを分割せず、分割が必要になった場合は`model.dsl`、`views.dsl`、`styles.dsl`を`examples/diagrams/`直下に置き、`workspace.dsl`から相対パスで`!include`する。さらに大きい場合だけ、`model/`や`views/`配下へ細分化する。
+
+`!include`は、`examples/diagrams/`配下のDSLソースツリー内で相対参照が完結するようにする。`pages/`、`partials/`、`assets/images/`、別module、リポジトリ外ファイルは`!include`対象にしない。
 
 モデル変更は必ず`workspace.dsl`から始める。手動レイアウトを使う図では、既存`workspace.json`のレイアウトを反映した状態で`workspace.json`を更新し、DSL変更とJSON更新を同じ変更単位で扱う。
 

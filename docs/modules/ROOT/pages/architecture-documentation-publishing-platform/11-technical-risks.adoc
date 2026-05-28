@@ -1,7 +1,7 @@
 = 11. 技術的リスク
 :docstatus: draft
 :created: 2026-05-05
-:revdate: 2026-05-27
+:revdate: 2026-05-28
 :authors: F; ChatGPT
 :lang: ja
 
@@ -82,7 +82,6 @@ docToolchainはarc42やAsciiDoc文書運用に有用だが、Antora連携は検�
 * DSL変更をJSON workspaceへ反映し忘れ、モデルとレイアウト付きexport入力がずれる。
 * view keyが暗黙生成のまま、または命名規則に沿っておらず、レイアウトを安定して対応付けられない。
 * 既存view keyを不用意に変更し、`workspace.json`に保持した手動レイアウトとの対応が壊れる。
-* `!include`の分割規則と生成コマンドが噛み合わない。
 * arc42本文から参照する画像パスが不安定になる。
 
 対策候補は以下である。
@@ -166,42 +165,38 @@ docToolchainはarc42やAsciiDoc文書運用に有用だが、Antora連携は検�
 | 影響
 
 | UC-1
-| Structurizr DSLの分割単位と`!include`配置規則を決める
-| DSLソースツリー、再利用範囲、検査単位に影響する。
-
-| UC-2
 | private repositoryの文書をpublic GitHub Pagesに出してよいか判断する
 | 情報漏洩リスクとアクセス制御に影響する。
 
-| UC-3
+| UC-2
 | docToolchainのAntora連携がbetaである点を検証する
 | 採用範囲、build手順、代替手段に影響する。
 
-| UC-4
+| UC-3
 | サイト再生成用のGitHub Actions権限とトークン管理方針を決める
 | cross-repository workflow、secret管理、セキュリティに影響する。
 
-| UC-5
+| UC-4
 | サイト再生成失敗時の通知・再実行手順を決める
 | 運用負荷、障害発見、復旧手順に影響する。
 
-| UC-6
+| UC-5
 | Antora UI上の日英切り替え導線を決める
 | 閲覧者が英語正本と日本語補助版を行き来する操作に影響する。
 
-| UC-7
+| UC-6
 | publish workflowでtools/check-language-pairsに渡すcontent root取得手順を決める
 | 実装済みの日英対応検査を公開workflowで実行できるかに影響する。
 
-| UC-8
+| UC-7
 | 日英対応ページの内容差分や更新鮮度を検査対象にするか決める
 | 翻訳の古さや内容差分をどこまでCIで扱うかに影響する。
 
-| UC-9
+| UC-8
 | Structurizr Docker image tagの更新方針を決める
 | 固定したStructurizr実行環境をいつ更新するかに影響する。
 
-| UC-10
+| UC-9
 | Structurizr view keyを変更する場合のJSONレイアウト移行手順を決める
 | 既存view key変更時に、手動レイアウトを失わず移行できるかに影響する。
 |===

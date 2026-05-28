@@ -4,10 +4,14 @@
 - arc42本文では、DSL断片を主たる図表現として直接埋め込まない。
 
 ## 配置
+- 標準では、1つのAntora moduleにつき1つのStructurizr workspaceを置く。
 - Structurizr DSL/JSONは、対応するAntora module配下の`examples/diagrams/`に置く。
 - 標準のモデル正本は、対応するAntora module配下の`examples/diagrams/workspace.dsl`とする。
 - 手動レイアウトを含むStructurizr JSON workspaceは、対応するAntora module配下の`examples/diagrams/workspace.json`に置く。
 - `workspace.json`はモデル正本ではなく、Structurizrの見た目を再現するためのレイアウト付きexport入力として扱う。
+- 小規模なうちは、DSLを`workspace.dsl`に集約し、分割しない。
+- DSL分割が必要になった場合は、`examples/diagrams/`直下に`model.dsl`、`views.dsl`、`styles.dsl`を置き、`workspace.dsl`から`!include`する。
+- さらに大きい場合だけ、`examples/diagrams/model/`や`examples/diagrams/views/`配下へ細分化する。
 - 生成SVGは、対応するAntora module配下の`assets/images/diagrams/`に置く。
 - 生成SVGは派生成果物だが、公開サイトでAntoraが読むassetとしてリポジトリ管理する。
 - 1つの図のモデルを更新するときは、まずDSLソースを更新し、既存`workspace.json`のレイアウトを反映した状態で`workspace.json`を更新し、その結果として生成SVGを更新する。
@@ -57,4 +61,5 @@ docker run --rm -v "$PWD:/usr/local/structurizr" structurizr/structurizr:2026.05
 
 ## `!include` の扱い
 - `!include`を使う場合は、対応するAntora moduleの`examples/diagrams/`配下のDSLソースツリー内で相対参照が完結するように構成する。
+- `!include`では、`pages/`、`partials/`、`assets/images/`、別module、リポジトリ外ファイルを参照しない。
 - 生成画像の置き場やarc42本文ファイルを`!include`の対象にしない。

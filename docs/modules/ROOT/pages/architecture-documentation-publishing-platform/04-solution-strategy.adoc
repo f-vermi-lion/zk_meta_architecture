@@ -1,7 +1,7 @@
 = 4. ソリューション戦略
 :docstatus: draft
 :created: 2026-05-05
-:revdate: 2026-05-27
+:revdate: 2026-05-28
 :authors: F; ChatGPT
 :lang: ja
 
@@ -165,7 +165,6 @@ CI上の標準実行環境は`structurizr/structurizr:2026.05.22-playwright`と�
 
 以下は、現時点では戦略として固定せず、未決定事項または技術的リスクとして管理する。
 
-* Structurizr DSLの分割単位と`!include`配置規則
 * Structurizr Docker image tagの更新方針
 * Structurizr view keyを変更する場合のJSONレイアウト移行手順
 * private repositoryの文書をpublic GitHub Pagesへ出してよいか
