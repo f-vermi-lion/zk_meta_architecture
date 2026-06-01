@@ -241,7 +241,7 @@ C4/Structurizrでは、1つのAntora moduleにつき1つのStructurizr workspace
 
 C4図の標準生成経路は、Structurizr DSL/JSONからStructurizrの`export -format svg`で直接SVGを生成する方式にする。
 
-Structurizr図生成CI workflowは、図を持つ各ソースリポジトリの`.github/workflows/diagrams.yml`に置く。起動条件は、`pull_request`、`main`への`push`、手動の`workflow_dispatch`とする。初期標準では`paths` filterを使わず、workflow内のworkspace自動検出で図生成対象なしを成功扱いにする。
+Structurizr図生成CI workflowは、図を持つ各ソースリポジトリの`.github/workflows/diagrams.yml`に置く。標準YAMLテンプレートは`docs/modules/ROOT/examples/github-actions/diagrams.yml`に置く。起動条件は、`pull_request`、`main`への`push`、手動の`workflow_dispatch`とする。初期標準では`paths` filterを使わず、workflow内のworkspace自動検出で図生成対象なしを成功扱いにする。
 
 標準Docker imageは`structurizr/structurizr:2026.05.22-playwright`とする。Docker image tagは日付付き`-playwright` tagを固定し、`latest`や未修飾tagは使わない。tag更新は月次確認または必要時の専用変更として手動で行う。標準コマンドは以下である。
 

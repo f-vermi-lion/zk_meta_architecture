@@ -15,8 +15,10 @@
 - サイト用リポジトリで再生成すると、content sourceから取得した他リポジトリの成果物を更新できず、正本と派生成果物の責務が曖昧になる。
 
 ## 残した論点
-- Structurizr図生成CI workflowのYAMLテンプレートは別途作成する。
 - サイト再生成依頼と図生成CIの依存関係は、サイト再生成用のGitHub Actions権限とトークン管理方針と合わせて決める。
+
+## 後続実装
+- Structurizr図生成CI workflowの標準YAMLテンプレートは、`docs/modules/ROOT/examples/github-actions/diagrams.yml`に作成した。
 
 ## 参考
 - `decisions/architecture_diagrams.md`

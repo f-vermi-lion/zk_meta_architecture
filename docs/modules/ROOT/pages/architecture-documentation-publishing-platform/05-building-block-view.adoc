@@ -151,7 +151,7 @@ view keyは`<view-type>-<target>[-<purpose>]`形式の英小文字kebab-caseに�
 * 必要に応じた図生成
 * `main`更新後のサイト用リポジトリへの再生成依頼
 
-Structurizr図生成CI workflowは、図を持つ各ソースリポジトリの`.github/workflows/diagrams.yml`に置く。起動条件は、`pull_request`、`main`への`push`、手動の`workflow_dispatch`とする。初期標準では`paths` filterを使わず、workflow内のworkspace自動検出で図生成対象なしを成功扱いにする。
+Structurizr図生成CI workflowは、図を持つ各ソースリポジトリの`.github/workflows/diagrams.yml`に置く。標準YAMLテンプレートは`docs/modules/ROOT/examples/github-actions/diagrams.yml`に置く。起動条件は、`pull_request`、`main`への`push`、手動の`workflow_dispatch`とする。初期標準では`paths` filterを使わず、workflow内のworkspace自動検出で図生成対象なしを成功扱いにする。
 
 サイト用リポジトリへの再生成依頼は、`repository_dispatch`を標準にする。
 
@@ -272,6 +272,13 @@ Structurizrは、C4図モデルの正本をDSLとして扱い、サイト掲載�
 CI上の標準実行環境は、Playwright依存を含むStructurizr Docker imageを第一候補にする。
 
 Structurizr図生成CI workflowは、各ソースリポジトリの`.github/workflows/diagrams.yml`に置き、`pull_request`、`main`への`push`、`workflow_dispatch`で起動する。`pull_request`ではmerge前に生成SVGの未反映差分を検出し、`main`への`push`ではサイト再生成依頼前に図資産が反映済みであることを確認する。`workflow_dispatch`は、失敗後の再確認や環境更新後の手動検証に使う。
+
+標準YAMLテンプレートは以下である。
+
+[source,yaml]
+----
+include::example$github-actions/diagrams.yml[]
+----
 
 標準Docker imageは`structurizr/structurizr:2026.05.22-playwright`とする。各ソースリポジトリrootで、以下の標準コマンドにより`workspace.json`からSVGを生成する。
 

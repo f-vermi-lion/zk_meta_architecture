@@ -49,3 +49,4 @@
 - [x] Structurizr図生成CI workflowの配置と起動条件を決める
 - [x] 図ファイル配置をC4/Structurizr以外にも拡張できる構成に整理する
 - [x] Structurizr Docker image tagの更新方針を決める
+- [x] Structurizr図生成CI workflowのYAMLテンプレートを作成する

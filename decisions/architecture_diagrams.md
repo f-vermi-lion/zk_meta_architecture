@@ -49,6 +49,7 @@
 ## CIでの標準生成手順
 - 実行位置は各ソースリポジトリのrootとする。
 - Structurizr図生成CI workflowは、図を持つ各ソースリポジトリの`.github/workflows/diagrams.yml`に置く。
+- 標準YAMLテンプレートは、`docs/modules/ROOT/examples/github-actions/diagrams.yml`に置く。
 - workflowは`pull_request`、`main`への`push`、手動の`workflow_dispatch`で起動する。
 - 初期標準では、GitHub Actionsの`paths` filterは使わず、workflow内のworkspace自動検出で図生成対象なしを成功扱いにする。
 - `pull_request`では、生成SVGの未反映差分をmerge前に検出する。
