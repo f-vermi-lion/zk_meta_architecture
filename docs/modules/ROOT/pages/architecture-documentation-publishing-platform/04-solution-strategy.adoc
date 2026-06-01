@@ -15,7 +15,7 @@
 * 文書体系はarc42を基本にする。
 * 文書形式はAsciiDocにする。
 * 文書配置はAntora標準構成に寄せる。
-* 図の正本はStructurizr DSLにする。
+* C4図の標準正本はStructurizr DSLにする。
 * 公開サイト生成は専用サイトリポジトリのAntora playbookで行う。
 * 公開先はGitHub Pagesにする。
 * 更新契機は各ソースリポジトリの`main`更新とする。
@@ -74,11 +74,11 @@ Antoraを使う主な理由は、以下である。
 
 arc42は、システムごとのアーキテクチャ説明の型として使う。単一の巨大なarc42ですべてを表すのではなく、全体文書とサブシステム文書を階層的に組み合わせる。
 
-== 4.5 Structurizr DSLを図の正本にする戦略
+== 4.5 図ソースとC4/Structurizrを分離する戦略
 
-アーキテクチャ図のモデル正本はStructurizr DSLにする。
+アーキテクチャ図は、図ソースと公開画像を分離して管理する。公開画像はAntora image familyに合わせ、`docs/modules/<module>/assets/images/diagrams/`に置く。
 
-arc42本文には、Structurizr DSLそのものを主たる図表現として直接埋め込まず、DSLから生成したSVGなどの画像を埋め込む。
+C4図の標準正本はStructurizr DSLにする。arc42本文には、Structurizr DSLそのものを主たる図表現として直接埋め込まず、DSLから生成したSVGなどの画像を埋め込む。
 
 この方針により、以下を分離する。
 
@@ -88,7 +88,7 @@ arc42本文には、Structurizr DSLそのものを主たる図表現として直
 | 役割
 
 | Structurizr DSL
-| 図モデルの正本。変更はまずDSLに入れる。
+| C4図モデルの標準正本。C4図の変更はまずDSLに入れる。
 
 | Structurizr JSON workspace
 | 手動レイアウトを含むexport入力。モデル正本ではなく、見た目を再現するために管理する。
@@ -102,9 +102,9 @@ arc42本文には、Structurizr DSLそのものを主たる図表現として直
 
 標準生成経路は、Structurizr DSL/JSONからStructurizrの`export -format svg`で直接SVGを生成する方式にする。手動レイアウトを再現する場合は`workspace.json`を入力にする。PlantUML / C4-PlantUML経由は、生成される図の見た目が目的に合わないため標準経路にしない。
 
-CI上の標準実行環境は`structurizr/structurizr:2026.05.22-playwright`とし、各ソースリポジトリrootで`docs/modules/<module>/examples/diagrams/workspace.json`から`docs/modules/<module>/assets/images/diagrams/`へSVGを生成する。生成SVGは派生成果物だが、Antora assetとしてリポジトリ管理する。
+CI上の標準実行環境は`structurizr/structurizr:2026.05.22-playwright`とし、各ソースリポジトリrootで`docs/modules/<module>/examples/diagrams/structurizr/workspace.json`から`docs/modules/<module>/assets/images/diagrams/`へSVGを生成する。生成SVGは派生成果物だが、Antora assetとしてリポジトリ管理する。
 
-生成対象は`find docs/modules -path '*/examples/diagrams/workspace.json' -type f -print`で自動検出する。対象が0件の場合は、図生成対象なしとして成功扱いにする。生成後は`git status --porcelain -- docs/modules/<module>/assets/images/diagrams`で未反映差分を検出する。出力がある場合は、生成SVGが変更単位に含まれていないためCI失敗にする。
+生成対象は`find docs/modules -path '*/examples/diagrams/structurizr/workspace.json' -type f -print`で自動検出する。対象が0件の場合は、図生成対象なしとして成功扱いにする。生成後は`git status --porcelain -- docs/modules/<module>/assets/images/diagrams`で未反映差分を検出する。出力がある場合は、生成SVGが変更単位に含まれていないためCI失敗にする。
 
 モデル変更は必ず`workspace.dsl`から始める。手動レイアウトを使う図では、既存`workspace.json`のレイアウトを反映した状態で`workspace.json`を更新し、DSL変更とJSON更新を同じ変更単位で扱う。
 

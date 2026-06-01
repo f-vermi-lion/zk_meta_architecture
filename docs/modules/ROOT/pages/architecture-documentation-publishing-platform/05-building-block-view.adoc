@@ -101,15 +101,15 @@ docs/modules/ROOT/pages/  # 英語正本
 docs/modules/ja/pages/    # 日本語補助版
 ----
 
-=== 5.2.2 Structurizr DSL / JSON workspace
+=== 5.2.2 図ソースとStructurizr DSL / JSON workspace
 
-Structurizr DSLは、図モデルの正本としてソースリポジトリに置く。
+図ソースは、対応するAntora module配下の`examples/diagrams/`に置く。公開画像は、対応するAntora module配下の`assets/images/diagrams/`に置く。
 
-標準配置は、対応するAntora module配下の`examples/diagrams/`とする。
+C4/Structurizrの標準配置は、対応するAntora module配下の`examples/diagrams/structurizr/`とする。
 
 [source,text]
 ----
-docs/modules/ROOT/examples/diagrams/
+docs/modules/ROOT/examples/diagrams/structurizr/
   workspace.dsl
   workspace.json
   model.dsl   # optional
@@ -119,9 +119,9 @@ docs/modules/ROOT/examples/diagrams/
 
 `workspace.json`は、手動レイアウトを含むStructurizr JSON workspaceである。モデル正本ではなく、Structurizrの見た目を再現するためのレイアウト付きexport入力として管理する。
 
-標準では、1つのAntora moduleにつき1つのStructurizr workspaceを置く。標準入口は`workspace.dsl`である。小規模なうちはDSLを分割せず、分割が必要になった場合は`model.dsl`、`views.dsl`、`styles.dsl`を`examples/diagrams/`直下に置き、`workspace.dsl`から相対パスで`!include`する。さらに大きい場合だけ、`model/`や`views/`配下へ細分化する。
+標準では、1つのAntora moduleにつき1つのStructurizr workspaceを置く。標準入口は`workspace.dsl`である。小規模なうちはDSLを分割せず、分割が必要になった場合は`model.dsl`、`views.dsl`、`styles.dsl`を`examples/diagrams/structurizr/`直下に置き、`workspace.dsl`から相対パスで`!include`する。さらに大きい場合だけ、`model/`や`views/`配下へ細分化する。
 
-`!include`は、`examples/diagrams/`配下のDSLソースツリー内で相対参照が完結するようにする。`pages/`、`partials/`、`assets/images/`、別module、リポジトリ外ファイルは`!include`対象にしない。
+`!include`は、`examples/diagrams/structurizr/`配下のDSLソースツリー内で相対参照が完結するようにする。`pages/`、`partials/`、`assets/images/`、別module、リポジトリ外ファイルは`!include`対象にしない。
 
 モデル変更は必ず`workspace.dsl`から始める。手動レイアウトを使う図では、既存`workspace.json`のレイアウトを反映した状態で`workspace.json`を更新し、DSL変更とJSON更新を同じ変更単位で扱う。
 
@@ -277,10 +277,10 @@ Structurizr図生成CI workflowは、各ソースリポジトリの`.github/work
 
 [source,sh]
 ----
-docker run --rm -v "$PWD:/usr/local/structurizr" structurizr/structurizr:2026.05.22-playwright export -format svg -workspace docs/modules/<module>/examples/diagrams/workspace.json -output docs/modules/<module>/assets/images/diagrams
+docker run --rm -v "$PWD:/usr/local/structurizr" structurizr/structurizr:2026.05.22-playwright export -format svg -workspace docs/modules/<module>/examples/diagrams/structurizr/workspace.json -output docs/modules/<module>/assets/images/diagrams
 ----
 
-生成対象は`find docs/modules -path '*/examples/diagrams/workspace.json' -type f -print`で自動検出する。対象が0件の場合は、図生成対象なしとして成功扱いにする。
+生成対象は`find docs/modules -path '*/examples/diagrams/structurizr/workspace.json' -type f -print`で自動検出する。対象が0件の場合は、図生成対象なしとして成功扱いにする。
 
 生成SVGは、`docs/modules/<module>/assets/images/diagrams/`に置き、Antora assetとしてリポジトリ管理する。arc42本文からは`image::diagrams/<file>.svg[]`で参照する。
 
@@ -322,7 +322,7 @@ GitHub Pagesサイトは、閲覧者向けの公開結果である。
 
 === 5.5.2 生成済み図
 
-生成済み図は、Structurizr DSL/JSONから直接生成されるSVGである。
+生成済み図は、図ソースから生成または書き出したSVGである。C4図ではStructurizr DSL/JSONから直接生成する。
 
 arc42本文からは、AsciiDocの`image::diagrams/<file>.svg[]`で参照する。
 

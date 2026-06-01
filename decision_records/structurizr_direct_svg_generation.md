@@ -5,7 +5,7 @@
 - PlantUML / C4-PlantUML経由は標準経路にしない。
 - CI上の標準Docker imageは`structurizr/structurizr:2026.05.22-playwright`とする。
 - CIの標準入力は、手動レイアウトを含む`workspace.json`とする。
-- CIの標準検出対象は、`find docs/modules -path '*/examples/diagrams/workspace.json' -type f -print`で得られるAntora module配下のworkspaceとする。
+- CIの標準検出対象は、`find docs/modules -path '*/examples/diagrams/structurizr/workspace.json' -type f -print`で得られるAntora module配下のworkspaceとする。
 - 対象`workspace.json`が0件の場合は、図生成対象なしとして成功扱いにする。
 - 生成SVGは、Antora assetとしてリポジトリ管理する。
 - SVG再生成後の未反映差分は、`git status --porcelain -- docs/modules/<module>/assets/images/diagrams`で検出する。

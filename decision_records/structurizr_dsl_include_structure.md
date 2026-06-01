@@ -2,11 +2,11 @@
 
 ## 決定
 - 標準では、1つのAntora moduleにつき1つのStructurizr workspaceを置く。
-- 標準入口は`docs/modules/<module>/examples/diagrams/workspace.dsl`とする。
+- 標準入口は`docs/modules/<module>/examples/diagrams/structurizr/workspace.dsl`とする。
 - 小規模なうちは、DSLを分割せず`workspace.dsl`に集約する。
-- DSL分割が必要になった場合は、`examples/diagrams/`直下に`model.dsl`、`views.dsl`、`styles.dsl`を置き、`workspace.dsl`から相対パスで`!include`する。
-- さらに大きい場合だけ、`examples/diagrams/model/`や`examples/diagrams/views/`配下へ細分化する。
-- `!include`は`examples/diagrams/`配下のDSLソースツリー内に限定し、`pages/`、`partials/`、`assets/images/`、別module、リポジトリ外ファイルは参照しない。
+- DSL分割が必要になった場合は、`examples/diagrams/structurizr/`直下に`model.dsl`、`views.dsl`、`styles.dsl`を置き、`workspace.dsl`から相対パスで`!include`する。
+- さらに大きい場合だけ、`examples/diagrams/structurizr/model/`や`examples/diagrams/structurizr/views/`配下へ細分化する。
+- `!include`は`examples/diagrams/structurizr/`配下のDSLソースツリー内に限定し、`pages/`、`partials/`、`assets/images/`、別module、リポジトリ外ファイルは参照しない。
 
 ## 理由
 - 1 module 1 workspaceを標準にすると、Antora module、Structurizr workspace、生成SVGの対応が追いやすい。

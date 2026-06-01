@@ -2,7 +2,7 @@
 
 ## 決定
 - Structurizr図のモデル正本は`workspace.dsl`とする。
-- `workspace.dsl`と、手動レイアウトを含むStructurizr JSON workspaceの`workspace.json`は、対応するAntora moduleの`examples/diagrams/`に置く。
+- `workspace.dsl`と、手動レイアウトを含むStructurizr JSON workspaceの`workspace.json`は、対応するAntora moduleの`examples/diagrams/structurizr/`に置く。
 - SVG生成時は、手動レイアウトを再現するために`workspace.json`を`export -format svg -workspace <path>`の入力にする。
 - 生成SVGは、対応するAntora moduleの`assets/images/diagrams/`に置く。
 - DSL変更後は、既存`workspace.json`のレイアウト情報を反映した状態で`workspace.json`を更新する。
@@ -13,8 +13,8 @@
 ## 理由
 - StructurizrのPNG/SVG exportはDSLまたはJSON workspaceを入力にできる。
 - 手動レイアウトを使う場合はJSON workspaceが必要になるため、DSLだけでは見た目を安定して再現しにくい。
-- 一方で、モデル変更の出発点をJSONに寄せると、図モデルの正本が重くなり、DSLを正本にする既存方針と衝突する。
-- そのため、DSLをモデル正本に残し、JSONはレイアウト付きexport入力として管理する。
+- 一方で、モデル変更の出発点をJSONに寄せると、C4図モデルの正本が重くなり、DSLを標準正本にする既存方針と衝突する。
+- そのため、DSLをC4図モデルの標準正本に残し、JSONはレイアウト付きexport入力として管理する。
 - Structurizrのレイアウトマージは要素やviewを対応付ける必要があるため、view keyを明示して安定させることで、図全体のレイアウト喪失を避けやすくなる。
 - view keyは手動レイアウト保持の安定識別子なので、表示タイトルやarc42章番号のような変わりやすい情報ではなく、view種別と対象の意味に基づくslugで命名する。
 - 既存view keyの変更はJSON側のレイアウト対応を壊しやすいため、命名規則は新規viewの標準とし、既存keyの変更は慎重に扱う。

@@ -120,7 +120,7 @@ Fの確認では、公開ページはローカルbuild結果と大きな差が�
 . DSL変更と対応する`workspace.json`更新が同じ変更単位に含まれていることを確認する。
 . Structurizr viewsに明示的で安定したview keyがあることを確認する。
 . view keyが`<view-type>-<target>[-<purpose>]`形式の英小文字kebab-caseであり、章番号や一時的な表示名を含まないことを確認する。
-. 生成対象を`find docs/modules -path '*/examples/diagrams/workspace.json' -type f -print`で検出する。対象が0件なら図生成対象なしとして成功扱いにする。
+. 生成対象を`find docs/modules -path '*/examples/diagrams/structurizr/workspace.json' -type f -print`で検出する。対象が0件なら図生成対象なしとして成功扱いにする。
 . `structurizr/structurizr:2026.05.22-playwright`で`workspace.json`を入力にし、Structurizrの`export -format svg`でサイト掲載用SVGを生成する。
 . 生成SVGが`docs/modules/<module>/assets/images/diagrams/`に置かれ、同じ変更単位に含まれていることを確認する。
 . `git status --porcelain -- docs/modules/<module>/assets/images/diagrams`の出力が空であることを確認する。

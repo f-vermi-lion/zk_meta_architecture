@@ -6,15 +6,15 @@
 - `README.md`から対応するGitHub Pages上の公開ページへのリンクを置く。
 - 複数リポジトリの文書集約は、Antoraのcontent sourcesを基本にする。
 - GitHub Pages上の公開物は派生成果物であり、正本ではない。
-- 文書正本は各ソースリポジトリのAsciiDoc、Structurizr DSL、Antora設定、docToolchain設定、GitHub Actions workflowに置く。
+- 文書正本は各ソースリポジトリのAsciiDoc、図ソース、Antora設定、docToolchain設定、GitHub Actions workflowに置く。C4図では、図ソースの標準正本をStructurizr DSLとする。
 
 ## 高レベル自動化手順
 - ソースリポジトリで文書、図定義、Antora設定を更新する。
 - ソースリポジトリのGitHub Actionsで、必要な文書検査やStructurizr直接SVG生成を実行する。
 - Structurizr直接SVG生成workflowは、各ソースリポジトリの`.github/workflows/diagrams.yml`に置き、`pull_request`、`main`への`push`、`workflow_dispatch`で起動する。
-- Structurizr直接SVG生成では、`structurizr/structurizr:2026.05.22-playwright`を使い、`docs/modules/<module>/examples/diagrams/workspace.json`から`docs/modules/<module>/assets/images/diagrams/`へSVGを再生成する。
+- Structurizr直接SVG生成では、`structurizr/structurizr:2026.05.22-playwright`を使い、`docs/modules/<module>/examples/diagrams/structurizr/workspace.json`から`docs/modules/<module>/assets/images/diagrams/`へSVGを再生成する。
 - 生成SVGは派生成果物だがAntora assetとしてリポジトリ管理し、再生成差分がある場合は文書変更に含める。
-- ソースリポジトリ側CIは、`find docs/modules -path '*/examples/diagrams/workspace.json' -type f -print`で生成対象を検出する。対象が0件なら図生成対象なしとして成功扱いにする。
+- ソースリポジトリ側CIは、`find docs/modules -path '*/examples/diagrams/structurizr/workspace.json' -type f -print`で生成対象を検出する。対象が0件なら図生成対象なしとして成功扱いにする。
 - ソースリポジトリ側CIは、SVG再生成後に`git status --porcelain -- docs/modules/<module>/assets/images/diagrams`を実行し、未反映差分があれば失敗扱いにする。
 - サイト用リポジトリ`zouchikikou-docs-site`のGitHub Actionsで、content sources取得後にcheckout済みcontent rootを引数として`tools/check-language-pairs <content-root>...`を実行し、Antora buildを実行する。標準ではサイト用リポジトリ側でStructurizr SVGを再生成しない。
 - `zouchikikou-docs-site`のAntora playbookで複数リポジトリの文書を集約する。

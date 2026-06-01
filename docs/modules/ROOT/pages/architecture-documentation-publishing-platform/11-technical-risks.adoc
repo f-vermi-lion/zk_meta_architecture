@@ -71,9 +71,9 @@ docToolchainはarc42やAsciiDoc文書運用に有用だが、Antora連携は検�
 
 == 11.4 Structurizr直接SVG生成のCI実行環境とJSONレイアウト移行手順が未確定であるリスク
 
-図のモデル正本はStructurizr DSLとし、公開サイトに載せる標準生成物はStructurizrの`export -format svg`で直接生成するSVGとする。
+C4図のモデル標準正本はStructurizr DSLとし、公開サイトに載せる標準生成物はStructurizrの`export -format svg`で直接生成するSVGとする。
 
-手動レイアウトはStructurizr JSON workspaceで管理する。DSL変更後は、既存`workspace.json`のレイアウトを反映した状態で`workspace.json`を更新する。view keyは`<view-type>-<target>[-<purpose>]`形式で明示する。CIで使う標準Docker imageは`structurizr/structurizr:2026.05.22-playwright`、標準入力は`docs/modules/<module>/examples/diagrams/workspace.json`、出力先は`docs/modules/<module>/assets/images/diagrams/`とする。生成対象は`find docs/modules -path '*/examples/diagrams/workspace.json' -type f -print`で自動検出し、対象が0件なら図生成対象なしとして成功扱いにする。生成SVGはAntora assetとしてリポジトリ管理する。再生成後の未反映差分は`git status --porcelain -- docs/modules/<module>/assets/images/diagrams`で検出する。ただし、Docker image tagの更新方針と、view key変更時のJSONレイアウト移行手順は未確定である。
+手動レイアウトはStructurizr JSON workspaceで管理する。DSL変更後は、既存`workspace.json`のレイアウトを反映した状態で`workspace.json`を更新する。view keyは`<view-type>-<target>[-<purpose>]`形式で明示する。CIで使う標準Docker imageは`structurizr/structurizr:2026.05.22-playwright`、標準入力は`docs/modules/<module>/examples/diagrams/structurizr/workspace.json`、出力先は`docs/modules/<module>/assets/images/diagrams/`とする。生成対象は`find docs/modules -path '*/examples/diagrams/structurizr/workspace.json' -type f -print`で自動検出し、対象が0件なら図生成対象なしとして成功扱いにする。生成SVGはAntora assetとしてリポジトリ管理する。再生成後の未反映差分は`git status --porcelain -- docs/modules/<module>/assets/images/diagrams`で検出する。ただし、Docker image tagの更新方針と、view key変更時のJSONレイアウト移行手順は未確定である。
 
 リスクは以下である。
 

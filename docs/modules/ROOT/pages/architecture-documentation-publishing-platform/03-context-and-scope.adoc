@@ -1,7 +1,7 @@
 = 3. コンテキストとスコープ
 :docstatus: draft
 :created: 2026-04-27
-:revdate: 2026-05-25
+:revdate: 2026-05-28
 :authors: F; Codex; ChatGPT
 :lang: ja
 
@@ -148,7 +148,7 @@
 
 ==== 図作成インターフェース
 
-文書作成者は、Structurizr DSLを図モデルの正本として編集する。
+文書作成者は、C4図ではStructurizr DSLを図モデルの標準正本として編集する。
 
 手動レイアウトを使う図では、Structurizr JSON workspaceをレイアウト付きexport入力として管理する。図の最終出力形式は、サイト表示に適したSVGとする。CIでの標準生成経路は、Structurizrのブラウザベースレンダラによる`export -format svg`を使い、PlantUML / C4-PlantUML経由は標準経路にしない。
 

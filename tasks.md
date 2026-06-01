@@ -3,7 +3,7 @@
 - [x] arc42文書ディレクトリの命名規則を決める
 - [x] アーキテクチャ文書の日英運用方針を決める
 - [x] 文書メタデータの項目と記法を整理する
-- [x] Structurizr DSL を正本として図の生成・埋め込み方針を決める
+- [x] C4図ではStructurizr DSLを標準正本として図の生成・埋め込み方針を決める
 - [x] 文書 version の更新ルールを決める
 - [x] 連番付きディレクトリ名で途中挿入・並べ替えが起きたときのリネーム方針を決める
 - [x] arc42文書ディレクトリ名から連番を外す規則に改める
@@ -47,4 +47,5 @@
 - [x] Antora標準に合わせてStructurizr図資産配置と自動検出手順を決める
 - [x] Structurizr DSL の分割単位と `!include` 配置規則を決める
 - [x] Structurizr図生成CI workflowの配置と起動条件を決める
+- [x] 図ファイル配置をC4/Structurizr以外にも拡張できる構成に整理する
 - [ ] Structurizr Docker image tagの更新方針を決める
