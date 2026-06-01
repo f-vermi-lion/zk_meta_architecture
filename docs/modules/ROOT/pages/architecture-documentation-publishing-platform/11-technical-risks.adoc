@@ -1,7 +1,7 @@
 = 11. 技術的リスク
 :docstatus: draft
 :created: 2026-05-05
-:revdate: 2026-05-28
+:revdate: 2026-06-01
 :authors: F; ChatGPT
 :lang: ja
 
@@ -69,16 +69,16 @@ docToolchainはarc42やAsciiDoc文書運用に有用だが、Antora連携は検�
 * docToolchainなしでも最小公開できる経路を維持する。
 * 採用するtaskと採用しないtaskを決定として残す。
 
-== 11.4 Structurizr直接SVG生成のCI実行環境とJSONレイアウト移行手順が未確定であるリスク
+== 11.4 Structurizr直接SVG生成のJSONレイアウト移行手順が未確定であるリスク
 
 C4図のモデル標準正本はStructurizr DSLとし、公開サイトに載せる標準生成物はStructurizrの`export -format svg`で直接生成するSVGとする。
 
-手動レイアウトはStructurizr JSON workspaceで管理する。DSL変更後は、既存`workspace.json`のレイアウトを反映した状態で`workspace.json`を更新する。view keyは`<view-type>-<target>[-<purpose>]`形式で明示する。CIで使う標準Docker imageは`structurizr/structurizr:2026.05.22-playwright`、標準入力は`docs/modules/<module>/examples/diagrams/structurizr/workspace.json`、出力先は`docs/modules/<module>/assets/images/diagrams/`とする。生成対象は`find docs/modules -path '*/examples/diagrams/structurizr/workspace.json' -type f -print`で自動検出し、対象が0件なら図生成対象なしとして成功扱いにする。生成SVGはAntora assetとしてリポジトリ管理する。再生成後の未反映差分は`git status --porcelain -- docs/modules/<module>/assets/images/diagrams`で検出する。ただし、Docker image tagの更新方針と、view key変更時のJSONレイアウト移行手順は未確定である。
+手動レイアウトはStructurizr JSON workspaceで管理する。DSL変更後は、既存`workspace.json`のレイアウトを反映した状態で`workspace.json`を更新する。view keyは`<view-type>-<target>[-<purpose>]`形式で明示する。CIで使う標準Docker imageは`structurizr/structurizr:2026.05.22-playwright`、標準入力は`docs/modules/<module>/examples/diagrams/structurizr/workspace.json`、出力先は`docs/modules/<module>/assets/images/diagrams/`とする。生成対象は`find docs/modules -path '*/examples/diagrams/structurizr/workspace.json' -type f -print`で自動検出し、対象が0件なら図生成対象なしとして成功扱いにする。生成SVGはAntora assetとしてリポジトリ管理する。再生成後の未反映差分は`git status --porcelain -- docs/modules/<module>/assets/images/diagrams`で検出する。Docker image tagは固定tagを月次確認または必要時に手動更新する方針にした。ただし、view key変更時のJSONレイアウト移行手順は未確定である。
 
 リスクは以下である。
 
 * CI環境で安定して画像生成できない。
-* 固定したDocker image tagが古くなり、更新判断が遅れる。
+* 手動確認を怠り、固定したDocker image tagの更新判断が遅れる。
 * DSL変更をJSON workspaceへ反映し忘れ、モデルとレイアウト付きexport入力がずれる。
 * view keyが暗黙生成のまま、または命名規則に沿っておらず、レイアウトを安定して対応付けられない。
 * 既存view keyを不用意に変更し、`workspace.json`に保持した手動レイアウトとの対応が壊れる。
@@ -89,7 +89,7 @@ C4図のモデル標準正本はStructurizr DSLとし、公開サイトに載せ
 * 最小のDSL/JSONで直接SVG生成を試す。
 * CIコマンド、Docker image tag、出力先、参照方法を固定する。
 * 再生成差分は`git status --porcelain`で検出する。
-* Docker image tag更新方針を別途決める。
+* Docker image tagは月次確認または必要時の専用変更で更新する。
 * view keyの命名規則を守り、既存view keyを変更する場合はJSONレイアウト移行手順を別途定める。
 * 生成失敗時に、DSLファイル、出力先、参照元ページをlogに出す。
 
@@ -191,10 +191,6 @@ C4図のモデル標準正本はStructurizr DSLとし、公開サイトに載せ
 | UC-7
 | 日英対応ページの内容差分や更新鮮度を検査対象にするか決める
 | 翻訳の古さや内容差分をどこまでCIで扱うかに影響する。
-
-| UC-8
-| Structurizr Docker image tagの更新方針を決める
-| 固定したStructurizr実行環境をいつ更新するかに影響する。
 
 | UC-9
 | Structurizr view keyを変更する場合のJSONレイアウト移行手順を決める

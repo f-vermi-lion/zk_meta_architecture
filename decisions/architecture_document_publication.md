@@ -13,6 +13,7 @@
 - ソースリポジトリのGitHub Actionsで、必要な文書検査やStructurizr直接SVG生成を実行する。
 - Structurizr直接SVG生成workflowは、各ソースリポジトリの`.github/workflows/diagrams.yml`に置き、`pull_request`、`main`への`push`、`workflow_dispatch`で起動する。
 - Structurizr直接SVG生成では、`structurizr/structurizr:2026.05.22-playwright`を使い、`docs/modules/<module>/examples/diagrams/structurizr/workspace.json`から`docs/modules/<module>/assets/images/diagrams/`へSVGを再生成する。
+- Structurizr直接SVG生成で使うDocker image tagは日付付き`-playwright` tagを明示固定し、`latest`や未修飾tagは使わない。更新は月次確認または必要時に専用変更として手動で行い、tag文字列、生成SVG、関連文書を同じ変更単位に含める。
 - 生成SVGは派生成果物だがAntora assetとしてリポジトリ管理し、再生成差分がある場合は文書変更に含める。
 - ソースリポジトリ側CIは、`find docs/modules -path '*/examples/diagrams/structurizr/workspace.json' -type f -print`で生成対象を検出する。対象が0件なら図生成対象なしとして成功扱いにする。
 - ソースリポジトリ側CIは、SVG再生成後に`git status --porcelain -- docs/modules/<module>/assets/images/diagrams`を実行し、未反映差分があれば失敗扱いにする。

@@ -1,7 +1,7 @@
 = 4. ソリューション戦略
 :docstatus: draft
 :created: 2026-05-05
-:revdate: 2026-05-28
+:revdate: 2026-06-01
 :authors: F; ChatGPT
 :lang: ja
 
@@ -104,6 +104,8 @@ C4図の標準正本はStructurizr DSLにする。arc42本文には、Structuriz
 
 CI上の標準実行環境は`structurizr/structurizr:2026.05.22-playwright`とし、各ソースリポジトリrootで`docs/modules/<module>/examples/diagrams/structurizr/workspace.json`から`docs/modules/<module>/assets/images/diagrams/`へSVGを生成する。生成SVGは派生成果物だが、Antora assetとしてリポジトリ管理する。
 
+Docker image tagは、Playwright依存を含む日付付き`-playwright` tagを明示固定し、`latest`や未修飾tagは使わない。tag更新は、月次確認、CI失敗、脆弱性対応、GitHub Actions runner互換性対応、Structurizr export修正の取り込みが必要な場合に、専用変更として手動で行う。更新時は、tag文字列、生成SVG、関連文書を同じ変更単位に含める。
+
 生成対象は`find docs/modules -path '*/examples/diagrams/structurizr/workspace.json' -type f -print`で自動検出する。対象が0件の場合は、図生成対象なしとして成功扱いにする。生成後は`git status --porcelain -- docs/modules/<module>/assets/images/diagrams`で未反映差分を検出する。出力がある場合は、生成SVGが変更単位に含まれていないためCI失敗にする。
 
 モデル変更は必ず`workspace.dsl`から始める。手動レイアウトを使う図では、既存`workspace.json`のレイアウトを反映した状態で`workspace.json`を更新し、DSL変更とJSON更新を同じ変更単位で扱う。
@@ -165,7 +167,6 @@ CI上の標準実行環境は`structurizr/structurizr:2026.05.22-playwright`と�
 
 以下は、現時点では戦略として固定せず、未決定事項または技術的リスクとして管理する。
 
-* Structurizr Docker image tagの更新方針
 * Structurizr view keyを変更する場合のJSONレイアウト移行手順
 * private repositoryの文書をpublic GitHub Pagesへ出してよいか
 * docToolchainのAntora連携をどこまで使うか

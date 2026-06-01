@@ -21,7 +21,9 @@
 
 ## 残した論点
 - view keyを変更する場合のJSONレイアウト移行手順は別途決める。
-- Structurizr Docker image tagの更新方針は別途決める。
+
+## 後続決定
+- Structurizr Docker image tagの更新方針は、`structurizr_docker_image_tag_update_policy.md`で後続決定した。
 
 ## 参考
 - https://docs.structurizr.com/export/png-and-svg

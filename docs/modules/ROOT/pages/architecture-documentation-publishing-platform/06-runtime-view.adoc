@@ -1,7 +1,7 @@
 = 6. ランタイムビュー
 :docstatus: draft
 :created: 2026-05-05
-:revdate: 2026-05-28
+:revdate: 2026-06-01
 :authors: F; ChatGPT
 :lang: ja
 
@@ -122,6 +122,7 @@ Fの確認では、公開ページはローカルbuild結果と大きな差が�
 . view keyが`<view-type>-<target>[-<purpose>]`形式の英小文字kebab-caseであり、章番号や一時的な表示名を含まないことを確認する。
 . 生成対象を`find docs/modules -path '*/examples/diagrams/structurizr/workspace.json' -type f -print`で検出する。対象が0件なら図生成対象なしとして成功扱いにする。
 . `structurizr/structurizr:2026.05.22-playwright`で`workspace.json`を入力にし、Structurizrの`export -format svg`でサイト掲載用SVGを生成する。
+. Docker image tagを更新する場合は、月次確認または必要時の専用変更として扱い、tag文字列、生成SVG、関連文書を同じ変更単位に含める。
 . 生成SVGが`docs/modules/<module>/assets/images/diagrams/`に置かれ、同じ変更単位に含まれていることを確認する。
 . `git status --porcelain -- docs/modules/<module>/assets/images/diagrams`の出力が空であることを確認する。
 . arc42本文から参照される画像パスが存在することを確認する。

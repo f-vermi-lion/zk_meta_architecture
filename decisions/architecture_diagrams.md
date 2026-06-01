@@ -55,6 +55,11 @@
 - `main`への`push`では、サイト再生成依頼前に生成SVGが反映済みであることを確認する。
 - `workflow_dispatch`は、失敗後の再確認や環境更新後の手動検証に使う。
 - 標準Docker imageは`structurizr/structurizr:2026.05.22-playwright`とする。
+- Docker image tagは、Playwright依存を含む日付付き`-playwright` tagを明示固定する。
+- `latest`や未修飾tagは使わない。
+- Docker image tagの更新は、月次確認、CI失敗、脆弱性対応、GitHub Actions runner互換性対応、Structurizr export修正の取り込みが必要な場合に、専用変更として手動で行う。
+- Docker image tagを更新するときは、標準Docker imageのtag文字列、図生成CI設定、生成SVG、関連文書を同じ変更単位で更新する。
+- 更新候補で生成に失敗する場合、または生成SVG差分が大きすぎて判断できない場合は、現行tagを維持し、具体的な未解決論点を`inbox.md`へ戻す。
 - 標準コマンドは次とする。
 
 ```sh

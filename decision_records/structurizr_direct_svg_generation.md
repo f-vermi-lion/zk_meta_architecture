@@ -19,8 +19,8 @@
 - 生成SVGをリポジトリ管理すると、Antora build時に外部生成手順へ依存せず、レビュー時に図の差分も確認しやすい。
 - `git status --porcelain`を使うと、専用スクリプトを増やさずに変更済みSVGとuntracked SVGを検出できる。
 
-## 残した論点
-- Structurizr Docker image tagの更新方針は別途決める。
+## 後続決定
+- Structurizr Docker image tagの更新方針は、`structurizr_docker_image_tag_update_policy.md`で後続決定した。
 
 ## 参考
 - https://docs.structurizr.com/export/png-and-svg

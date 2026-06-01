@@ -1,7 +1,7 @@
 = 5. ビルディングブロックビュー
 :docstatus: draft
 :created: 2026-05-05
-:revdate: 2026-05-28
+:revdate: 2026-06-01
 :authors: F; ChatGPT
 :lang: ja
 
@@ -274,6 +274,8 @@ CI上の標準実行環境は、Playwright依存を含むStructurizr Docker imag
 Structurizr図生成CI workflowは、各ソースリポジトリの`.github/workflows/diagrams.yml`に置き、`pull_request`、`main`への`push`、`workflow_dispatch`で起動する。`pull_request`ではmerge前に生成SVGの未反映差分を検出し、`main`への`push`ではサイト再生成依頼前に図資産が反映済みであることを確認する。`workflow_dispatch`は、失敗後の再確認や環境更新後の手動検証に使う。
 
 標準Docker imageは`structurizr/structurizr:2026.05.22-playwright`とする。各ソースリポジトリrootで、以下の標準コマンドにより`workspace.json`からSVGを生成する。
+
+Docker image tagは日付付き`-playwright` tagを固定し、`latest`や未修飾tagは使わない。tag更新は、月次確認または必要時の専用変更として手動で行い、tag文字列、生成SVG、関連文書を同じ変更単位に含める。
 
 [source,sh]
 ----
