@@ -1,5 +1,4 @@
 - private repositoryの文書をpublic GitHub Pagesに出してよいか判断する
-- docToolchainのAntora連携がbetaである点を検証する
 - サイト再生成用のGitHub Actions権限とトークン管理方針を決める
 - サイト再生成失敗時の通知・再実行手順を決める
 - Antora UI上の日英切り替え導線を決める
@@ -9,4 +8,4 @@
 - 1 module内に複数Structurizr workspaceを置く必要が出た場合の命名規則を決める
 - DSL分割後にStructurizr JSON workspaceへ再同期する具体コマンド手順を決める
 - Structurizr Docker image tag更新をRenovateなどで自動PR化するか、手動運用の負荷が増えた時点で検討する
-- 色々なところで使うGitHub Actionsのworkflowテンプレートの扱い方
+- GitHub Actionsの共通workflowテンプレートを使って1つのワークフローを複数リポジトリで使いまわせるようにする
