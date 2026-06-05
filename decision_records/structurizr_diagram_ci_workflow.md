@@ -18,7 +18,9 @@
 - サイト再生成依頼と図生成CIの依存関係は、サイト再生成用のGitHub Actions権限とトークン管理方針と合わせて決める。
 
 ## 後続実装
-- Structurizr図生成CI workflowの標準YAMLテンプレートは、`docs/modules/ROOT/examples/github-actions/diagrams.yml`に作成した。
+- Structurizr図生成CI workflowの実処理は、`f-vermi-lion/github-workflows`の`.github/workflows/structurizr-diagrams.yml`でreusable workflowとして共通化した。
+- 各ソースリポジトリに置く呼び出し側の標準YAMLテンプレートは、`docs/modules/ROOT/examples/github-actions/diagrams.yml`に作成した。
+- 初期の呼び出し例では、共通reusable workflowを`@main`で参照する。
 
 ## 参考
 - `decisions/architecture_diagrams.md`

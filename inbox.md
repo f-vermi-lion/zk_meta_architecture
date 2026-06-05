@@ -8,4 +8,4 @@
 - 1 module内に複数Structurizr workspaceを置く必要が出た場合の命名規則を決める
 - DSL分割後にStructurizr JSON workspaceへ再同期する具体コマンド手順を決める
 - Structurizr Docker image tag更新をRenovateなどで自動PR化するか、手動運用の負荷が増えた時点で検討する
-- GitHub Actionsの共通workflowテンプレートを使って1つのワークフローを複数リポジトリで使いまわせるようにする
+- github-workflowsのreusable workflowをtag/releaseで固定参照する運用方針を決める

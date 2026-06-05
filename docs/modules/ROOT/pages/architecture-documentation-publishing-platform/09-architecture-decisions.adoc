@@ -31,7 +31,7 @@
 | 4章、5章、6章、10章、11章
 
 | `decisions/architecture_diagrams.md`
-| 図ソースと公開画像の分離、C4/Structurizrの標準配置、JSON workspaceによるレイアウト管理、直接SVG生成、Docker image tag更新方針、図生成CIテンプレート、DSL分割と`!include`配置規則。
+| 図ソースと公開画像の分離、C4/Structurizrの標準配置、JSON workspaceによるレイアウト管理、直接SVG生成、Docker image tag更新方針、図生成CIの共通化、DSL分割と`!include`配置規則。
 | 4章、5章、6章、8章、11章
 
 | `decisions/architecture_document_languages.md`
@@ -63,7 +63,7 @@
 
 日英対応検査の標準コマンドは、専用サイトリポジトリ内の`tools/check-language-pairs`とする。このコマンドは、公開workflowがcontent sourcesを取得した後、Antora buildの前に実行する。
 
-図ソースと公開画像は分離して管理する。C4図ではStructurizr DSLをモデル正本とし、手動レイアウトを含むJSON workspaceからSVGを生成する。Structurizr図生成CI、Docker image tag、生成SVG差分検出、DSL分割規則の詳細は`decisions/architecture_diagrams.md`で管理する。
+図ソースと公開画像は分離して管理する。C4図ではStructurizr DSLをモデル正本とし、手動レイアウトを含むJSON workspaceからSVGを生成する。Structurizr図生成CI、共通reusable workflow、Docker image tag、生成SVG差分検出、DSL分割規則の詳細は`decisions/architecture_diagrams.md`で管理する。
 
 標準配置の具体例は、8.2で管理する。
 

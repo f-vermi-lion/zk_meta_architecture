@@ -11,7 +11,7 @@
 ## 高レベル自動化手順
 - ソースリポジトリで文書、図定義、Antora設定を更新する。
 - ソースリポジトリのGitHub Actionsで、必要な文書検査やStructurizr直接SVG生成を実行する。
-- Structurizr直接SVG生成workflowは、各ソースリポジトリの`.github/workflows/diagrams.yml`に置き、`pull_request`、`main`への`push`、`workflow_dispatch`で起動する。
+- Structurizr直接SVG生成workflowは、各ソースリポジトリの`.github/workflows/diagrams.yml`に置き、`pull_request`、`main`への`push`、`workflow_dispatch`で起動する。図生成の実処理は、`f-vermi-lion/github-workflows`のreusable workflowとして共通化する。
 - Structurizr直接SVG生成では、`structurizr/structurizr:2026.05.22-playwright`を使い、`docs/modules/<module>/examples/diagrams/structurizr/workspace.json`から`docs/modules/<module>/assets/images/diagrams/`へSVGを再生成する。
 - Structurizr直接SVG生成で使うDocker image tagは日付付き`-playwright` tagを明示固定し、`latest`や未修飾tagは使わない。更新は月次確認または必要時に専用変更として手動で行い、tag文字列、生成SVG、関連文書を同じ変更単位に含める。
 - 生成SVGは派生成果物だがAntora assetとしてリポジトリ管理し、再生成差分がある場合は文書変更に含める。
