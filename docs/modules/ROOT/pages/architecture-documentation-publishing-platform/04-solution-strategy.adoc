@@ -1,7 +1,7 @@
 = 4. ソリューション戦略
 :docstatus: draft
 :created: 2026-05-05
-:revdate: 2026-05-23
+:revdate: 2026-06-01
 :authors: F; ChatGPT
 :lang: ja
 
@@ -15,7 +15,7 @@
 * 文書体系はarc42を基本にする。
 * 文書形式はAsciiDocにする。
 * 文書配置はAntora標準構成に寄せる。
-* 図の正本はStructurizr DSLにする。
+* C4図の標準正本はStructurizr DSLにする。
 * 公開サイト生成は専用サイトリポジトリのAntora playbookで行う。
 * 公開先はGitHub Pagesにする。
 * 更新契機は各ソースリポジトリの`main`更新とする。
@@ -74,11 +74,11 @@ Antoraを使う主な理由は、以下である。
 
 arc42は、システムごとのアーキテクチャ説明の型として使う。単一の巨大なarc42ですべてを表すのではなく、全体文書とサブシステム文書を階層的に組み合わせる。
 
-== 4.5 Structurizr DSLを図の正本にする戦略
+== 4.5 図ソースとC4/Structurizrを分離する戦略
 
-アーキテクチャ図の正本はStructurizr DSLにする。
+アーキテクチャ図は、図ソースと公開画像を分離して管理する。公開画像はAntora image familyに合わせ、`docs/modules/<module>/assets/images/diagrams/`に置く。
 
-arc42本文には、Structurizr DSLそのものを主たる図表現として直接埋め込まず、DSLから生成したSVGなどの画像を埋め込む。
+C4図の標準正本はStructurizr DSLにする。arc42本文には、Structurizr DSLそのものを主たる図表現として直接埋め込まず、DSLから生成したSVGなどの画像を埋め込む。
 
 この方針により、以下を分離する。
 
@@ -88,16 +88,33 @@ arc42本文には、Structurizr DSLそのものを主たる図表現として直
 | 役割
 
 | Structurizr DSL
-| 図モデルの正本。変更はまずDSLに入れる。
+| C4図モデルの標準正本。C4図の変更はまずDSLに入れる。
 
-| 生成済みSVG / PNG
-| 公開サイトで閲覧するための派生成果物。
+| Structurizr JSON workspace
+| 手動レイアウトを含むexport入力。モデル正本ではなく、見た目を再現するために管理する。
+
+| 生成済みSVG
+| 公開サイトで閲覧するための標準派生成果物。PNGは必要時の補助出力に留める。
 
 | arc42本文
 | 図を説明し、生成済み画像を参照する文書。
 |===
 
-Structurizr DSLからSVGを直接生成するか、PlantUML / C4-PlantUML経由にするかは未決定であり、11章の技術的リスクとして扱う。
+標準生成経路は、Structurizr DSL/JSONからStructurizrの`export -format svg`で直接SVGを生成する方式にする。手動レイアウトを再現する場合は`workspace.json`を入力にする。PlantUML / C4-PlantUML経由は、生成される図の見た目が目的に合わないため標準経路にしない。
+
+CI上の標準実行環境は`structurizr/structurizr:2026.05.22-playwright`とし、各ソースリポジトリrootで`docs/modules/<module>/examples/diagrams/structurizr/workspace.json`から`docs/modules/<module>/assets/images/diagrams/`へSVGを生成する。生成SVGは派生成果物だが、Antora assetとしてリポジトリ管理する。
+
+Docker image tagは、Playwright依存を含む日付付き`-playwright` tagを明示固定し、`latest`や未修飾tagは使わない。tag更新は、月次確認、CI失敗、脆弱性対応、GitHub Actions runner互換性対応、Structurizr export修正の取り込みが必要な場合に、専用変更として手動で行う。更新時は、tag文字列、生成SVG、関連文書を同じ変更単位に含める。
+
+生成対象は`find docs/modules -path '*/examples/diagrams/structurizr/workspace.json' -type f -print`で自動検出する。対象が0件の場合は、図生成対象なしとして成功扱いにする。生成後は`git status --porcelain -- docs/modules/<module>/assets/images/diagrams`で未反映差分を検出する。出力がある場合は、生成SVGが変更単位に含まれていないためCI失敗にする。
+
+モデル変更は必ず`workspace.dsl`から始める。手動レイアウトを使う図では、既存`workspace.json`のレイアウトを反映した状態で`workspace.json`を更新し、DSL変更とJSON更新を同じ変更単位で扱う。
+
+レイアウトだけを調整する場合は`workspace.json`の変更だけを許容する。ただし、`workspace.json`は手編集せず、StructurizrのUIまたは公式ツールのmerge/export結果として更新する。
+
+レイアウト保持のため、Structurizr viewsには明示的で安定したview keyを付ける。view keyは`<view-type>-<target>[-<purpose>]`形式の英小文字kebab-caseにし、`view-type`には`system-context`、`container`、`component`、`dynamic`、`deployment`、`filtered`、`image`、`custom`を使う。
+
+例は`system-context-docs-site`、`container-docs-site`、`dynamic-publish-flow`、`deployment-docs-site-production`である。arc42章番号や一時的な表示名はview keyに入れない。
 
 == 4.6 英語正本・日本語補助版の運用戦略
 
@@ -150,13 +167,11 @@ Structurizr DSLからSVGを直接生成するか、PlantUML / C4-PlantUML経由�
 
 以下は、現時点では戦略として固定せず、未決定事項または技術的リスクとして管理する。
 
-* Structurizr DSLの分割単位と`!include`配置規則
-* Structurizr DSLからSVGを直接生成するか、PlantUML / C4-PlantUML経由にするか
+* Structurizr view keyを変更する場合のJSONレイアウト移行手順
 * private repositoryの文書をpublic GitHub Pagesへ出してよいか
 * docToolchainのAntora連携をどこまで使うか
 * cross-repository workflowで使うtoken / secret管理
-* GitHub Pages初回公開後に公開URLと確認結果を記録する
 * サイト再生成失敗時の通知・再実行手順
 * Antora UI上の日英切り替え導線
-* サイト用リポジトリ作成後の`tools/check-language-pairs`実装
+* publish workflowで`tools/check-language-pairs`に渡すcontent root取得手順
 * 日英対応ページの内容差分や更新鮮度の検査要否

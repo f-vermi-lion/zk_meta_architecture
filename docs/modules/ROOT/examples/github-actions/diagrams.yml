@@ -1,0 +1,17 @@
+name: Generate Structurizr Diagrams
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  diagrams:
+    uses: f-vermi-lion/github-workflows/.github/workflows/structurizr-diagrams.yml@main
+    with:
+      content-root: docs

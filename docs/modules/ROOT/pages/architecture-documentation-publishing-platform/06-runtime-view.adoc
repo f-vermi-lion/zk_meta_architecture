@@ -1,7 +1,7 @@
 = 6. ランタイムビュー
 :docstatus: draft
 :created: 2026-05-05
-:revdate: 2026-05-23
+:revdate: 2026-06-01
 :authors: F; ChatGPT
 :lang: ja
 
@@ -42,6 +42,10 @@
 
 Antora playbookは`.nojekyll`を生成物に含める。初回有効化では、`repository_dispatch`、cross-repository token / secret、private repositoryのcontent source、`tools/check-language-pairs`実行は含めない。
 
+2026-05-23に初回公開を行った。公開URLは、https://f-vermi-lion.github.io/zouchikikou-docs-site/meta-architecture/architecture-documentation-publishing-platform/index.html である。
+
+Fの確認では、公開ページはローカルbuild結果と大きな差がない。
+
 == 6.1 ソースリポジトリのmain更新から公開まで
 
 このシナリオは、文書作成者がソースリポジトリの`main`へ文書または図定義を反映した後、GitHub Pages上の公開サイトが更新されるまでの標準フローである。
@@ -59,12 +63,13 @@ Antora playbookは`.nojekyll`を生成物に含める。初回有効化では、
 
 . 文書作成者が、ソースリポジトリ内の`.adoc`または`.dsl`を更新する。
 . 変更をpull requestまたは直接pushで`main`へ反映する。
-. ソースリポジトリ側workflowが文書検査と必要な図生成を実行する。
-. ソースリポジトリ側workflowが、`zouchikikou-docs-site`へ`repository_dispatch`を送る。
+. ソースリポジトリ側workflowが文書検査を実行する。
+. ソースリポジトリ側の`.github/workflows/diagrams.yml`が、必要な図生成と生成SVGの未反映差分検出を実行する。
+. ソースリポジトリ側workflowが、図生成CI成功後に`zouchikikou-docs-site`へ`repository_dispatch`を送る。
 . `zouchikikou-docs-site`の公開workflowが起動する。
 . 公開workflowがAntora playbookに従ってcontent sourcesを取得する。
 . 公開workflowがcheckout済みcontent rootを引数として`tools/check-language-pairs <content-root>...`などの共通検査を実行する。
-. 公開workflowが必要な図生成または生成済み図の存在確認を行う。
+. 公開workflowが生成済み図の存在確認を行う。
 . 公開workflowがAntora buildを実行する。
 . 公開workflowが生成済み静的サイトをGitHub Pagesへdeployする。
 . 文書サイト閲覧者がGitHub Pages上の更新済みページを読む。
@@ -88,7 +93,7 @@ Antora playbookは`.nojekyll`を生成物に含める。初回有効化では、
 
 . Fまたは保守者が、サイト用リポジトリの公開workflowを手動実行する。
 . 公開workflowが最新のcontent sourcesを取得する。
-. 公開workflowが日英対応検査、図生成確認、Antora build、GitHub Pages deployを実行する。
+. 公開workflowが日英対応検査、生成済み図の存在確認、Antora build、GitHub Pages deployを実行する。
 . Fまたは保守者が、Actions logと公開サイトを確認する。
 
 === 6.2.3 結果
@@ -111,7 +116,15 @@ Antora playbookは`.nojekyll`を生成物に含める。初回有効化では、
 
 . `.dsl`ファイルが更新される。
 . Structurizr DSLの構文またはモデル整合性を検査する。
-. SVGなどのサイト掲載用画像を生成する。
+. 手動レイアウトを使う図では、既存`workspace.json`のレイアウトを反映した状態で`workspace.json`を更新する。
+. DSL変更と対応する`workspace.json`更新が同じ変更単位に含まれていることを確認する。
+. Structurizr viewsに明示的で安定したview keyがあることを確認する。
+. view keyが`<view-type>-<target>[-<purpose>]`形式の英小文字kebab-caseであり、章番号や一時的な表示名を含まないことを確認する。
+. 生成対象を`find docs/modules -path '*/examples/diagrams/structurizr/workspace.json' -type f -print`で検出する。対象が0件なら図生成対象なしとして成功扱いにする。
+. `structurizr/structurizr:2026.05.22-playwright`で`workspace.json`を入力にし、Structurizrの`export -format svg`でサイト掲載用SVGを生成する。
+. Docker image tagを更新する場合は、月次確認または必要時の専用変更として扱い、tag文字列、生成SVG、関連文書を同じ変更単位に含める。
+. 生成SVGが`docs/modules/<module>/assets/images/diagrams/`に置かれ、同じ変更単位に含まれていることを確認する。
+. `git status --porcelain -- docs/modules/<module>/assets/images/diagrams`の出力が空であることを確認する。
 . arc42本文から参照される画像パスが存在することを確認する。
 . Antora buildで画像が取り込まれることを確認する。
 
@@ -120,6 +133,8 @@ Antora playbookは`.nojekyll`を生成物に含める。初回有効化では、
 日英対応検査は、公開workflowがcontent sourcesを取得した後、Antora buildの前に実行する。
 
 標準コマンド形式は、`tools/check-language-pairs <content-root>...`である。`<content-root>`には、`antora.yml`を持つAntora content rootを渡す。
+
+このコマンド本体は`zouchikikou-docs-site`に実装済みである。ただし、publish workflowでこのコマンドに渡すcheckout済みcontent rootをどう取得するかは未決定である。
 
 === 6.4.1 失敗条件
 
@@ -134,6 +149,8 @@ Antora playbookは`.nojekyll`を生成物に含める。初回有効化では、
 
 検査違反のissue codeは、`missing_ja`、`missing_en`、`missing_lang`、`lang_mismatch`とする。
 
+issue出力形式は、`issue_code<TAB>content_root<TAB>module<TAB>relative_path<TAB>message`のタブ区切り行とする。
+
 === 6.4.2 失敗時の扱い
 
 . 公開workflowを失敗させる。
@@ -146,7 +163,7 @@ Antora playbookは`.nojekyll`を生成物に含める。初回有効化では、
 
 == 6.5 図生成で失敗する場合
 
-図生成は、Structurizr DSL、生成経路、出力先、参照パスのいずれかが壊れると失敗する。
+図生成は、Structurizr DSL/JSON、DSLからJSONへの同期状態、Playwrightを含む実行環境、出力先、参照パスのいずれかが壊れると失敗する。
 
 === 6.5.1 失敗条件
 
@@ -154,14 +171,17 @@ Antora playbookは`.nojekyll`を生成物に含める。初回有効化では、
 
 * Structurizr DSLの構文が不正である。
 * `!include`の参照先が存在しない。
-* 期待するSVGまたはPNGを生成できない。
+* 手動レイアウトを使う図で、`workspace.json`がDSL変更を反映していない。
+* view keyが暗黙生成のまま、または命名規則に沿っておらず、レイアウトを安定して対応付けられない。
+* 期待するSVGを生成できない。
+* `git status --porcelain -- docs/modules/<module>/assets/images/diagrams`に出力があり、再生成されたSVGに未反映の差分が残っている。
 * arc42本文が参照する画像パスに生成物がない。
 * Antora buildで画像が取り込めない。
 
 === 6.5.2 失敗時の扱い
 
 . 公開workflowを失敗させる。
-. 失敗したDSLファイル、生成コマンド、出力先、参照元ページをlogに出す。
+. 失敗したDSLファイル、生成コマンド、出力先、参照元ページ、`git status --short`と`git diff`の結果をlogに出す。
 . GitHub Pagesへのdeployは実行しない。
 . 文書作成者がDSL、include、出力先、参照パスを修正する。
 . 修正後、`main`更新または`workflow_dispatch`で再生成する。

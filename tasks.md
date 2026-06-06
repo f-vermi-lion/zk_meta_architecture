@@ -3,7 +3,7 @@
 - [x] arc42文書ディレクトリの命名規則を決める
 - [x] アーキテクチャ文書の日英運用方針を決める
 - [x] 文書メタデータの項目と記法を整理する
-- [x] Structurizr DSL を正本として図の生成・埋め込み方針を決める
+- [x] C4図ではStructurizr DSLを標準正本として図の生成・埋め込み方針を決める
 - [x] 文書 version の更新ルールを決める
 - [x] 連番付きディレクトリ名で途中挿入・並べ替えが起きたときのリネーム方針を決める
 - [x] arc42文書ディレクトリ名から連番を外す規則に改める
@@ -36,3 +36,18 @@
 - [x] zouchikikou-docs-siteの初期ファイルをcommit/pushする
 - [x] zouchikikou-docs-siteのGitHub Pages deploy有効化手順を決める
 - [x] zouchikikou-docs-siteのGitHub Pages deploy workflowを実装して初回公開前の状態を整える
+- [x] GitHub Pages初回公開URLと確認結果を記録する
+- [x] tools/check-language-pairsを実装する
+- [x] Structurizr DSLから直接SVGを生成する方針を決める
+- [x] Structurizr図のレイアウト情報をDSL正本とJSON配置で管理する方針を決める
+- [x] DSL変更をJSONレイアウトworkspaceへ反映する同期手順を決める
+- [x] Structurizr view key の命名規則を決める
+- [x] Structurizr直接SVG生成のCIコマンドと成果物配置手順を決める
+- [x] Structurizr生成SVGの再生成差分をCIで検出する具体実装を決める
+- [x] Antora標準に合わせてStructurizr図資産配置と自動検出手順を決める
+- [x] Structurizr DSL の分割単位と `!include` 配置規則を決める
+- [x] Structurizr図生成CI workflowの配置と起動条件を決める
+- [x] 図ファイル配置をC4/Structurizr以外にも拡張できる構成に整理する
+- [x] Structurizr Docker image tagの更新方針を決める
+- [x] Structurizr図生成CI workflowのYAMLテンプレートを作成する
+- [x] github-workflowsでStructurizr図生成reusable workflowを提供する

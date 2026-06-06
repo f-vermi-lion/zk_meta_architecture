@@ -1,7 +1,7 @@
 = 3. コンテキストとスコープ
 :docstatus: draft
 :created: 2026-04-27
-:revdate: 2026-05-12
+:revdate: 2026-05-28
 :authors: F; Codex; ChatGPT
 :lang: ja
 
@@ -148,9 +148,9 @@
 
 ==== 図作成インターフェース
 
-文書作成者は、Structurizr DSLを図の正本として編集する。
+文書作成者は、C4図ではStructurizr DSLを図モデルの標準正本として編集する。
 
-図の最終出力形式は、サイト表示に適したSVGまたは画像ファイルとする。ただし、CIでの変換方式は、StructurizrのPNG/SVG exportを使う案と、docToolchainの`exportStructurizr`によるPlantUML / C4-PlantUML経由案を比較・検証する。
+手動レイアウトを使う図では、Structurizr JSON workspaceをレイアウト付きexport入力として管理する。図の最終出力形式は、サイト表示に適したSVGとする。CIでの標準生成経路は、Structurizrのブラウザベースレンダラによる`export -format svg`を使い、PlantUML / C4-PlantUML経由は標準経路にしない。
 
 ==== サイト閲覧インターフェース
 
@@ -223,13 +223,18 @@ Antoraは、content source repositoriesとして複数のGitリポジトリ、�
 │  F / contributors / viewers  │
 └─────────────────────────────┘
 
-補助的な変換経路:
+標準の図生成経路:
 
 Structurizr DSL
       │
-      ├─ Structurizr PNG/SVG export
+      ├─ model source
+      ▼
+Structurizr JSON workspace
       │
-      └─ docToolchain exportStructurizr → PlantUML / C4-PlantUML → image
+      └─ Structurizr export -format svg
+             │
+             ▼
+         Antora assets / image::...[]
 ----
 
 === 3.2.3 外部技術インターフェース
@@ -261,7 +266,7 @@ Structurizr DSL
 | arc42テンプレート、AsciiDoc生成、図連携、補助成果物生成を担う。docToolchainのAntora連携はbetaと明記されているため、採用時は検証対象にする。
 
 | Structurizr
-| `.dsl`、CLI/export、PNG/SVG export、PlantUML export
+| `.dsl`、`.json`、CLI/export、SVG export
 | C4図モデルの正本を管理し、サイト掲載用の図を生成する。
 
 | Asciidoctor / AsciiDoc処理系
@@ -291,7 +296,7 @@ Structurizr DSL
 
 | 図定義の更新
 | Git push / pull request
-| `.dsl`
+| `.dsl`、`.json`
 
 | 文書分割・再利用
 | AsciiDoc include / Antora partial include
@@ -306,8 +311,8 @@ Structurizr DSL
 | `antora-playbook.yml`
 
 | 図生成
-| Structurizr export / docToolchain task
-| SVG、PNG、PlantUML、C4-PlantUML
+| Structurizr `export -format svg`
+| SVG
 
 | サイト生成
 | Antora CLI

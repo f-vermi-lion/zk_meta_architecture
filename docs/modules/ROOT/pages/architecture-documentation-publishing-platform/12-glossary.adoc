@@ -1,7 +1,7 @@
 = 12. 用語集
 :docstatus: draft
 :created: 2026-05-05
-:revdate: 2026-05-12
+:revdate: 2026-05-28
 :authors: F; ChatGPT
 :lang: ja
 
@@ -21,13 +21,13 @@
 | Antora playbook、共通UI、公開workflow、共通検査ツールを持ち、複数ソースリポジトリの文書を集約してGitHub Pagesへ公開するリポジトリ。標準名は`zouchikikou-docs-site`とする。
 
 | 正本
-| 後続の編集、検査、生成の基準になる一次成果物。文書本文ではAsciiDoc、図ではStructurizr DSLを指す。
+| 後続の編集、検査、生成の基準になる一次成果物。文書本文ではAsciiDoc、図モデルではStructurizr DSLを指す。
 
 | 補助版
 | 正本の理解や利用を助けるための版。造智機巧本体のアーキテクチャ文書では、日本語版を補助版として扱う。
 
 | 派生成果物
-| 正本から生成される成果物。GitHub Pages上のHTML、生成済みSVG / PNG、build artifactなど。直接編集して正本化しない。
+| 正本から生成される成果物。GitHub Pages上のHTML、生成済みSVG、build artifactなど。直接編集して正本化しない。
 
 | arc42文書
 | arc42テンプレートの章構成に沿って書くアーキテクチャ文書。全体文書とサブシステム文書を階層的に組み合わせる。
@@ -60,10 +60,19 @@
 | Antoraサイトのナビゲーションを定義するAsciiDocファイル。各moduleの`nav.adoc`などを指す。
 
 | Structurizr DSL
-| C4モデルやアーキテクチャ図をテキストで定義するDSL。この基盤では図の正本として扱う。
+| C4モデルやアーキテクチャ図をテキストで定義するDSL。この基盤ではC4図の標準正本として扱う。
+
+| Structurizr JSON workspace
+| Structurizr workspaceをJSONで表したファイル。この基盤では、手動レイアウトを含むSVG export用の管理対象として扱うが、モデル正本にはしない。
+
+| Structurizr view key
+| Structurizr viewを識別し、JSON workspace上の手動レイアウトを安定して対応付けるためのkey。この基盤では`<view-type>-<target>[-<purpose>]`形式の英小文字kebab-caseにする。
 
 | 生成済み図
-| Structurizr DSLなどから生成したSVGまたはPNG。arc42本文から`image::...[]`で参照する。
+| 図ソースから生成または書き出したSVG。派生成果物だが、Antora assetとしてリポジトリ管理し、arc42本文から`image::diagrams/<file>.svg[]`で参照する。C4図ではStructurizr DSL/JSONから`export -format svg`で直接生成する。
+
+| 未反映差分
+| 正本やexport入力から再生成した派生成果物が、リポジトリに反映されていない状態。生成SVGでは`git status --porcelain -- docs/modules/<module>/assets/images/diagrams`で検出する。
 
 | `repository_dispatch`
 | あるGitHubリポジトリのworkflowから、別のリポジトリのworkflowをイベントとして起動するために使う方式。この基盤では、ソースリポジトリからサイト用リポジトリへの自動再生成依頼に使う。

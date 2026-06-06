@@ -1,7 +1,7 @@
 = 5. ビルディングブロックビュー
 :docstatus: draft
 :created: 2026-05-05
-:revdate: 2026-05-23
+:revdate: 2026-06-01
 :authors: F; ChatGPT
 :lang: ja
 
@@ -101,19 +101,39 @@ docs/modules/ROOT/pages/  # 英語正本
 docs/modules/ja/pages/    # 日本語補助版
 ----
 
-=== 5.2.2 Structurizr DSL
+=== 5.2.2 図ソースとStructurizr DSL / JSON workspace
 
-Structurizr DSLは、図モデルの正本としてソースリポジトリに置く。
+図ソースは、対応するAntora module配下の`examples/diagrams/`に置く。公開画像は、対応するAntora module配下の`assets/images/diagrams/`に置く。
 
-標準配置は、対応するAntora module配下の`assets/diagrams/source/`とする。
+C4/Structurizrの標準配置は、対応するAntora module配下の`examples/diagrams/structurizr/`とする。
 
 [source,text]
 ----
-docs/modules/ROOT/assets/diagrams/source/
+docs/modules/ROOT/examples/diagrams/structurizr/
   workspace.dsl
+  workspace.json
+  model.dsl   # optional
+  views.dsl   # optional
+  styles.dsl  # optional
 ----
 
-DSLの分割単位と`!include`の詳細規則は未決定である。ただし、`!include`を使う場合は、DSLソースツリー内で相対参照が完結するようにする。
+`workspace.json`は、手動レイアウトを含むStructurizr JSON workspaceである。モデル正本ではなく、Structurizrの見た目を再現するためのレイアウト付きexport入力として管理する。
+
+標準では、1つのAntora moduleにつき1つのStructurizr workspaceを置く。標準入口は`workspace.dsl`である。小規模なうちはDSLを分割せず、分割が必要になった場合は`model.dsl`、`views.dsl`、`styles.dsl`を`examples/diagrams/structurizr/`直下に置き、`workspace.dsl`から相対パスで`!include`する。さらに大きい場合だけ、`model/`や`views/`配下へ細分化する。
+
+`!include`は、`examples/diagrams/structurizr/`配下のDSLソースツリー内で相対参照が完結するようにする。`pages/`、`partials/`、`assets/images/`、別module、リポジトリ外ファイルは`!include`対象にしない。
+
+モデル変更は必ず`workspace.dsl`から始める。手動レイアウトを使う図では、既存`workspace.json`のレイアウトを反映した状態で`workspace.json`を更新し、DSL変更とJSON更新を同じ変更単位で扱う。
+
+レイアウトだけを調整する場合は、`workspace.json`の変更だけを許容する。ただし、`workspace.json`は手編集せず、StructurizrのUIまたは公式ツールのmerge/export結果として更新する。
+
+レイアウト保持のため、Structurizr viewsには明示的で安定したview keyを付ける。
+
+view keyは`<view-type>-<target>[-<purpose>]`形式の英小文字kebab-caseにする。`view-type`の標準語彙は、`system-context`、`container`、`component`、`dynamic`、`deployment`、`filtered`、`image`、`custom`である。
+
+`target`と`purpose`は、対象システム、コンテナ、シナリオなどを表す安定したslugにする。例は`system-context-docs-site`、`container-docs-site`、`dynamic-publish-flow`、`deployment-docs-site-production`である。arc42章番号や一時的な表示名はview keyに入れない。
+
+既存view keyの変更は、`workspace.json`に保持した手動レイアウトを失うリスクがあるため原則として避ける。
 
 === 5.2.3 Antora component descriptor
 
@@ -130,6 +150,8 @@ DSLの分割単位と`!include`の詳細規則は未決定である。ただし�
 * pushまたはpull request時の文書検査
 * 必要に応じた図生成
 * `main`更新後のサイト用リポジトリへの再生成依頼
+
+Structurizr図生成CI workflowは、図を持つ各ソースリポジトリの`.github/workflows/diagrams.yml`に置く。図生成の実処理は、`f-vermi-lion/github-workflows`のreusable workflowとして共通化する。呼び出し側の標準YAMLテンプレートは`docs/modules/ROOT/examples/github-actions/diagrams.yml`に置く。起動条件は、`pull_request`、`main`への`push`、手動の`workflow_dispatch`とする。初期標準では`paths` filterを使わず、workflow内のworkspace自動検出で図生成対象なしを成功扱いにする。
 
 サイト用リポジトリへの再生成依頼は、`repository_dispatch`を標準にする。
 
@@ -192,7 +214,7 @@ GitHub PagesがAntora生成物をJekyllとして処理しないよう、Antora p
 
 . content sourcesを取得する。
 . 日英対応検査などの共通検査を実行する。
-. 必要な図生成または図生成済み成果物の確認を行う。
+. 生成済み図の存在確認を行う。
 . Antora buildを実行する。
 . 生成済み静的サイトをGitHub Pagesへdeployする。
 . build artifactとlogを残す。
@@ -243,12 +265,35 @@ docToolchainは、arc42文書運用、AsciiDoc処理、図連携などの補助�
 
 Structurizrは、C4図モデルの正本をDSLとして扱い、サイト掲載用の図を生成するために使う。
 
-図生成経路は未確定である。
+標準生成経路は、Structurizr DSL/JSONからStructurizrの`export -format svg`で直接SVGを生成する方式にする。
 
-候補は以下である。
+この経路では、Structurizrのブラウザベースレンダラで見た目を決め、生成したSVGをAntora assetsとして配置する。手動レイアウトを再現する場合は、`workspace.json`を`export -format svg -workspace <path>`の入力にする。
 
-* StructurizrのPNG/SVG exportを使う。
-* docToolchainの`exportStructurizr`からPlantUML / C4-PlantUML経由で生成する。
+CI上の標準実行環境は、Playwright依存を含むStructurizr Docker imageを第一候補にする。
+
+Structurizr図生成CI workflowは、各ソースリポジトリの`.github/workflows/diagrams.yml`に置き、`pull_request`、`main`への`push`、`workflow_dispatch`で起動する。図生成の実処理は`f-vermi-lion/github-workflows`の`.github/workflows/structurizr-diagrams.yml`で共通化する。`pull_request`ではmerge前に生成SVGの未反映差分を検出し、`main`への`push`ではサイト再生成依頼前に図資産が反映済みであることを確認する。`workflow_dispatch`は、失敗後の再確認や環境更新後の手動検証に使う。
+
+呼び出し側の標準YAMLテンプレートは以下である。
+
+[source,yaml]
+----
+include::example$github-actions/diagrams.yml[]
+----
+
+標準Docker imageは`structurizr/structurizr:2026.05.22-playwright`とする。各ソースリポジトリrootで、以下の標準コマンドにより`workspace.json`からSVGを生成する。
+
+Docker image tagは日付付き`-playwright` tagを固定し、`latest`や未修飾tagは使わない。tag更新は、月次確認または必要時の専用変更として手動で行い、tag文字列、生成SVG、関連文書を同じ変更単位に含める。
+
+[source,sh]
+----
+docker run --rm -v "$PWD:/usr/local/structurizr" structurizr/structurizr:2026.05.22-playwright export -format svg -workspace docs/modules/<module>/examples/diagrams/structurizr/workspace.json -output docs/modules/<module>/assets/images/diagrams
+----
+
+生成対象は`find docs/modules -path '*/examples/diagrams/structurizr/workspace.json' -type f -print`で自動検出する。対象が0件の場合は、図生成対象なしとして成功扱いにする。
+
+生成SVGは、`docs/modules/<module>/assets/images/diagrams/`に置き、Antora assetとしてリポジトリ管理する。arc42本文からは`image::diagrams/<file>.svg[]`で参照する。
+
+SVG export後の未反映差分は、`git status --porcelain -- docs/modules/<module>/assets/images/diagrams`で検出する。出力がある場合、CIは失敗扱いにし、`git status --short -- docs/modules/<module>/assets/images/diagrams`と`git diff -- docs/modules/<module>/assets/images/diagrams`をlogに出す。
 
 === 5.4.4 日英対応検査スクリプト
 
@@ -260,9 +305,17 @@ Structurizrは、C4図モデルの正本をDSLとして扱い、サイト掲載�
 
 実装言語はPython 3とし、標準ライブラリのみを使う。
 
+`zouchikikou-docs-site`の`tools/check-language-pairs`として実装済みである。
+
+`antora.yml`の`name`が`meta-architecture`であるcontent rootは、検査対象外としてskipする。
+
 検査違反は、`missing_ja`、`missing_en`、`missing_lang`、`lang_mismatch`のいずれかのissue codeを持つ行として出力する。
 
+issue出力形式は、`issue_code<TAB>content_root<TAB>module<TAB>relative_path<TAB>message`のタブ区切り行とする。
+
 終了コードは、問題なしを`0`、検査違反ありを`1`、引数不正やcontent root不正など実行不能を`2`とする。
+
+publish workflowでこのコマンドへ渡すcontent rootの取得手順は未決定であり、11章の未決定事項として扱う。
 
 初期範囲では、翻訳内容の差分、更新鮮度、日英リンクの存在は検査しない。
 
@@ -278,11 +331,17 @@ GitHub Pagesサイトは、閲覧者向けの公開結果である。
 
 === 5.5.2 生成済み図
 
-生成済み図は、Structurizr DSLなどから生成されるSVGまたはPNGである。
+生成済み図は、図ソースから生成または書き出したSVGである。C4図ではStructurizr DSL/JSONから直接生成する。
 
-arc42本文からは、AsciiDocの`image::...[]`で参照する。
+arc42本文からは、AsciiDocの`image::diagrams/<file>.svg[]`で参照する。
 
-生成済み図がリポジトリに保存されるか、build artifactとして扱われるかは、図生成経路とCI運用を決める段階で確定する。
+PNGは必要時の補助出力に留める。
+
+生成済みSVGは派生成果物であり、直接編集して正本化しない。
+
+生成済み図は、公開サイトでAntoraが読むassetとしてリポジトリ管理する。図モデルまたはレイアウトを変更した場合は、対応する生成SVGも同じ変更単位に含める。
+
+未反映差分はソースリポジトリ側CIの`git status --porcelain -- docs/modules/<module>/assets/images/diagrams`で検出する。
 
 === 5.5.3 build artifact / log
 

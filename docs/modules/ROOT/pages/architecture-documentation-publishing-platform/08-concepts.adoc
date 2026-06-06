@@ -1,7 +1,7 @@
 = 8. 横断的コンセプト
 :docstatus: draft
 :created: 2026-05-05
-:revdate: 2026-05-23
+:revdate: 2026-06-01
 :authors: F; ChatGPT
 :lang: ja
 
@@ -26,6 +26,11 @@
 | 各ソースリポジトリ
 | はい
 | C4図モデルの正本。図の変更はまずDSLへ入れる。
+
+| Structurizr JSON workspace
+| 各ソースリポジトリ
+| いいえ
+| 手動レイアウトを含むexport入力。モデル正本ではなく、SVG生成時の見た目再現に使う。
 
 | Antora component descriptor
 | 各コンテンツルート
@@ -52,10 +57,10 @@
 | いいえ
 | 利用者向けの公開結果。正本ではない。
 
-| 生成済みSVG / PNG / PlantUML
+| 生成済みSVG
 | build出力またはassets
 | いいえ
-| DSLなどから生成される派生成果物。
+| Structurizr DSL/JSONから直接生成される派生成果物。
 |===
 
 GitHub Pages上の公開結果や生成済み画像を直接編集して正本化しない。
@@ -101,10 +106,15 @@ source-repo-a/
           02-architecture-constraints.adoc
           03-context-and-scope.adoc
         partials/
-        assets/
+        examples/
           diagrams/
-            source/
+            structurizr/
               workspace.dsl
+              workspace.json
+        assets/
+          images/
+            diagrams/
+              system-context-docs-site.svg
       ja/
         nav.adoc
         pages/
@@ -208,17 +218,83 @@ arc42本文は、章ごとのファイルに分ける。
 
 == 8.5 図定義と生成画像
 
-図の正本はStructurizr DSLにする。
+図ソースは、対応するAntora module配下の`examples/diagrams/`に置く。公開画像は、対応するAntora module配下の`assets/images/diagrams/`に置く。
 
 標準配置は以下である。
 
 [source,text]
 ----
-docs/modules/<module>/assets/diagrams/source/  # DSL source
-docs/modules/<module>/assets/diagrams/         # generated diagrams
+docs/modules/<module>/examples/diagrams/                     # diagram source root
+docs/modules/<module>/examples/diagrams/structurizr/workspace.dsl   # C4 model source
+docs/modules/<module>/examples/diagrams/structurizr/workspace.json  # C4 layout workspace
+docs/modules/<module>/examples/diagrams/structurizr/model.dsl       # optional model split
+docs/modules/<module>/examples/diagrams/structurizr/views.dsl       # optional view split
+docs/modules/<module>/examples/diagrams/structurizr/styles.dsl      # optional style split
+docs/modules/<module>/assets/images/diagrams/                # generated diagrams
 ----
 
-arc42本文では、生成済み画像をAsciiDocの`image::...[]`で参照する。
+C4/Structurizrでは、1つのAntora moduleにつき1つのStructurizr workspaceを置く。標準入口は常に`workspace.dsl`にする。
+
+小規模なうちはDSLを分割しない。分割が必要になった場合は、`examples/diagrams/structurizr/`直下に`model.dsl`、`views.dsl`、`styles.dsl`を置き、`workspace.dsl`から相対パスで`!include`する。さらに大きい場合だけ、`examples/diagrams/structurizr/model/`や`examples/diagrams/structurizr/views/`配下へ細分化する。
+
+`!include`は`examples/diagrams/structurizr/`配下のDSLソースツリー内に限定する。`pages/`、`partials/`、`assets/images/`、別module、リポジトリ外ファイルは参照しない。
+
+C4図の標準生成経路は、Structurizr DSL/JSONからStructurizrの`export -format svg`で直接SVGを生成する方式にする。
+
+Structurizr図生成CI workflowは、図を持つ各ソースリポジトリの`.github/workflows/diagrams.yml`に置く。図生成の実処理は、`f-vermi-lion/github-workflows`のreusable workflowとして共通化する。呼び出し側の標準YAMLテンプレートは`docs/modules/ROOT/examples/github-actions/diagrams.yml`に置く。起動条件は、`pull_request`、`main`への`push`、手動の`workflow_dispatch`とする。初期標準では`paths` filterを使わず、workflow内のworkspace自動検出で図生成対象なしを成功扱いにする。
+
+標準Docker imageは`structurizr/structurizr:2026.05.22-playwright`とする。Docker image tagは日付付き`-playwright` tagを固定し、`latest`や未修飾tagは使わない。tag更新は月次確認または必要時の専用変更として手動で行う。標準コマンドは以下である。
+
+[source,sh]
+----
+docker run --rm -v "$PWD:/usr/local/structurizr" structurizr/structurizr:2026.05.22-playwright export -format svg -workspace docs/modules/<module>/examples/diagrams/structurizr/workspace.json -output docs/modules/<module>/assets/images/diagrams
+----
+
+生成対象は以下で自動検出する。対象が0件の場合は、図生成対象なしとして成功扱いにする。
+
+[source,sh]
+----
+find docs/modules -path '*/examples/diagrams/structurizr/workspace.json' -type f -print
+----
+
+生成SVGは派生成果物だが、Antora assetとしてリポジトリ管理する。Antoraページからは`image::diagrams/<file>.svg[]`で参照する。
+
+再生成後の未反映差分は以下で検出する。
+
+[source,sh]
+----
+git status --porcelain -- docs/modules/<module>/assets/images/diagrams
+----
+
+出力が空なら成功、空でなければ未反映差分ありとしてCIを失敗させる。失敗時は以下をlogに出す。
+
+[source,sh]
+----
+git status --short -- docs/modules/<module>/assets/images/diagrams
+git diff -- docs/modules/<module>/assets/images/diagrams
+----
+
+`workspace.json`は、手動レイアウトを再現するためのレイアウト付きexport入力として管理する。モデル変更の出発点は引き続き`workspace.dsl`にする。
+
+モデル変更時は`workspace.dsl`を更新し、既存`workspace.json`のレイアウトを反映した状態で`workspace.json`を更新する。レイアウトだけを調整する場合は、`workspace.json`の変更だけを許容する。
+
+`workspace.json`は手編集せず、StructurizrのUIまたは公式ツールのmerge/export結果として更新する。
+
+レイアウト保持のため、Structurizr viewsには明示的で安定したview keyを付ける。形式は`<view-type>-<target>[-<purpose>]`の英小文字kebab-caseにする。
+
+`view-type`の標準語彙は、`system-context`、`container`、`component`、`dynamic`、`deployment`、`filtered`、`image`、`custom`である。`target`と`purpose`は安定したslugにし、arc42章番号や一時的な表示名は含めない。
+
+例:
+
+[source,text]
+----
+system-context-docs-site
+container-docs-site
+dynamic-publish-flow
+deployment-docs-site-production
+----
+
+arc42本文では、生成済み画像をAsciiDocの`image::diagrams/<file>.svg[]`で参照する。
 
 DSL断片をarc42本文へ主たる図表現として直接埋め込まない。
 

@@ -1,7 +1,7 @@
 = 9. アーキテクチャ決定
 :docstatus: draft
 :created: 2026-05-05
-:revdate: 2026-05-23
+:revdate: 2026-06-01
 :authors: F; ChatGPT
 :lang: ja
 
@@ -31,7 +31,7 @@
 | 4章、5章、6章、10章、11章
 
 | `decisions/architecture_diagrams.md`
-| Structurizr DSLを図の正本にする方針、生成画像の配置、`!include`の大枠。
+| 図ソースと公開画像の分離、C4/Structurizrの標準配置、JSON workspaceによるレイアウト管理、直接SVG生成、Docker image tag更新方針、図生成CIの共通化、DSL分割と`!include`配置規則。
 | 4章、5章、6章、8章、11章
 
 | `decisions/architecture_document_languages.md`
@@ -55,11 +55,15 @@
 
 初回のGitHub Pages deployは、`zouchikikou-docs-site`の`.github/workflows/publish.yml`を`workflow_dispatch`で手動実行する。workflowはAntora build結果の`build/site`を`actions/upload-pages-artifact@v4`でPages artifactとしてuploadし、`actions/deploy-pages@v4`でGitHub Pagesへdeployする。Antora playbookは`.nojekyll`を生成物に含める。`repository_dispatch`、cross-repository token / secret、private repositoryの取り込み、共通検査ツール実行は別段階で有効化する。
 
+2026-05-23時点の初回公開URLは、https://f-vermi-lion.github.io/zouchikikou-docs-site/meta-architecture/architecture-documentation-publishing-platform/index.html である。
+
 日本語版・英語版は同一component内のAntora moduleで分ける。英語正本は`ROOT` module、日本語補助版は`ja` moduleに置き、対応するページはmodule配下の相対パスとファイル名を揃える。
 
 公開時と版確定時のCIでは、英語正本`docs/modules/ROOT/pages/**/*.adoc`と日本語補助版`docs/modules/ja/pages/**/*.adoc`の対応ページ欠落、および`:lang:`不一致を失敗扱いにする。`meta_architecture`自体は日本語運用のため、この日英必須検査の対象外にする。
 
 日英対応検査の標準コマンドは、専用サイトリポジトリ内の`tools/check-language-pairs`とする。このコマンドは、公開workflowがcontent sourcesを取得した後、Antora buildの前に実行する。
+
+図ソースと公開画像は分離して管理する。C4図ではStructurizr DSLをモデル正本とし、手動レイアウトを含むJSON workspaceからSVGを生成する。Structurizr図生成CI、共通reusable workflow、Docker image tag、生成SVG差分検出、DSL分割規則の詳細は`decisions/architecture_diagrams.md`で管理する。
 
 標準配置の具体例は、8.2で管理する。
 
@@ -94,6 +98,30 @@ decision recordは、現在有効な決定そのものではなく、なぜそ�
 | `decision_records/architecture_document_language_antora_modules.md`
 | 日英版をAntora moduleで分ける理由。
 | `architecture_document_languages.md`
+
+| `decision_records/structurizr_direct_svg_generation.md`
+| Structurizr直接SVG生成を標準経路にする理由。
+| `architecture_diagrams.md`
+
+| `decision_records/structurizr_diagram_layout_json.md`
+| Structurizr図のレイアウト情報をJSONで管理する理由。
+| `architecture_diagrams.md`
+
+| `decision_records/structurizr_dsl_include_structure.md`
+| Structurizr DSLの分割単位と`!include`配置規則を決めた理由。
+| `architecture_diagrams.md`
+
+| `decision_records/structurizr_diagram_ci_workflow.md`
+| Structurizr図生成CI workflowの配置と起動条件を決めた理由。
+| `architecture_diagrams.md`, `architecture_document_publication.md`
+
+| `decision_records/structurizr_docker_image_tag_update_policy.md`
+| Structurizr Docker image tagの更新方針を決めた理由。
+| `architecture_diagrams.md`, `architecture_document_publication.md`
+
+| `decision_records/diagram_source_layout_tool_neutral.md`
+| 図ソース配置をtool-neutralに分離した理由。
+| `architecture_diagrams.md`
 |===
 
 == 9.4 未決定事項との関係
