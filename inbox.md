@@ -1,11 +1,5 @@
-- private repositoryの文書をpublic GitHub Pagesに出してよいか判断する
-- サイト再生成用のGitHub Actions権限とトークン管理方針を決める
 - サイト再生成失敗時の通知・再実行手順を決める
 - Antora UI上の日英切り替え導線を決める
 - publish workflowでtools/check-language-pairsに渡すcontent root取得手順を決める
-- 日英対応ページの内容差分や更新鮮度を検査対象にするか決める
-- Structurizr view key を変更する場合のJSONレイアウト移行手順を決める
-- 1 module内に複数Structurizr workspaceを置く必要が出た場合の命名規則を決める
-- DSL分割後にStructurizr JSON workspaceへ再同期する具体コマンド手順を決める
-- Structurizr Docker image tag更新をRenovateなどで自動PR化するか、手動運用の負荷が増えた時点で検討する
 - github-workflowsのreusable workflowをtag/releaseで固定参照する運用方針を決める
+- ローカル執筆基盤の初期機能をどうするか考える
