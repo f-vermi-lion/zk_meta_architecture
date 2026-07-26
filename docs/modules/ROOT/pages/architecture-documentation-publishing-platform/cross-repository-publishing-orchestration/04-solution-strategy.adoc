@@ -1,0 +1,43 @@
+= 4. ソリューション戦略
+:docstatus: draft
+:created: 2026-07-27
+:revdate: 2026-07-27
+:authors: F; Codex; ChatGPT
+:lang: ja
+
+== 4.1 repositoryの責務で処理を分ける
+
+source側は、自分が所有する正本と派生成果物を検査する。
+site側は、複数sourceの組み合わせ、横断規則、静的サイト、公開を検査する。
+
+この境界により、図生成環境や文書固有処理をsite側へ集めず、
+site側が公開時点の全content sourceを一貫して検査できるようにする。
+
+== 4.2 eventで疎結合に接続する
+
+source側の`main`更新後に`repository_dispatch`で再生成を依頼する。
+site側はsource repositoryのworkflow実装へ直接依存せず、
+再生成イベントを入口に最新content sourcesからsiteを作る。
+
+event type、payload、送信認証の詳細は実装前に確定する。
+payloadだけを文書正本として扱わず、site buildはplaybookが指定するcontent sourceを取得する。
+
+== 4.3 自動経路と手動経路を同じ処理へ集約する
+
+`repository_dispatch`と`workflow_dispatch`は同じsite build / deploy jobを起動する。
+手動経路を別の簡略処理にせず、
+自動失敗後にも同じ検査と公開を再実行できるようにする。
+
+== 4.4 fail closedにする
+
+source側検査、横断検査、asset確認、Antora buildのどれかが失敗したら、
+新しいPages artifactをdeployしない。
+
+既存の公開サイトを自動削除せず、
+「正本は更新されたが公開結果は古い」という状態をlogと通知で識別できるようにする。
+
+== 4.5 目標と実装状態を分ける
+
+標準として決定した全体フローと、
+現在実装されている手動workflow・個別toolを区別する。
+一部の部品が存在するだけでend-to-end公開を実装済みとしない。

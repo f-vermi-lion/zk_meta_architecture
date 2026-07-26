@@ -1,0 +1,31 @@
+= 2. 制約
+:docstatus: draft
+:created: 2026-07-27
+:revdate: 2026-07-27
+:authors: F; Codex; ChatGPT
+:lang: ja
+
+== 2.1 形式と配置
+
+* アーキテクチャ文書の構成にはarc42を使う。
+* 本文の標準形式はAsciiDocとする。
+* 文書は各ソースリポジトリの`docs/`をAntora content rootとして配置する。
+* `docs/antora.yml`をcomponent descriptorとする。
+* 文書本文は`docs/modules/<module>/pages/`、再利用断片は`partials/`、画像などは`assets/`に置く。
+* GitHub上の`README.md`は入口として残すが、arc42本文の正本にはしない。
+
+== 2.2 文書の分割
+
+* 単一のarc42へ全体とすべての詳細を詰め込まず、必要に応じて階層的な複数のarc42へ分ける。
+* 独立したarc42文書は、それぞれ専用のpage directoryと`index.adoc`を持つ。
+* 子文書は親文書のdirectory配下へネストし、親文書から辿れるようにする。
+* 一つのpage groupに複数の独立したarc42本文を混在させない。
+* arc42の章は必要なものだけを置いてよく、空の章ファイルは作らない。
+
+== 2.3 正本とツール
+
+* 文書本文とページメタデータの正本はAsciiDocページに置く。
+* ページ識別にはAntora resource IDを使う。
+* サイト生成の中心はAntoraとする。
+* docToolchainは補助候補であり、採用範囲が決まるまでは必須の執筆経路にしない。
+* 文書内容の自動生成や翻訳品質の完全保証は、この規約の責務に含めない。

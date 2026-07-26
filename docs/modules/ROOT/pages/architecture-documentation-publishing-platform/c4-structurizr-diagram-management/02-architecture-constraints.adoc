@@ -1,0 +1,29 @@
+= 2. 制約
+:docstatus: draft
+:created: 2026-07-27
+:revdate: 2026-07-27
+:authors: F; Codex; ChatGPT
+:lang: ja
+
+== 2.1 正本と形式
+
+* C4図のモデル正本はStructurizr DSLとする。
+* 手動レイアウトを使う場合はStructurizr JSON workspaceを管理するが、モデル正本にはしない。
+* 公開用の標準画像形式はSVGとし、PNGは必要時の補助出力とする。
+* arc42本文へDSL断片を主たる図として直接埋め込まず、生成画像を埋め込む。
+* C4図の標準生成経路にPlantUML / C4-PlantUMLを使わない。
+
+== 2.2 配置
+
+* 図ソースは対応するAntora moduleの`examples/diagrams/`へ置く。
+* Structurizr固有ファイルは`examples/diagrams/structurizr/`へ置く。
+* 公開画像は`assets/images/diagrams/`へ置く。
+* 生成SVGは派生成果物だが、Antoraが読むassetとしてリポジトリ管理する。
+
+== 2.3 更新
+
+* モデル変更は`workspace.dsl`から始める。
+* 手動レイアウトを使う変更では、DSL、更新したJSON workspace、生成SVG、説明本文を同じ変更単位で扱う。
+* `workspace.json`をテキストエディタで手編集しない。
+* 既存view keyは、レイアウトとの対応を壊すおそれがあるため原則として変更しない。
+* CIでは日付付きの`-playwright` Docker image tagを固定し、`latest`や未修飾tagを使わない。

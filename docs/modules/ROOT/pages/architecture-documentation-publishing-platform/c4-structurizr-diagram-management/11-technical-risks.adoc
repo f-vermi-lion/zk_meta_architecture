@@ -1,0 +1,48 @@
+= 11. 技術的リスク
+:docstatus: draft
+:created: 2026-07-27
+:revdate: 2026-07-27
+:authors: F; Codex; ChatGPT
+:lang: ja
+
+== 11.1 DSLとJSON workspaceの同期
+
+DSL変更を既存レイアウト付きJSONへ反映する具体的で検証済みの操作が不足している。
+誤った同期は、モデルの欠落、古いレイアウト、JSONだけに存在するモデルを生む。
+
+既存workspaceを変更するときはバックアップを取り、
+Structurizr UIまたは公式ツールの操作後にJSON差分と生成SVGを確認する。
+実行可能な標準同期手順は別途確定する必要がある。
+
+== 11.2 view keyの変更
+
+view keyはJSON workspace内のレイアウトとviewを対応付ける。
+既存keyを変更すると手動レイアウトを失う可能性がある。
+
+既存keyは原則維持する。
+変更が必要な場合のレイアウト移行手順は未決定であり、
+確定するまでは専用変更としてバックアップ、JSON差分、生成図を確認する。
+
+== 11.3 生成環境の変化
+
+Structurizr Docker imageやGitHub Actions runnerの更新により、
+生成失敗または意図しないSVG差分が生じる可能性がある。
+
+日付付きtagを固定し、更新は専用変更に分ける。
+候補tagで生成できない、または差分を判断できない場合は現行tagを維持する。
+
+== 11.4 共通workflowと適用状態の差
+
+reusable workflowが実装されていても、
+各ソースリポジトリにcaller、workspace、生成SVGがなければend-to-endでは動作しない。
+
+「共通処理が存在する」「callerを配置した」「実際の図で成功した」を別々の状態として記録する。
+現時点の`meta_architecture`は共通workflowの説明例を持つが、実際のworkspaceとcallerを持たない。
+
+== 11.5 目視不足
+
+CIが再生成差分なしを確認しても、図の読みやすさ、重なり、切れ、
+説明との意味的な一致までは保証できない。
+
+図変更ではStructurizr上の表示とAntora生成ページを人間が確認し、
+少なくともpull request前に一度は公開時の見た目を確認する。

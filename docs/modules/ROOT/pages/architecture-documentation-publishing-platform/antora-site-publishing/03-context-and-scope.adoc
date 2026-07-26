@@ -1,0 +1,56 @@
+= 3. コンテキストとスコープ
+:docstatus: draft
+:created: 2026-07-27
+:revdate: 2026-07-27
+:authors: F; Codex; ChatGPT
+:lang: ja
+
+== 3.1 外部要素
+
+[cols="1,2,3",options="header"]
+|===
+| 外部要素
+| インターフェース
+| 関係
+
+| ソースリポジトリ
+| Git repository、branch、start path、`antora.yml`
+| 文書、図、component設定をcontent sourceとして提供する。
+
+| サイト保守者
+| `npm run build`、`workflow_dispatch`、Actions UI
+| buildと公開を起動し、結果を確認する。
+
+| Antora
+| playbook、component descriptor、module resource
+| content sourcesを読み、静的サイトを生成する。
+
+| GitHub Actions
+| build / publish workflow、artifact
+| 依存関係の導入、build、Pages upload / deployを実行する。
+
+| GitHub Pages
+| Pages artifact、HTTPS
+| 静的サイトを公開する。
+
+| 文書サイト閲覧者
+| Webブラウザ
+| 生成HTML、CSS、JavaScript、画像を閲覧する。
+|===
+
+== 3.2 含むもの
+
+* content sourceの選択と取得
+* サイトtitle、start page、UI、出力先
+* Antora build
+* GitHub Pages artifactとdeploy
+* 公開サイトの基本navigation
+
+== 3.3 含まないもの
+
+* 各content sourceの文書内容と図モデル
+* source側workflowの内部
+* `repository_dispatch`を送る権限とイベント設計
+* 翻訳内容の品質
+* GitHub、Antora、ブラウザの製品本体
+* PDF、Word、Confluenceなどへの本格出力

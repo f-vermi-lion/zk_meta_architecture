@@ -1,0 +1,85 @@
+= 5. ビルディングブロックビュー
+:docstatus: draft
+:created: 2026-07-27
+:revdate: 2026-07-27
+:authors: F; Codex; ChatGPT
+:lang: ja
+
+== 5.1 リポジトリ構成
+
+[listing]
+----
+zouchikikou-docs-site/
+  README.md
+  antora-playbook.yml
+  package.json
+  package-lock.json
+  .gitignore
+  .github/
+    workflows/
+      build.yml
+      publish.yml
+  tools/
+    README.md
+    check-language-pairs
+    test_check_language_pairs.py
+----
+
+== 5.2 構成要素
+
+[cols="1,2,3",options="header"]
+|===
+| 要素
+| 実装
+| 責務
+
+| Antora playbook
+| `antora-playbook.yml`
+| site title、start page、content sources、UI、出力先を定義する。
+
+| npm build
+| `package.json` / `package-lock.json`
+| Antora CLIとsite generatorの依存関係を固定し、`npm run build`を提供する。
+
+| bootstrap build
+| `.github/workflows/build.yml`
+| 手動でbuildし、`build/site`を一般artifactとして保存する。
+
+| Pages publish
+| `.github/workflows/publish.yml`
+| 手動でbuildし、Pages artifactをuploadしてGitHub Pagesへdeployする。
+
+| 共通UI
+| Antora default UIとplaybookの補助設定
+| サイトの基本表示、navigation、静的ファイルを提供する。
+
+| 共通検査
+| `tools/`
+| 複数content sourceを横断する検査を提供する。日英検査の詳細は関連子文書で扱う。
+
+| 静的サイト
+| `build/site`
+| HTML、CSS、JavaScript、画像、`.nojekyll`を含む派生成果物。
+|===
+
+== 5.3 現在のplaybook
+
+現在の初期playbookは、
+`https://github.com/f-vermi-lion/zk_meta_architecture.git`の`main`、
+`start_path: docs`を一つのcontent sourceとして取得する。
+`runtime.fetch: true`でremote content sourceの更新を取得し、
+出力先を`build/site`とする。
+
+これはpublicな最小構成の実装であり、
+複数リポジトリ集約と未pushローカル草稿のpreviewが完成したことを意味しない。
+
+== 5.4 Pages公開
+
+publish workflowは、最小権限として`contents: read`、`pages: write`、
+`id-token: write`を持つ。
+`actions/configure-pages@v5`、`actions/upload-pages-artifact@v4`、
+`actions/deploy-pages@v4`を使う。
+
+現在のworkflowは`workflow_dispatch`だけを受け付ける。
+`repository_dispatch`は
+xref:architecture-documentation-publishing-platform/cross-repository-publishing-orchestration/05-building-block-view.adoc[公開オーケストレーション]の目標構成であり、まだsite workflowへ実装されていない。

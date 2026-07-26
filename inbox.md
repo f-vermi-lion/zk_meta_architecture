@@ -3,4 +3,3 @@
 - publish workflowでtools/check-language-pairsに渡すcontent root取得手順を決める
 - github-workflowsのreusable workflowをtag/releaseで固定参照する運用方針を決める
 - ローカル執筆基盤の初期機能をどうするか考える
-- このmeta_architectureの中身がかなり盛りだくさんなことが分かったので全体と部分の関係に分割していきたい

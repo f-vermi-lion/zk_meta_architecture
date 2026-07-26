@@ -1,0 +1,29 @@
+= Antoraサイト集約・GitHub Pages公開基盤
+:docstatus: draft
+:created: 2026-07-27
+:revdate: 2026-07-27
+:authors: F; Codex; ChatGPT
+:lang: ja
+
+この文書は、複数のAntora content sourceをサイト用リポジトリで集約し、
+静的サイトを生成してGitHub Pagesへ公開する基盤を扱う。
+
+親文書: xref:architecture-documentation-publishing-platform/index.adoc[アーキテクチャ文書公開基盤]
+
+関連文書:
+
+* content sourceの文書構造は xref:architecture-documentation-publishing-platform/document-structure-and-authoring-rules/index.adoc[文書構造・執筆規約]に従う。
+* 日英対応の横断検査は xref:architecture-documentation-publishing-platform/bilingual-document-operation-and-validation/index.adoc[日英文書運用・検査]で扱う。
+* source側からの起動、処理順、再実行は xref:architecture-documentation-publishing-platform/cross-repository-publishing-orchestration/index.adoc[リポジトリ間公開オーケストレーション]で扱う。
+
+== 目次
+
+* xref:architecture-documentation-publishing-platform/antora-site-publishing/01-introduction-and-goals.adoc[1. 導入と目的]
+* xref:architecture-documentation-publishing-platform/antora-site-publishing/02-architecture-constraints.adoc[2. 制約]
+* xref:architecture-documentation-publishing-platform/antora-site-publishing/03-context-and-scope.adoc[3. コンテキストとスコープ]
+* xref:architecture-documentation-publishing-platform/antora-site-publishing/04-solution-strategy.adoc[4. ソリューション戦略]
+* xref:architecture-documentation-publishing-platform/antora-site-publishing/05-building-block-view.adoc[5. ビルディングブロックビュー]
+* xref:architecture-documentation-publishing-platform/antora-site-publishing/06-runtime-view.adoc[6. ランタイムビュー]
+* xref:architecture-documentation-publishing-platform/antora-site-publishing/08-concepts.adoc[8. 横断的コンセプト]
+* xref:architecture-documentation-publishing-platform/antora-site-publishing/10-quality-requirements.adoc[10. 品質要求]
+* xref:architecture-documentation-publishing-platform/antora-site-publishing/11-technical-risks.adoc[11. 技術的リスク]

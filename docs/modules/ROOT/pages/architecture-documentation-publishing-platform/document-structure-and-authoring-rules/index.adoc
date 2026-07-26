@@ -1,0 +1,28 @@
+= 文書構造・執筆規約
+:docstatus: draft
+:created: 2026-07-27
+:revdate: 2026-07-27
+:authors: F; Codex; ChatGPT
+:lang: ja
+
+この文書は、造智機巧のアーキテクチャ文書を
+ソースリポジトリ内で作成、分割、配置、参照、更新するための規約を扱う。
+
+親文書: xref:architecture-documentation-publishing-platform/index.adoc[アーキテクチャ文書公開基盤]
+
+関連文書:
+
+* 図を含む文書の更新は xref:architecture-documentation-publishing-platform/c4-structurizr-diagram-management/index.adoc[C4／Structurizr図生成・管理基盤]に従う。
+* 日英版の配置と対応検査は xref:architecture-documentation-publishing-platform/bilingual-document-operation-and-validation/index.adoc[日英文書運用・検査]に従う。
+* 生成サイトでの確認は xref:architecture-documentation-publishing-platform/antora-site-publishing/index.adoc[Antoraサイト集約・GitHub Pages公開基盤]に従う。
+
+== 目次
+
+* xref:architecture-documentation-publishing-platform/document-structure-and-authoring-rules/01-introduction-and-goals.adoc[1. 導入と目的]
+* xref:architecture-documentation-publishing-platform/document-structure-and-authoring-rules/02-architecture-constraints.adoc[2. 制約]
+* xref:architecture-documentation-publishing-platform/document-structure-and-authoring-rules/04-solution-strategy.adoc[4. ソリューション戦略]
+* xref:architecture-documentation-publishing-platform/document-structure-and-authoring-rules/05-building-block-view.adoc[5. ビルディングブロックビュー]
+* xref:architecture-documentation-publishing-platform/document-structure-and-authoring-rules/06-runtime-view.adoc[6. ランタイムビュー]
+* xref:architecture-documentation-publishing-platform/document-structure-and-authoring-rules/08-concepts.adoc[8. 横断的コンセプト]
+* xref:architecture-documentation-publishing-platform/document-structure-and-authoring-rules/10-quality-requirements.adoc[10. 品質要求]
+* xref:architecture-documentation-publishing-platform/document-structure-and-authoring-rules/11-technical-risks.adoc[11. 技術的リスク]

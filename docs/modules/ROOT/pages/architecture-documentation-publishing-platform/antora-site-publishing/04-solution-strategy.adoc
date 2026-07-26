@@ -1,0 +1,38 @@
+= 4. ソリューション戦略
+:docstatus: draft
+:created: 2026-07-27
+:revdate: 2026-07-27
+:authors: F; Codex; ChatGPT
+:lang: ja
+
+== 4.1 専用リポジトリで集約する
+
+ソースリポジトリは自分の文書正本と最小限の検査・生成設定を持つ。
+統合サイト全体の構成、content sourceの列挙、共通UI、
+GitHub Pages deployは`zouchikikou-docs-site`へ集約する。
+
+これにより、ソース側を「文書を書く場所」、
+サイト側を「集めて公開する場所」として分ける。
+
+== 4.2 Antoraの標準構造に乗る
+
+playbookのcontent sourcesで複数リポジトリを取得し、
+component、module、page、partial、asset、navigationを使って統合する。
+ページ間参照は各content sourceが持つAntora resource IDを維持する。
+
+== 4.3 段階的に公開する
+
+. publicな一つのcontent sourceを手動workflowでbuildする。
+. build結果をartifactとして確認する。
+. 手動`workflow_dispatch`でGitHub Pagesへ公開する。
+. 横断検査と複数content sourceを追加する。
+. リポジトリ間オーケストレーションを有効化する。
+
+初期経路で未使用の`repository_dispatch`、private repository、
+token / secret、日英検査を、実装済みとして扱わない。
+
+== 4.4 生成物を再利用しない
+
+サイトbuildはcontent sourcesから毎回生成する。
+公開HTMLを次回buildの入力や文書正本にせず、
+playbookと各content sourceを再現可能な入力として扱う。

@@ -1,0 +1,71 @@
+= 6. ランタイムビュー
+:docstatus: draft
+:created: 2026-07-27
+:revdate: 2026-07-27
+:authors: F; Codex; ChatGPT
+:lang: ja
+
+== 6.1 pull requestを検査する
+
+. 文書作成者が文書、図、設定を変更してpull requestを作る。
+. source側workflowが文書検査を行う。
+. 図workspaceを持つ場合は図生成workflowがSVGを再生成し、未反映差分を検出する。
+. 変更者が差分、検査結果、ローカル生成siteを確認する。
+. すべての必須検査に成功した変更だけを`main`へmergeする。
+
+pull request由来のworkflowはdispatch、secret利用、Pages deployを行わない。
+
+== 6.2 `main`更新から公開する
+
+. `main`へのpushをsource側workflowが受け取る。
+. 文書検査と
+xref:architecture-documentation-publishing-platform/c4-structurizr-diagram-management/06-runtime-view.adoc[図生成差分検査]を実行する。
+. source側検査が成功したら、サイト用リポジトリへ`repository_dispatch`を送る。
+. site側workflowが起動し、playbookに従ってcontent sourcesを取得する。
+. checkout済みcontent rootを
+xref:architecture-documentation-publishing-platform/bilingual-document-operation-and-validation/06-runtime-view.adoc[日英対応検査]などへ渡す。
+. assetの存在を確認し、Antora buildを実行する。
+. 成功した`build/site`をPages artifactとしてuploadする。
+. GitHub Pagesへdeployする。
+. Actions log、artifact、deployment URLを残す。
+. 保守者が公開結果を確認する。
+
+`repository_dispatch`、content root列挙、権限・tokenは未実装または未決定であり、
+このフローは目標とする標準経路である。
+
+== 6.3 手動で再実行する
+
+. 保守者がサイト用リポジトリの公開workflowを`workflow_dispatch`で起動する。
+. workflowは自動経路と同じcontent取得、横断検査、build、deployを行う。
+. 保守者が元の失敗が解消したことと公開結果を確認する。
+
+現在の`publish.yml`は手動build / deployを実装しているが、
+日英検査などの標準横断検査はまだ組み込まれていない。
+
+== 6.4 source側で失敗する
+
+文書検査、Structurizr export、生成SVG差分検出のいずれかが失敗した場合:
+
+. 失敗したfile、command、差分をsource側logへ出す。
+. `repository_dispatch`を送らない。
+. Pages deployを起動しない。
+. 正本または派生成果物を修正し、pull requestまたはworkflowを再実行する。
+
+図固有の失敗条件は
+xref:architecture-documentation-publishing-platform/c4-structurizr-diagram-management/11-technical-risks.adoc[図生成・管理の技術的リスク]を参照する。
+
+== 6.5 site側で失敗する
+
+content取得、日英検査、asset確認、Antora buildのいずれかが失敗した場合:
+
+. 失敗したcontent root、page、検査code、build logをsite側logへ出す。
+. Pages artifactのuploadとdeployを行わない。
+. 既存の公開サイトは正本より古い可能性があることを認識する。
+. 原因を修正後、`main`更新または`workflow_dispatch`で再実行する。
+
+== 6.6 deploy後に確認する
+
+. deployment URLへアクセスする。
+. 対象page、navigation、xref、図、言語導線を確認する。
+. source側とsite側のActions logに未確認の失敗・warningがないか確認する。
+. 公開結果が期待と異なる場合は、次の自動更新を待たず手動再実行または修正を行う。

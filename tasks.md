@@ -51,3 +51,7 @@
 - [x] Structurizr Docker image tagの更新方針を決める
 - [x] Structurizr図生成CI workflowのYAMLテンプレートを作成する
 - [x] github-workflowsでStructurizr図生成reusable workflowを提供する
+- [x] アーキテクチャ文書公開基盤の親文書と5つの子文書の責務・配置を既存の階層的arc42規則に沿って定める
+- [x] アーキテクチャ文書公開基盤の草稿を全体像の親文書と5つの子文書へ分割する
+- [x] 分割した親子文書のナビゲーションと相互参照を整える
+- [x] 分割した親子文書をAntoraでビルドし、生成サイトの見た目を確認する

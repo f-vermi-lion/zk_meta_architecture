@@ -1,244 +1,67 @@
 = 10. 品質要求
 :docstatus: draft
 :created: 2026-05-05
-:revdate: 2026-05-27
-:authors: F; ChatGPT
+:revdate: 2026-07-27
+:authors: F; ChatGPT; Codex
 :lang: ja
-
 
 == 10.1 品質要求概要
 
-この基盤の品質要求は、文書の内容そのものではなく、文書を書き始めてから公開・確認するまでの非効率を下げることに集中する。
-
-主な品質要求は以下である。
-
-[cols="1,3",options="header"]
+[cols="2,3,2",options="header"]
 |===
-| 品質要求
-| 意味
+| 品質
+| 全体として満たすこと
+| 主な担当文書
 
-| 自動公開性
-| 文書と図を更新して`main`へ反映したら、手動作業なしでGitHub Pagesへ反映される。
+| 変更容易性
+| 全体像を失わず、文書・図・公開・言語・自動化を別々の変更単位として扱える。
+| xref:architecture-documentation-publishing-platform/document-structure-and-authoring-rules/10-quality-requirements.adoc[文書構造・執筆規約]
 
-| 正本保持性
-| 文書本文と図定義の正本が、対象ソースリポジトリ内に残る。
+| 再現性
+| 正本と設定から、図とサイトを再生成できる。
+| xref:architecture-documentation-publishing-platform/c4-structurizr-diagram-management/10-quality-requirements.adoc[図生成・管理] /
+xref:architecture-documentation-publishing-platform/antora-site-publishing/10-quality-requirements.adoc[サイト集約・公開]
 
-| 編集容易性
-| 章・節単位で、F、Codex、ChatGPTが扱いやすい大きさに分割されている。
+| 検出可能性
+| 日英ページ欠落、生成物の未反映差分、build失敗を公開前に検出できる。
+| xref:architecture-documentation-publishing-platform/bilingual-document-operation-and-validation/10-quality-requirements.adoc[日英文書運用・検査] /
+xref:architecture-documentation-publishing-platform/cross-repository-publishing-orchestration/10-quality-requirements.adoc[公開オーケストレーション]
 
-| 統合性
-| 複数リポジトリの文書を、統合サイトとして閲覧できる。
+| 確認容易性
+| pull request前に文書、図、生成HTMLの見た目を確認でき、公開後の結果も追跡できる。
+| すべての子文書
 
-| 草稿確認性
-| 公開前または草稿段階でも、表示崩れ、図、リンク、構成を確認できる。
-
-| 初期構築容易性
-| サイト用リポジトリ作成直後に、deployやtoken設定なしでAntora buildを確認できる。
-
-| 日英整合性
-| 英語正本と日本語補助版の対応欠落を検出できる。
-
-| 既存ツール優先
-| 独自実装を増やしすぎず、Antora、docToolchain、Structurizr、GitHub Actionsなどに乗る。
+| 運用容易性
+| 自動経路が失敗しても手動再実行でき、失敗箇所と入力をlogから判断できる。
+| xref:architecture-documentation-publishing-platform/cross-repository-publishing-orchestration/10-quality-requirements.adoc[公開オーケストレーション]
 |===
 
-== 10.2 品質シナリオ
+== 10.2 全体品質シナリオ
 
-=== 10.2.1 文書更新が自動公開される
+=== 10.2.1 文書と図を変更する
 
-[cols="1,3",options="header"]
-|===
-| 項目
-| 内容
+文書作成者が文書または図を変更したとき、
+正本、必要な派生成果物、参照を同じ変更単位でレビューでき、
+pull request前に生成サイト上の表示を確認できる。
 
-| 刺激
-| 文書作成者がソースリポジトリの`main`へ`.adoc`または`.dsl`の変更を反映する。
+=== 10.2.2 複数リポジトリを公開する
 
-| 環境
-| GitHub ActionsとGitHub Pagesが利用可能で、サイト用リポジトリの公開workflowが設定済みである。
+ソースリポジトリの`main`が更新されたとき、
+source側検査、site側横断検査、Antora build、Pages deployの結果を追跡できる。
+どこかで失敗した場合は古い公開結果と新しい正本を区別できる。
 
-| 応答
-| サイト用リポジトリの公開workflowが起動し、検査、生成、Antora build、Pages deployを実行する。
+=== 10.2.3 詳細を探す
 
-| 受け入れ条件
-| 追加の手動操作なしで、GitHub Pages上の該当ページに変更が反映される。
-|===
+閲覧者または保守者が親文書を読んだとき、
+担当する子文書へ一回のリンクで移動できる。
+子文書からは親文書と直接関係する他の子文書へ戻れる。
 
-=== 10.2.2 文書正本がソースリポジトリに残る
+== 10.3 最低条件
 
-[cols="1,3",options="header"]
-|===
-| 項目
-| 内容
+本体文書の作成を始める最低条件は次のとおりである。
 
-| 刺激
-| あるシステムまたはサブシステムのアーキテクチャ説明を更新する。
-
-| 環境
-| 対象システムのソースリポジトリが存在する。
-
-| 応答
-| arc42本文、Structurizr DSL、Antora設定、必要なworkflowが、そのソースリポジトリに保存される。
-
-| 受け入れ条件
-| GitHub Pages上のHTMLだけを見なくても、ソースリポジトリから文書正本と図定義を復元できる。
-|===
-
-=== 10.2.3 章・節単位でLLMが扱いやすい
-
-[cols="1,3",options="header"]
-|===
-| 項目
-| 内容
-
-| 刺激
-| CodexまたはChatGPTに、特定章の修正、レビュー、要約、追記を依頼する。
-
-| 環境
-| arc42本文が章または節単位の`.adoc`ファイルに分かれている。
-
-| 応答
-| 対象の章ファイルだけを読み書きの単位にできる。
-
-| 受け入れ条件
-| 1つの作業で不要な章全体や巨大な単一文書を毎回扱わなくてよい。
-|===
-
-=== 10.2.4 複数リポジトリの文書を統合できる
-
-[cols="1,3",options="header"]
-|===
-| 項目
-| 内容
-
-| 刺激
-| 複数のソースリポジトリにアーキテクチャ文書が追加される。
-
-| 環境
-| サイト用リポジトリにAntora playbookがある。
-
-| 応答
-| Antoraが複数content sourcesを取得し、統合サイトを生成する。
-
-| 受け入れ条件
-| 閲覧者が1つのGitHub Pagesサイトから、全体文書と各リポジトリの文書を辿れる。
-|===
-
-=== 10.2.5 草稿段階で確認できる
-
-[cols="1,3",options="header"]
-|===
-| 項目
-| 内容
-
-| 刺激
-| 文書作成者が、公開前に表示、図、リンク、ナビゲーションを確認したい。
-
-| 環境
-| ローカルまたはGitHub ActionsでAntora buildを実行できる。
-
-| 応答
-| build結果、log、必要に応じてartifactを確認できる。
-
-| 受け入れ条件
-| GitHub Pagesへdeployする前に、構成崩れ、図欠落、リンク切れを検出できる。
-|===
-
-=== 10.2.6 日英対応の欠落を検出できる
-
-[cols="1,3",options="header"]
-|===
-| 項目
-| 内容
-
-| 刺激
-| 公開または版確定のために、英語正本と日本語補助版の整合を確認する。
-
-| 環境
-| content sources取得後、Antora build前の公開workflowで検査スクリプトを実行できる。
-
-| 応答
-| `tools/check-language-pairs <content-root>...`が、対応ページの欠落と`:lang:`不一致を検出する。
-
-| 受け入れ条件
-| 欠落または不一致がある場合、コマンドが終了コード`1`で失敗し、`issue_code<TAB>content_root<TAB>module<TAB>relative_path<TAB>message`形式のlogを出す。
-|===
-
-publish workflowへの組み込みは、checkout済みcontent rootの取得手順を決めてから行う。
-
-=== 10.2.7 既存ツールを優先して使う
-
-[cols="1,3",options="header"]
-|===
-| 項目
-| 内容
-
-| 刺激
-| 文書公開基盤に新しい機能または処理が必要になる。
-
-| 環境
-| Antora、docToolchain、Structurizr、GitHub Actionsなどの既存ツールが利用可能である。
-
-| 応答
-| まず既存ツールの機能、設定、組み合わせで実現できるかを確認する。
-
-| 受け入れ条件
-| 独自実装は、既存ツールで賄えない差分、検査、接続、運用補助に限定される。
-|===
-
-=== 10.2.8 サイト用リポジトリを小さく作り始められる
-
-[cols="1,3",options="header"]
-|===
-| 項目
-| 内容
-
-| 刺激
-| `zouchikikou-docs-site`を初期作成する。
-
-| 環境
-| public repositoryとして骨組みを作成でき、GitHub Actionsで手動workflowを実行できる。
-
-| 応答
-| `workflow_dispatch`で起動する`build.yml`が、`npm run build`でAntora buildを実行する。
-
-| 受け入れ条件
-| Pages deploy、`repository_dispatch`、token / secret利用なしで、`https://github.com/f-vermi-lion/zk_meta_architecture.git`の`main` branch、`start_path: docs`をcontent sourceとしてbuildできる。
-|===
-
-=== 10.2.9 初期build結果をGitHub Pagesへ公開できる
-
-[cols="1,3",options="header"]
-|===
-| 項目
-| 内容
-
-| 刺激
-| `zouchikikou-docs-site`で初期Antora buildが成功した。
-
-| 環境
-| `zouchikikou-docs-site`のGitHub Pages publishing sourceをGitHub Actionsにできる。
-
-| 応答
-| 手動`workflow_dispatch`で起動する`.github/workflows/publish.yml`が、`.nojekyll`を含む`build/site`をPages artifactとしてuploadし、GitHub Pagesへdeployする。
-
-| 受け入れ条件
-| `repository_dispatch`、cross-repository token / secret、private repositoryのcontent sourceなしで、publicな初期文書サイトをGitHub Pages上で確認できる。
-|===
-
-== 10.3 本体文書を書き始められる最低条件
-
-造智機巧本体の文書を書き始める前に、この基盤が完璧である必要はない。
-
-ただし、最低限以下が満たされていると、後戻りと手戻りを抑えやすい。
-
-* ソースリポジトリ側の標準文書配置が決まっている。
-* サイト用リポジトリの責務が決まっている。
-* サイト用リポジトリの初期構成が決まっている。
-* `main`更新から公開workflow起動までの流れが決まっている。
-* 章ファイル名とメタデータ規則が決まっている。
-* 図の標準配置、生成、差分検出方針が決まっている。
-* 日英対応の検査方針が決まっている。
-* 未決定事項と技術的リスクが11章に逃がされている。
-
-この条件を満たせば、7章の詳細デプロイメントビューが未完成でも、造智機巧本体の最初の文書作成を始められる。
+* 文書配置、命名、メタデータ、相互参照の規則が決まっている。
+* 図の正本、レイアウト、生成、配置の規則が決まっている。
+* サイト用リポジトリの責務と最小build / deploy経路がある。
+* 日英文書の対応方針と最低限の検査仕様がある。
+* 自動化の未実装部分と未決定の権限・運用が明示されている。

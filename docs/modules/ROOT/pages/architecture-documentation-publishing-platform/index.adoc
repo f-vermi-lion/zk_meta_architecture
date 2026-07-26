@@ -1,13 +1,40 @@
-= アーキテクチャ文書公開基盤
+= アーキテクチャ文書公開基盤の全体像
 :docstatus: draft
 :created: 2026-04-27
-:revdate: 2026-05-23
+:revdate: 2026-07-27
 :authors: F; Codex; ChatGPT
 :lang: ja
 
 NOTE: 草稿版。特に記載がなければオーナー（F）による案。
 
-== 目次
+この文書は、複数のソースリポジトリにあるアーキテクチャ文書を集約し、
+GitHub Pagesへ公開する基盤の全体像を示す親文書である。
+各領域の規則、構成、処理手順は子文書に分け、この文書では境界、関係、全体フローを扱う。
+
+== 子文書
+
+[cols="2,3",options="header"]
+|===
+| 子文書
+| 扱う内容
+
+| xref:architecture-documentation-publishing-platform/document-structure-and-authoring-rules/index.adoc[文書構造・執筆規約]
+| arc42 / AsciiDoc文書の配置、命名、メタデータ、分割、相互参照、更新手順。
+
+| xref:architecture-documentation-publishing-platform/c4-structurizr-diagram-management/index.adoc[C4／Structurizr図生成・管理基盤]
+| C4図の正本、レイアウト、SVG生成、配置、CI検査、文書への埋め込み。
+
+| xref:architecture-documentation-publishing-platform/antora-site-publishing/index.adoc[Antoraサイト集約・GitHub Pages公開基盤]
+| Antora playbook、サイト用リポジトリ、サイトbuild、GitHub Pages deploy。
+
+| xref:architecture-documentation-publishing-platform/bilingual-document-operation-and-validation/index.adoc[日英文書運用・検査]
+| 英語正本と日本語補助版の配置、対応検査、公開時の扱い。
+
+| xref:architecture-documentation-publishing-platform/cross-repository-publishing-orchestration/index.adoc[リポジトリ間公開オーケストレーション]
+| ソースリポジトリからサイト用リポジトリへつなぐworkflow、再生成、失敗時の境界。
+|===
+
+== 親文書の目次
 
 * xref:architecture-documentation-publishing-platform/01-introduction-and-goals.adoc[1. 導入と目的]
 * xref:architecture-documentation-publishing-platform/02-architecture-constraints.adoc[2. 制約]

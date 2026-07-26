@@ -1,177 +1,51 @@
 = 4. ソリューション戦略
 :docstatus: draft
 :created: 2026-05-05
-:revdate: 2026-06-01
-:authors: F; ChatGPT
+:revdate: 2026-07-27
+:authors: F; ChatGPT; Codex
 :lang: ja
 
+== 4.1 基本戦略
 
-== 4.1 基本方針
+* 文書と図の正本は、それらが説明するソースコードに近いソースリポジトリへ置く。
+* 文書はarc42とAsciiDocで構成し、Antora標準構成で管理する。
+* C4図はStructurizr DSLをモデル正本とし、公開用SVGを生成する。
+* 専用サイトリポジトリが複数のcontent sourcesを集約し、Antoraでサイトを生成する。
+* 英語正本と日本語補助版は同一component内の別moduleとして管理する。
+* GitHub Actionsが検査、生成、集約、GitHub Pages公開を接続する。
 
-アーキテクチャ文書公開基盤は、文書本文の正本を各ソースリポジトリに残し、公開表示だけを専用サイトリポジトリで集約する構成にする。
+== 4.2 責務の分割
 
-この基盤の解決方針は、以下の組み合わせで成立させる。
-
-* 文書体系はarc42を基本にする。
-* 文書形式はAsciiDocにする。
-* 文書配置はAntora標準構成に寄せる。
-* C4図の標準正本はStructurizr DSLにする。
-* 公開サイト生成は専用サイトリポジトリのAntora playbookで行う。
-* 公開先はGitHub Pagesにする。
-* 更新契機は各ソースリポジトリの`main`更新とする。
-* 自動再生成は`repository_dispatch`、手動再生成は`workflow_dispatch`で扱う。
-
-この章では、詳細な実装手順ではなく、後続章の前提になる主要な解決戦略だけを示す。
-
-== 4.2 文書正本を各ソースリポジトリに置く戦略
-
-各ソースリポジトリは、そのリポジトリが責任を持つシステム、サブシステム、ライブラリ、設定、運用などのアーキテクチャ文書を正本として保持する。
-
-文書正本をソースリポジトリに置く理由は、以下である。
-
-* コード変更と文書変更を同じ変更単位で扱える。
-* Codexなどのリポジトリ内AIが、コードと文書を同時に参照・編集しやすい。
-* 文書だけが別の場所で古くなる状態を避けやすい。
-* サブシステム単位のarc42文書を、そのサブシステムの近くに置ける。
-
-GitHub Pages上の公開サイトは、閲覧用の派生成果物であり、文書正本ではない。
-
-== 4.3 専用サイトリポジトリで集約・公開する戦略
-
-複数のソースリポジトリにある文書は、専用サイトリポジトリで集約する。
-
-専用サイトリポジトリは、以下を持つ。
-
-* Antora playbook
-* 公開workflow
-* 共通UI
-* 共通検査ツール
-* 必要な公開設定
-
-各ソースリポジトリは、原則として自分の文書正本と最低限の検査・生成設定を持つ。統合サイト全体の構成、複数リポジトリの取り込み順、GitHub Pagesへのdeployは専用サイトリポジトリ側の責務にする。
-
-この分離により、ソースリポジトリ側は「文書を書く場所」、サイト用リポジトリ側は「集めて公開する場所」として扱える。
-
-`zouchikikou-docs-site`は、まずpublicな骨組みリポジトリとして作成する。初期構成ではprivate repositoryの文書を取り込まず、手動`workflow_dispatch`でAntora buildを確認するところまでに限定する。
-
-== 4.4 AsciiDoc / Antora / arc42 を使う戦略
-
-文書本文はAsciiDocで書き、arc42の章構成に沿って分割する。
-
-AsciiDocを使う主な理由は、以下である。
-
-* arc42公式テンプレートとの相性がよい。
-* `include`や属性などにより、章・節単位の再利用がしやすい。
-* Antoraの文書体系に自然に乗せられる。
-* 図、コードブロック、表、相互参照を文書化基盤として扱いやすい。
-
-Antoraを使う主な理由は、以下である。
-
-* 複数リポジトリの文書をcontent sourcesとして集約できる。
-* component、module、page、partial、assetという構造で文書群を管理できる。
-* GitHub Pagesに出す静的サイトを生成できる。
-* `xref`により、相対パスより安定したページ間参照を使える。
-
-arc42は、システムごとのアーキテクチャ説明の型として使う。単一の巨大なarc42ですべてを表すのではなく、全体文書とサブシステム文書を階層的に組み合わせる。
-
-== 4.5 図ソースとC4/Structurizrを分離する戦略
-
-アーキテクチャ図は、図ソースと公開画像を分離して管理する。公開画像はAntora image familyに合わせ、`docs/modules/<module>/assets/images/diagrams/`に置く。
-
-C4図の標準正本はStructurizr DSLにする。arc42本文には、Structurizr DSLそのものを主たる図表現として直接埋め込まず、DSLから生成したSVGなどの画像を埋め込む。
-
-この方針により、以下を分離する。
-
-[cols="1,3",options="header"]
+[cols="2,3",options="header"]
 |===
-| 対象
-| 役割
+| 領域
+| 戦略
 
-| Structurizr DSL
-| C4図モデルの標準正本。C4図の変更はまずDSLに入れる。
+| xref:architecture-documentation-publishing-platform/document-structure-and-authoring-rules/04-solution-strategy.adoc[文書構造・執筆]
+| 文書の正本、階層、編集単位、識別子を安定させる。
 
-| Structurizr JSON workspace
-| 手動レイアウトを含むexport入力。モデル正本ではなく、見た目を再現するために管理する。
+| xref:architecture-documentation-publishing-platform/c4-structurizr-diagram-management/04-solution-strategy.adoc[図生成・管理]
+| 図モデル、手動レイアウト、生成画像を異なる役割として管理する。
 
-| 生成済みSVG
-| 公開サイトで閲覧するための標準派生成果物。PNGは必要時の補助出力に留める。
+| xref:architecture-documentation-publishing-platform/antora-site-publishing/04-solution-strategy.adoc[サイト集約・公開]
+| サイト全体の構成と公開を専用サイトリポジトリへ集約する。
 
-| arc42本文
-| 図を説明し、生成済み画像を参照する文書。
+| xref:architecture-documentation-publishing-platform/bilingual-document-operation-and-validation/04-solution-strategy.adoc[日英文書運用]
+| 正本言語と補助言語を明示し、公開時に構造上の対応を検査する。
+
+| xref:architecture-documentation-publishing-platform/cross-repository-publishing-orchestration/04-solution-strategy.adoc[公開オーケストレーション]
+| source側の検査とsite側の集約・公開をイベントで接続し、手動再実行経路を残す。
 |===
 
-標準生成経路は、Structurizr DSL/JSONからStructurizrの`export -format svg`で直接SVGを生成する方式にする。手動レイアウトを再現する場合は`workspace.json`を入力にする。PlantUML / C4-PlantUML経由は、生成される図の見た目が目的に合わないため標準経路にしない。
+== 4.3 段階的な実装
 
-CI上の標準実行環境は`structurizr/structurizr:2026.05.22-playwright`とし、各ソースリポジトリrootで`docs/modules/<module>/examples/diagrams/structurizr/workspace.json`から`docs/modules/<module>/assets/images/diagrams/`へSVGを生成する。生成SVGは派生成果物だが、Antora assetとしてリポジトリ管理する。
+最小構成ではpublicなcontent source、手動build、手動Pages deployから始める。
+その後、共通検査、図生成、`repository_dispatch`、複数リポジトリ、
+必要な権限と失敗時運用を段階的に有効化する。
 
-Docker image tagは、Playwright依存を含む日付付き`-playwright` tagを明示固定し、`latest`や未修飾tagは使わない。tag更新は、月次確認、CI失敗、脆弱性対応、GitHub Actions runner互換性対応、Structurizr export修正の取り込みが必要な場合に、専用変更として手動で行う。更新時は、tag文字列、生成SVG、関連文書を同じ変更単位に含める。
+未実装の標準フローを、初期構成で既に動作しているものとして扱わない。
 
-生成対象は`find docs/modules -path '*/examples/diagrams/structurizr/workspace.json' -type f -print`で自動検出する。対象が0件の場合は、図生成対象なしとして成功扱いにする。生成後は`git status --porcelain -- docs/modules/<module>/assets/images/diagrams`で未反映差分を検出する。出力がある場合は、生成SVGが変更単位に含まれていないためCI失敗にする。
+== 4.4 既存ツールの優先
 
-モデル変更は必ず`workspace.dsl`から始める。手動レイアウトを使う図では、既存`workspace.json`のレイアウトを反映した状態で`workspace.json`を更新し、DSL変更とJSON更新を同じ変更単位で扱う。
-
-レイアウトだけを調整する場合は`workspace.json`の変更だけを許容する。ただし、`workspace.json`は手編集せず、StructurizrのUIまたは公式ツールのmerge/export結果として更新する。
-
-レイアウト保持のため、Structurizr viewsには明示的で安定したview keyを付ける。view keyは`<view-type>-<target>[-<purpose>]`形式の英小文字kebab-caseにし、`view-type`には`system-context`、`container`、`component`、`dynamic`、`deployment`、`filtered`、`image`、`custom`を使う。
-
-例は`system-context-docs-site`、`container-docs-site`、`dynamic-publish-flow`、`deployment-docs-site-production`である。arc42章番号や一時的な表示名はview keyに入れない。
-
-== 4.6 英語正本・日本語補助版の運用戦略
-
-造智機巧本体のアーキテクチャ文書は、英語版を正本、日本語版を補助版として扱う。
-
-ただし、この`meta_architecture`自体は日本語運用の文書であるため、英語正本・日本語補助版の必須対応検査の対象外にする。
-
-日英版を持つ文書では、同一component内のAntora moduleで言語を分ける。
-
-[cols="1,2",options="header"]
-|===
-| module
-| 役割
-
-| `ROOT`
-| 英語正本
-
-| `ja`
-| 日本語補助版
-|===
-
-草稿段階では片方だけの更新を許容する。公開時と版確定時には、対応ページの欠落と`:lang:`不一致をCIで検出する。
-
-== 4.7 自動化と手動再実行の戦略
-
-文書作成者は、原則として文書本文、図定義、必要な参照を書き、`main`ブランチへ反映するところまでを行う。
-
-その後の文書検査、図生成、サイト生成、GitHub Pages公開は、GitHub Actionsで自動化する。
-
-自動化の起動方式は以下とする。
-
-[cols="1,2,3",options="header"]
-|===
-| 起動方式
-| 起動元
-| 用途
-
-| `repository_dispatch`
-| ソースリポジトリの`main`更新後
-| サイト用リポジトリの公開workflowを自動起動する。
-
-| `workflow_dispatch`
-| Fまたは保守者の手動操作
-| 失敗後の再実行、設定変更後の再生成、確認用の手動公開に使う。
-|===
-
-`repository_dispatch`だけにすると手動再実行が面倒になるため、サイト用リポジトリの公開workflowは`workflow_dispatch`も受け付ける。
-
-== 4.8 現時点で保留する判断
-
-以下は、現時点では戦略として固定せず、未決定事項または技術的リスクとして管理する。
-
-* Structurizr view keyを変更する場合のJSONレイアウト移行手順
-* private repositoryの文書をpublic GitHub Pagesへ出してよいか
-* docToolchainのAntora連携をどこまで使うか
-* cross-repository workflowで使うtoken / secret管理
-* サイト再生成失敗時の通知・再実行手順
-* Antora UI上の日英切り替え導線
-* publish workflowで`tools/check-language-pairs`に渡すcontent root取得手順
-* 日英対応ページの内容差分や更新鮮度の検査要否
+独自実装は、既存ツールでは表せない検査、リポジトリ間の接続、運用補助に限定する。
+docToolchainは補助候補として残すが、現時点の公開サイト生成の中心はAntoraとする。
