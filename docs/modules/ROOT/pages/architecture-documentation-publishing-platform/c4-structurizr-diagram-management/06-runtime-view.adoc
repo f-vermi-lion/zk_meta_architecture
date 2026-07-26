@@ -1,0 +1,89 @@
+= 6. ランタイムビュー
+:docstatus: draft
+:created: 2026-07-27
+:revdate: 2026-07-27
+:authors: F; Codex; ChatGPT
+:lang: ja
+
+== 6.1 文書と図を更新する
+
+. 変更する説明と、図で示す対象・関係・viewを一緒に考える。
+. C4モデルの変更を`workspace.dsl`またはそこからincludeするDSLへ入れる。
+. 手動レイアウトを使う場合は、既存`workspace.json`のレイアウトを反映した状態でモデルを同期する。
+. Structurizr UIまたは公式ツールを使って配置を調整し、図を目視する。
+. `workspace.json`を公式のmerge / export結果として更新する。テキストエディタで手編集しない。
+. JSON workspaceからSVGを生成する。
+. AsciiDocの説明と`image::diagrams/<file>.svg[]`参照を更新する。
+. DSL、JSON、SVG、本文の差分を確認する。
+. ローカル内容を使ってAntora buildし、少なくともpull request前に一度、生成ページ上の図と説明を目視する。
+
+DSLからレイアウト付きJSONへ同期する具体的で検証済みの操作と、
+view key変更時のレイアウト移行手順は未完成である。
+このため、既存workspaceへ影響する変更ではバックアップとJSON差分の確認を必須とする。
+
+== 6.2 SVGを生成する
+
+ソースリポジトリrootから、標準では次のコマンドを実行する。
+
+[source,sh]
+----
+docker run --rm \
+  -v "$PWD:/usr/local/structurizr" \
+  structurizr/structurizr:2026.05.22-playwright \
+  export \
+  -format svg \
+  -workspace docs/modules/<module>/examples/diagrams/structurizr/workspace.json \
+  -output docs/modules/<module>/assets/images/diagrams
+----
+
+生成対象は次で検出する。
+
+[source,sh]
+----
+find docs/modules \
+  -path '*/examples/diagrams/structurizr/workspace.json' \
+  -type f \
+  -print
+----
+
+対象が0件なら図生成対象なしとして成功扱いにする。
+検出した各workspaceは、同じmoduleの`assets/images/diagrams/`へ出力する。
+
+== 6.3 未反映差分を検出する
+
+SVG生成後、対応するasset directoryに差分がないことを確認する。
+
+[source,sh]
+----
+git status --porcelain -- docs/modules/<module>/assets/images/diagrams
+----
+
+出力があればCIを失敗させ、次をlogへ出す。
+
+[source,sh]
+----
+git status --short -- docs/modules/<module>/assets/images/diagrams
+git diff -- docs/modules/<module>/assets/images/diagrams
+----
+
+未追跡SVGも失敗対象にする。
+
+== 6.4 workflowの起動
+
+caller workflowは`pull_request`、`main`への`push`、`workflow_dispatch`で起動する。
+
+* pull requestでは、merge前に生成SVGの未反映差分を検出する。
+* `main` pushでは、サイト再生成依頼より前に図資産が反映済みであることを確認する。
+* `workflow_dispatch`は、失敗後やDocker image更新後の再確認に使う。
+
+後続の再生成依頼は
+xref:architecture-documentation-publishing-platform/cross-repository-publishing-orchestration/06-runtime-view.adoc[公開オーケストレーションのランタイムビュー]で扱う。
+
+== 6.5 Docker image tagを更新する
+
+tagは月次確認、CI失敗、脆弱性対応、runner互換性対応、
+export修正の取り込みが必要な場合に専用変更として更新する。
+
+更新時は、tag文字列、workflow、生成SVG、関連文書を同じ変更単位にする。
+生成に失敗する、またはSVG差分を判断できない場合は現行tagを維持し、
+具体的な論点を`inbox.md`へ戻す。

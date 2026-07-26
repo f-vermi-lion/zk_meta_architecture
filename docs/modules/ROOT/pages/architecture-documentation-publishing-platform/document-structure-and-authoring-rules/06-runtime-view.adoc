@@ -1,0 +1,46 @@
+= 6. ランタイムビュー
+:docstatus: draft
+:created: 2026-07-27
+:revdate: 2026-07-27
+:authors: F; Codex; ChatGPT
+:lang: ja
+
+== 6.1 新しい文書を作る
+
+. 文書が説明する対象と、親文書またはcomponent内での位置を決める。
+. `pages/`配下へ安定したslugのdirectoryを作り、`index.adoc`を置く。
+. 必要なarc42章だけを章ファイルとして作る。
+. 全ページへ必須メタデータを設定する。
+. 親文書の本文とnavigationから新しい文書へ`xref`する。
+. 子文書のindexから親文書と直接関係する文書へ`xref`する。
+. ローカル内容をcontent sourceにしたAntora buildを実行し、生成HTMLを確認する。
+
+== 6.2 文書を更新する
+
+. 変更内容が全体の責務か、特定の子文書の詳細かを判断する。
+. 詳細の正本となる一つのページを更新し、他ページには要約とリンクだけを残す。
+. `:revdate:`を更新し、必要なら`:docstatus:`を変更する。
+. navigation、xref、include、画像参照への影響を確認する。
+. 図を変更する場合は
+xref:architecture-documentation-publishing-platform/c4-structurizr-diagram-management/06-runtime-view.adoc[図の更新フロー]を同時に行う。
+. 日英版を持つ場合は
+xref:architecture-documentation-publishing-platform/bilingual-document-operation-and-validation/06-runtime-view.adoc[日英更新フロー]を同時に行う。
+. pull request前に、ソース差分とローカル生成サイトの対象ページを確認する。
+
+== 6.3 長くなった文書を分ける
+
+次のいずれかに当たる場合は、章・節ファイルまたは子arc42への分割を検討する。
+
+* 一つのページが複数の独立した責務を説明している。
+* 構成、実行時動作、品質、リスクを独立して説明できる部分がある。
+* 同じ詳細が親文書の複数章に繰り返されている。
+* 変更時に関係のない大量の文脈を読まなければならない。
+
+分割後は、親に境界と関係を残し、移した詳細を親から削除する。
+元の公開入口として使われる親の`index.adoc`とresource IDは維持する。
+
+== 6.4 検査の現状
+
+Antora buildはAsciiDoc解析、xref、include、assetの解決を確認する。
+一方、必須メタデータや一般的な文書規則を専用に検査する共通コマンドは現時点で未実装である。
+実装済みの日英対応検査は日英子文書、図生成差分検査は図子文書で扱う。

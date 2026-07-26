@@ -1,0 +1,83 @@
+= 5. ビルディングブロックビュー
+:docstatus: draft
+:created: 2026-07-27
+:revdate: 2026-07-27
+:authors: F; Codex; ChatGPT
+:lang: ja
+
+== 5.1 構成要素
+
+[cols="2,2,3",options="header"]
+|===
+| 要素
+| 所在
+| 責務
+
+| 文書検査
+| 各ソースリポジトリ
+| AsciiDoc、metadata、xref / includeなど、source内で完結する検査を行う。一般検査の具体実装は未完成。
+
+| 図生成caller
+| 各ソースリポジトリ
+| reusable workflowを呼び、生成SVGの未反映差分を検出する。
+
+| 図生成reusable workflow
+| `f-vermi-lion/github-workflows`
+| workspace検出、Structurizr export、Git差分検出を共通化する。
+
+| dispatch sender
+| 各ソースリポジトリ
+| `main`上の検査成功後、サイト用リポジトリへ再生成を依頼する。未実装。
+
+| site publish workflow
+| `zouchikikou-docs-site`
+| dispatchまたは手動起動から横断検査、Antora build、Pages deployを行う。現在は手動経路だけ実装。
+
+| 日英checker
+| `zouchikikou-docs-site/tools`
+| content rootの日英page対応と`:lang:`を検査する。toolは実装済み、workflow接続は未実装。
+
+| Antora build
+| `zouchikikou-docs-site`
+| playbookのcontent sourcesから静的サイトを生成する。
+
+| Pages deploy
+| `zouchikikou-docs-site` / GitHub Pages
+| Pages artifactをuploadして公開する。手動workflowは実装済み。
+|===
+
+== 5.2 起動関係
+
+[listing]
+----
+pull_request
+  -> source検査
+  -> 成功 / merge可能
+
+main push
+  -> source検査・図生成差分検査
+  -> repository_dispatch
+  -> site横断検査
+  -> Antora build
+  -> Pages deploy
+
+workflow_dispatch
+  -> site横断検査
+  -> Antora build
+  -> Pages deploy
+----
+
+上の`main push`経路は目標状態であり、
+現在のsite workflowは`repository_dispatch`を受け付けない。
+
+== 5.3 成果物
+
+* source側Actions log
+* site側Actions log
+* 検査issue
+* 生成SVGのGit差分
+* Antora build artifact
+* Pages artifact
+* deployment URL
+
+これらは調査と証跡に使う派生成果物であり、文書正本ではない。

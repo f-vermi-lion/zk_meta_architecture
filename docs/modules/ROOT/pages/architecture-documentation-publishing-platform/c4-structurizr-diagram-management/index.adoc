@@ -1,0 +1,28 @@
+= C4／Structurizr図生成・管理基盤
+:docstatus: draft
+:created: 2026-07-27
+:revdate: 2026-07-27
+:authors: F; Codex; ChatGPT
+:lang: ja
+
+この文書は、C4図のモデル、手動レイアウト、公開用画像、
+文書への埋め込み、再生成検査を一貫して管理する基盤を扱う。
+
+親文書: xref:architecture-documentation-publishing-platform/index.adoc[アーキテクチャ文書公開基盤]
+
+関連文書:
+
+* 図を置く文書構造は xref:architecture-documentation-publishing-platform/document-structure-and-authoring-rules/index.adoc[文書構造・執筆規約]に従う。
+* 生成画像を取り込むサイトは xref:architecture-documentation-publishing-platform/antora-site-publishing/index.adoc[Antoraサイト集約・GitHub Pages公開基盤]で扱う。
+* source側workflowの起動と後続処理は xref:architecture-documentation-publishing-platform/cross-repository-publishing-orchestration/index.adoc[リポジトリ間公開オーケストレーション]で扱う。
+
+== 目次
+
+* xref:architecture-documentation-publishing-platform/c4-structurizr-diagram-management/01-introduction-and-goals.adoc[1. 導入と目的]
+* xref:architecture-documentation-publishing-platform/c4-structurizr-diagram-management/02-architecture-constraints.adoc[2. 制約]
+* xref:architecture-documentation-publishing-platform/c4-structurizr-diagram-management/04-solution-strategy.adoc[4. ソリューション戦略]
+* xref:architecture-documentation-publishing-platform/c4-structurizr-diagram-management/05-building-block-view.adoc[5. ビルディングブロックビュー]
+* xref:architecture-documentation-publishing-platform/c4-structurizr-diagram-management/06-runtime-view.adoc[6. ランタイムビュー]
+* xref:architecture-documentation-publishing-platform/c4-structurizr-diagram-management/08-concepts.adoc[8. 横断的コンセプト]
+* xref:architecture-documentation-publishing-platform/c4-structurizr-diagram-management/10-quality-requirements.adoc[10. 品質要求]
+* xref:architecture-documentation-publishing-platform/c4-structurizr-diagram-management/11-technical-risks.adoc[11. 技術的リスク]

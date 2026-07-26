@@ -1,0 +1,51 @@
+= 10. 品質要求
+:docstatus: draft
+:created: 2026-07-27
+:revdate: 2026-07-27
+:authors: F; Codex; ChatGPT
+:lang: ja
+
+== 10.1 品質シナリオ
+
+[cols="2,3,3",options="header"]
+|===
+| シナリオ
+| 応答
+| 受け入れ条件
+
+| source検査が失敗する
+| dispatchとdeployを行わず、source側logへ原因を残す。
+| 公開workflowが起動せず、失敗fileと差分を特定できる。
+
+| site横断検査が失敗する
+| Antora buildまたはPages deployへ進まない。
+| content root、issue code、pageをsite側logから判断できる。
+
+| 自動dispatchが失敗する
+| 保守者が`workflow_dispatch`から同じsite処理を再実行する。
+| 自動・手動で検査、build、deployの内容が一致する。
+
+| `main`は更新されたが公開に失敗する
+| 正本更新と公開状態を別に記録する。
+| 古い公開siteを新しい正本と誤認せず、再実行対象を判断できる。
+
+| tokenを設定する
+| dispatch先と必要操作だけに権限を限定する。
+| pull request由来のworkflowからsecretとdeploy権限へ到達できない。
+
+| 公開に成功する
+| source / site log、artifact、deployment URLを残す。
+| どの正本更新に対応する公開かを調査でき、対象pageを目視できる。
+|===
+
+== 10.2 完了条件
+
+end-to-end公開の実装は、少なくとも次を満たしたとき完了とする。
+
+* source側検査成功後だけdispatchする。
+* site workflowが`repository_dispatch`と`workflow_dispatch`の両方を受け付ける。
+* 横断検査がAntora build前に実行される。
+* 失敗時にPages deployを行わない。
+* 権限とsecretの範囲が決定・実装されている。
+* 自動経路と手動経路の両方を実際に確認している。
+* 公開後確認の担当と結果が追跡できる。

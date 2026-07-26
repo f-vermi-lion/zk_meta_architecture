@@ -1,0 +1,45 @@
+= 10. 品質要求
+:docstatus: draft
+:created: 2026-07-27
+:revdate: 2026-07-27
+:authors: F; Codex; ChatGPT
+:lang: ja
+
+== 10.1 品質シナリオ
+
+[cols="2,3,3",options="header"]
+|===
+| シナリオ
+| 応答
+| 受け入れ条件
+
+| 初期サイトをbuildする
+| publicな一つのcontent sourceを取得し、Antoraで静的サイトを生成する。
+| `npm run build`が成功し、`build/site`にstart pageとnavigationが生成される。
+
+| 手動でPagesへ公開する
+| `workflow_dispatch`からbuild、artifact upload、deployを行う。
+| deployment URLが得られ、公開ページが生成結果と一致する。
+
+| content sourceを追加する
+| playbookへrepository、branch、start pathを追加する。
+| componentのpage、asset、navigationが既存componentと衝突せずに生成される。
+
+| buildが失敗する
+| workflowがdeployを行わず、logと必要なartifactを残す。
+| 失敗した処理と入力content sourceを判断できる。
+
+| pull request前に表示を確認する
+| ローカルcontent sourceを使う一時playbookからサイトを生成する。
+| 未pushの変更を含む親・子ページ、リンク、表、図を目視できる。
+|===
+
+== 10.2 完了条件
+
+サイト構成の変更は、少なくとも次を満たしたとき完了とする。
+
+* playbookが対象content sourceとstart pageを解決できる。
+* Antora buildにwarning以上の未確認事項がない。
+* 生成siteに`.nojekyll`が含まれる。
+* navigationと主要xrefを生成HTMLで確認している。
+* publish変更ではPages artifactと権限を確認している。

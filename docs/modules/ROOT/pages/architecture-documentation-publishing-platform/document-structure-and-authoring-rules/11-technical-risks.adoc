@@ -1,0 +1,44 @@
+= 11. 技術的リスク
+:docstatus: draft
+:created: 2026-07-27
+:revdate: 2026-07-27
+:authors: F; Codex; ChatGPT
+:lang: ja
+
+== 11.1 親子文書の重複
+
+同じ詳細を親と子の両方へ残すと、片方だけが更新されて矛盾する。
+親には境界、関係、要約を残し、実装規則と手順は担当子文書だけを正本とする。
+
+== 11.2 過剰な分割
+
+内容が薄いpageや子文書を増やすと、読むための移動と保守対象だけが増える。
+独立した責務、構成、実行時動作、品質、リスクを説明できる場合に子arc42へ分け、
+単なる短い再利用断片はpartial、短い補足は既存pageへ置く。
+
+== 11.3 resource IDの破壊
+
+directoryやpage名を不用意に変えると、navigation、本文、外部リンクが壊れる。
+slugを安定した対象名にし、表示順変更ではpathを変えない。
+renameが必要な場合は、全xrefと公開URLへの影響を同じ変更で確認する。
+
+== 11.4 ローカル草稿を確認できない
+
+現在の`zouchikikou-docs-site/antora-playbook.yml`はremote `main`をcontent sourceとして読む。
+そのままの`npm run build`が成功しても、未pushの草稿を確認した証拠にはならない。
+
+pull request前の確認では、ローカルの`meta_architecture`をcontent sourceにした一時playbookなど、
+確認対象が明示された経路を使う。
+恒久的なローカル執筆基盤の初期機能は未決定であり、`inbox.md`で別途扱う。
+
+== 11.5 検査の不足
+
+必須メタデータ、一般的なAsciiDoc規則、リンク方針を専用に検査する共通ツールは未実装である。
+当面は差分レビュー、検索、Antora build、生成HTMLの目視を組み合わせる。
+検査を追加する場合は、既存ツールで実現できる範囲を確認してから独自実装を検討する。
+
+== 11.6 docToolchainの採用範囲
+
+docToolchainのAntora連携をどこまで使うかは未決定である。
+Antora buildだけで成立する最小経路を維持し、
+必要なtaskごとに採用価値と安定性を確認する。

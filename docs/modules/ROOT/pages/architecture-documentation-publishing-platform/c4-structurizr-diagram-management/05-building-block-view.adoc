@@ -1,0 +1,91 @@
+= 5. ビルディングブロックビュー
+:docstatus: draft
+:created: 2026-07-27
+:revdate: 2026-07-27
+:authors: F; Codex; ChatGPT
+:lang: ja
+
+== 5.1 ファイル構成
+
+[listing]
+----
+docs/modules/<module>/
+  examples/
+    diagrams/
+      structurizr/
+        workspace.dsl
+        workspace.json
+        model.dsl    # optional
+        views.dsl    # optional
+        styles.dsl   # optional
+  assets/
+    images/
+      diagrams/
+        <generated-view>.svg
+  pages/
+    <document>/
+      <chapter>.adoc
+----
+
+== 5.2 構成要素
+
+[cols="1,2,3",options="header"]
+|===
+| 要素
+| 実装・配置
+| 責務
+
+| DSL workspace
+| `workspace.dsl`
+| C4モデル、view、styleの標準入口と正本。
+
+| 分割DSL
+| `model.dsl`、`views.dsl`、`styles.dsl`など
+| workspaceが大きい場合に、関心ごとに分割して`!include`する。
+
+| JSON workspace
+| `workspace.json`
+| 手動レイアウトを保持し、SVG exportの入力になる。
+
+| 生成SVG
+| `assets/images/diagrams/*.svg`
+| ページに埋め込み、公開する。
+
+| caller workflow
+| 各ソースリポジトリの`.github/workflows/diagrams.yml`
+| pull request、`main` push、手動実行から共通処理を呼び出す。
+
+| reusable workflow
+| `f-vermi-lion/github-workflows/.github/workflows/structurizr-diagrams.yml`
+| workspace検出、Docker export、未反映差分検出を共通化する。
+
+| caller例
+| `docs/modules/ROOT/examples/github-actions/diagrams.yml`
+| source側workflowの標準形を示す。
+|===
+
+== 5.3 実装状況
+
+reusable workflowとcaller例は実装済みである。
+初期標準ではcallerにGitHub Actionsの`paths` filterを設けず、
+reusable workflow内のworkspace自動検出で対象0件を成功扱いにする。
+
+[source,yaml]
+----
+include::example$github-actions/diagrams.yml[]
+----
+
+一方、`meta_architecture`には現在、実際の`workspace.dsl`、
+`workspace.json`、生成SVG、`.github/workflows/diagrams.yml`はない。
+したがって、共通基盤の実装済みと、このcontent sourceへの適用済みを区別する。
+
+== 5.4 文書への埋め込み
+
+生成SVGは、対応するページから次の形式で参照する。
+
+[source,asciidoc]
+----
+image::diagrams/<file>.svg[]
+----
+
+必要なら図の説明と、対応するDSLソースへの参照を併記する。

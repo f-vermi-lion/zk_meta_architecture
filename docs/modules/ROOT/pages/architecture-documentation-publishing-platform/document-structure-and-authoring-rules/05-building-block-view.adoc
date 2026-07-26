@@ -1,0 +1,94 @@
+= 5. ビルディングブロックビュー
+:docstatus: draft
+:created: 2026-07-27
+:revdate: 2026-07-27
+:authors: F; Codex; ChatGPT
+:lang: ja
+
+== 5.1 Antora content root
+
+標準構成は次のとおりである。
+
+[listing]
+----
+docs/
+  antora.yml
+  modules/
+    ROOT/
+      nav.adoc
+      pages/
+        <document-slug>/
+          index.adoc
+          01-introduction-and-goals.adoc
+          ...
+          <child-slug>/
+            index.adoc
+            ...
+      partials/
+      examples/
+      assets/
+        images/
+    ja/
+      nav.adoc
+      pages/
+      partials/
+      examples/
+      assets/
+----
+
+`meta_architecture`自体は日本語単独運用のため、
+現在は`ROOT` moduleに日本語ページを置く。
+造智機巧本体の日英配置は
+xref:architecture-documentation-publishing-platform/bilingual-document-operation-and-validation/05-building-block-view.adoc[日英文書運用・検査]で定める。
+
+== 5.2 構成要素
+
+[cols="1,2,3",options="header"]
+|===
+| 要素
+| 配置
+| 責務
+
+| component descriptor
+| `docs/antora.yml`
+| component名、title、version、navigationを定義する。
+
+| navigation
+| `docs/modules/<module>/nav.adoc`
+| 公開サイトで読者が辿るページ階層を定義する。
+
+| 文書トップ
+| `pages/<document-slug>/index.adoc`
+| 文書の目的、親、関連文書、章への入口を示す。
+
+| 章ファイル
+| `pages/<document-slug>/NN-chapter-slug.adoc`
+| arc42の一つの章を記述する。
+
+| 子文書
+| `pages/<parent-slug>/<child-slug>/`
+| 親の一部分を独立したarc42として記述する。
+
+| partial
+| `partials/`
+| 複数ページへ同じ内容を埋め込むための再利用断片。
+
+| example
+| `examples/`
+| ページから参照するソース例や設定例。
+
+| asset
+| `assets/`
+| 公開する画像や静的補助ファイル。
+
+| `README.md`
+| 文書またはリポジトリの入口
+| GitHub閲覧者を説明と公開ページへ案内する。arc42本文の正本にはしない。
+|===
+
+== 5.3 他領域との接続
+
+* 図ソースは`examples/diagrams/`、公開画像は`assets/images/diagrams/`に置く。
+* サイト用リポジトリはcontent rootをplaybookのcontent sourceとして取得する。
+* 日英版を持つcomponentは`ROOT`と`ja`で対応するpage pathを揃える。
+* source側workflowは文書固有の検査、site側workflowは横断検査とAntora buildを担当する。

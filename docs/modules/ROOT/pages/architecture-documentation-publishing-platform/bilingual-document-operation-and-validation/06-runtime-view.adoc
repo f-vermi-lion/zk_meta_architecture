@@ -1,0 +1,54 @@
+= 6. ランタイムビュー
+:docstatus: draft
+:created: 2026-07-27
+:revdate: 2026-07-27
+:authors: F; Codex; ChatGPT
+:lang: ja
+
+== 6.1 日英ページを更新する
+
+. 変更対象の英語正本または日本語補助版を編集する。
+. page pathとfile nameを対応するmodule間で揃える。
+. 英語pageへ`:lang: en`、日本語pageへ`:lang: ja`を設定する。
+. 対応するnavigationとxrefを更新する。
+. 草稿段階で片方だけを更新した場合は、対応版が未更新であることを変更管理上で追跡する。
+. 公開または版確定前に両版を揃え、検査コマンドを実行する。
+. 生成サイトで両pageと移動導線を確認する。
+
+== 6.2 検査を実行する
+
+[source,sh]
+----
+tools/check-language-pairs path/to/content-root [...]
+----
+
+問題がなければ終了code `0`で出力なしとする。
+違反があればすべてのissueを標準出力へ出し、終了code `1`とする。
+content rootがdirectoryでない、または`antora.yml`がない場合は
+標準エラーへ`invalid_content_root`を出し、終了code `2`とする。
+
+== 6.3 検査違反へ対応する
+
+. issue code、content root、module、relative pathを確認する。
+. `missing_ja`または`missing_en`なら対応pageを作る。
+. `missing_lang`または`lang_mismatch`ならpage headerを修正する。
+. navigationと対応言語へのlinkを確認する。
+. 検査を再実行する。
+. 問題がなくなった後にAntora buildと公開を行う。
+
+検査違反が残る場合、publish workflowはdeployへ進んではならない。
+
+== 6.4 publish workflowへの組み込み
+
+目標とする処理順は、content sources取得後、Antora build前である。
+ただし、checkout済みcontent rootをどのように列挙して
+`tools/check-language-pairs`へ渡すかは未決定である。
+
+この接続は
+xref:architecture-documentation-publishing-platform/cross-repository-publishing-orchestration/06-runtime-view.adoc[公開オーケストレーション]で確定する。
+
+== 6.5 言語切り替え
+
+公開後、英語正本と日本語補助版の対応pageを行き来できることを確認する。
+Antora UIのどこに導線を置くか、
+手動xrefかUIカスタマイズかは未決定である。

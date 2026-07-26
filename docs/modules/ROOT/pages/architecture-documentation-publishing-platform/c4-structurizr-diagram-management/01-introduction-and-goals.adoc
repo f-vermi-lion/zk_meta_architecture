@@ -1,0 +1,51 @@
+= 1. 導入と目的
+:docstatus: draft
+:created: 2026-07-27
+:revdate: 2026-07-27
+:authors: F; Codex; ChatGPT
+:lang: ja
+
+== 1.1 目的
+
+C4／Structurizr図生成・管理基盤は、
+C4モデルをテキストで変更可能な正本として保ち、
+手動調整した見た目を再現し、
+公開サイトへ同じ図を継続的に掲載できるようにする。
+
+図の意味、レイアウト、公開画像、説明本文が別々に古くなることを防ぎ、
+pull requestでそれらを同じ変更単位として確認できる状態を目指す。
+
+== 1.2 対象
+
+* Structurizr DSLによるC4モデルとview
+* Structurizr JSON workspaceに保持する手動レイアウト
+* SVG exportとAntora assetへの配置
+* view keyとDSL `!include`の規則
+* source側の図生成reusable workflowと未反映差分検出
+* 文書と図を一緒に草稿化し、見た目を確認する手順
+
+C4/Structurizr以外の図は、公開画像の共通配置だけをこの文書の対象とする。
+各形式固有の正本、生成、検査は、実際に採用するときに決める。
+
+== 1.3 品質目標
+
+[cols="1,3",options="header"]
+|===
+| 品質目標
+| 説明
+
+| モデル正本が明確
+| C4モデルの変更は必ずStructurizr DSLから始まる。
+
+| 見た目を再現できる
+| 手動レイアウトを含むJSON workspaceから同じSVGを生成できる。
+
+| 未反映差分を検出できる
+| DSL / JSON変更後に生成SVGが古いままならCIが失敗する。
+
+| 文と図が一致する
+| 文書の説明、図モデル、生成画像を同じ変更としてレビューできる。
+
+| 公開前に目視できる
+| Structurizr上の図とAntora生成ページ上のSVGをpull request前に確認できる。
+|===

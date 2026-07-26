@@ -1,0 +1,27 @@
+= 2. 制約
+:docstatus: draft
+:created: 2026-07-27
+:revdate: 2026-07-27
+:authors: F; Codex; ChatGPT
+:lang: ja
+
+== 2.1 起動方式
+
+* source側のpull requestでは検査を行うが、deployやsiteへのdispatchを行わない。
+* 標準の自動再生成契機は、source側`main`更新後の`repository_dispatch`とする。
+* site側の公開workflowは、自動再生成に加えて手動の`workflow_dispatch`を持つ。
+* source側は担当する文書・図の検査に成功した後で再生成を依頼する。
+
+== 2.2 処理配置
+
+* 文書と図の正本に依存する検査・生成はsource側で行う。
+* 複数content sourceを横断する検査、Antora build、Pages deployはsite側で行う。
+* site側は標準経路でStructurizr SVGを再生成しない。
+* 検査またはbuildが失敗した場合、後続のPages deployを実行しない。
+
+== 2.3 権限
+
+* workflowの権限は処理ごとに最小化する。
+* pull request由来の信頼できない変更からdispatch、secret利用、deployを行わない。
+* cross-repository token / secretの種類、保存場所、rotation、権限範囲は未決定である。
+* private content sourceを読む権限は、public Pages公開可否を決めるまで標準経路へ含めない。

@@ -1,198 +1,79 @@
 = 11. 技術的リスク
 :docstatus: draft
 :created: 2026-05-05
-:revdate: 2026-06-01
-:authors: F; ChatGPT
+:revdate: 2026-07-27
+:authors: F; ChatGPT; Codex
 :lang: ja
 
+== 11.1 リスクの所在
 
-== 11.1 private repositoryの文書をpublic Pagesへ出すリスク
+[cols="2,3,2",options="header"]
+|===
+| リスク
+| 全体への影響
+| 詳細
 
-private repository内の文書をpublic GitHub Pagesへ公開する場合、非公開情報が公開サイトへ混入するリスクがある。
+| 文書構造の重複・参照切れ
+| 全体と部分で異なる規則が正本化され、閲覧者が詳細へ辿れない。
+| xref:architecture-documentation-publishing-platform/document-structure-and-authoring-rules/11-technical-risks.adoc[文書構造・執筆規約]
 
-影響するものは以下である。
+| 図モデルとレイアウトの不整合
+| 古いJSON workspaceやSVGが公開され、説明と図が一致しない。
+| xref:architecture-documentation-publishing-platform/c4-structurizr-diagram-management/11-technical-risks.adoc[図生成・管理]
 
-* ソースコードや設計情報の機密性
-* GitHub Pagesの公開範囲
-* Antora playbookのcontent sources設定
-* build artifactやActions logの公開範囲
-* 図やスクリーンショットに含まれる情報
+| private文書の公開・site buildの不安定化
+| 非公開情報の漏洩、または公開サイトの更新停止につながる。
+| xref:architecture-documentation-publishing-platform/antora-site-publishing/11-technical-risks.adoc[サイト集約・公開]
 
-現時点では、private repositoryの文書をpublic GitHub Pagesに出してよいかは未決定である。
+| 日英版の同期ずれ
+| 対応ページ欠落や古い補助版が公開される。
+| xref:architecture-documentation-publishing-platform/bilingual-document-operation-and-validation/11-technical-risks.adoc[日英文書運用・検査]
 
-対策候補は以下である。
+| cross-repository権限・失敗検出
+| 自動公開が起動しない、過剰な権限を持つ、失敗に気づけない。
+| xref:architecture-documentation-publishing-platform/cross-repository-publishing-orchestration/11-technical-risks.adoc[公開オーケストレーション]
+|===
 
-* public公開してよい文書だけを別リポジトリまたは別pathに分ける。
-* private文書を取り込むplaybookとpublic公開用playbookを分ける。
-* 公開前に機密情報検査を行う。
-* public Pagesではなくprivate閲覧可能な公開先を検討する。
+== 11.2 未決定事項
 
-== 11.2 cross-repository workflow / token管理リスク
-
-各ソースリポジトリからサイト用リポジトリへ`repository_dispatch`を送るには、cross-repositoryの権限設定が必要になる。
-
-リスクは以下である。
-
-* tokenの権限が広すぎる。
-* secretの保存場所が増えすぎる。
-* tokenが漏洩した場合に、サイト用リポジトリ以外も操作できてしまう。
-* private repositoryをcontent sourceとして読む権限が不足する。
-* forkや外部貢献者のpull requestから意図しないworkflowが起動する。
-
-現時点では、サイト再生成用のGitHub Actions権限とtoken管理方針は未決定である。
-
-対策候補は以下である。
-
-* 最小権限のfine-grained tokenを使う。
-* `repository_dispatch`を送る専用の権限に限定する。
-* public文書用とprivate文書用の公開経路を分ける。
-* pull request由来のworkflowではdeployやdispatchを実行しない。
-* token管理方針を決定ファイルに反映する。
-
-== 11.3 docToolchain Antora連携がbetaであるリスク
-
-docToolchainはarc42やAsciiDoc文書運用に有用だが、Antora連携は検証対象である。
-
-リスクは以下である。
-
-* Antora buildとの役割分担が曖昧になる。
-* docToolchain側のbeta機能に依存しすぎて、CIが不安定になる。
-* Antora標準構成から外れた補助生成物が増える。
-* 期待した図生成経路や文書生成経路が使えない。
-
-現時点では、docToolchainを全面的な公開基盤として扱わず、arc42文書運用と図連携の補助候補として扱う。
-
-対策候補は以下である。
-
-* Antora buildを公開サイト生成の中心に固定する。
-* docToolchainは必要なtask単位で採用可否を検証する。
-* docToolchainなしでも最小公開できる経路を維持する。
-* 採用するtaskと採用しないtaskを決定として残す。
-
-== 11.4 Structurizr直接SVG生成のJSONレイアウト移行手順が未確定であるリスク
-
-C4図のモデル標準正本はStructurizr DSLとし、公開サイトに載せる標準生成物はStructurizrの`export -format svg`で直接生成するSVGとする。
-
-手動レイアウトはStructurizr JSON workspaceで管理する。DSL変更後は、既存`workspace.json`のレイアウトを反映した状態で`workspace.json`を更新する。view keyは`<view-type>-<target>[-<purpose>]`形式で明示する。CIで使う標準Docker imageは`structurizr/structurizr:2026.05.22-playwright`、標準入力は`docs/modules/<module>/examples/diagrams/structurizr/workspace.json`、出力先は`docs/modules/<module>/assets/images/diagrams/`とする。生成対象は`find docs/modules -path '*/examples/diagrams/structurizr/workspace.json' -type f -print`で自動検出し、対象が0件なら図生成対象なしとして成功扱いにする。生成SVGはAntora assetとしてリポジトリ管理する。再生成後の未反映差分は`git status --porcelain -- docs/modules/<module>/assets/images/diagrams`で検出する。Docker image tagは固定tagを月次確認または必要時に手動更新する方針にした。ただし、view key変更時のJSONレイアウト移行手順は未確定である。
-
-リスクは以下である。
-
-* CI環境で安定して画像生成できない。
-* 手動確認を怠り、固定したDocker image tagの更新判断が遅れる。
-* DSL変更をJSON workspaceへ反映し忘れ、モデルとレイアウト付きexport入力がずれる。
-* view keyが暗黙生成のまま、または命名規則に沿っておらず、レイアウトを安定して対応付けられない。
-* 既存view keyを不用意に変更し、`workspace.json`に保持した手動レイアウトとの対応が壊れる。
-* arc42本文から参照する画像パスが不安定になる。
-
-対策候補は以下である。
-
-* 最小のDSL/JSONで直接SVG生成を試す。
-* CIコマンド、Docker image tag、出力先、参照方法を固定する。
-* 再生成差分は`git status --porcelain`で検出する。
-* Docker image tagは月次確認または必要時の専用変更で更新する。
-* view keyの命名規則を守り、既存view keyを変更する場合はJSONレイアウト移行手順を別途定める。
-* 生成失敗時に、DSLファイル、出力先、参照元ページをlogに出す。
-
-== 11.5 サイト再生成失敗に気づけないリスク
-
-公開workflowが失敗しても、文書作成者が気づけないと、GitHub Pages上の文書が古いままになる。
-
-リスクは以下である。
-
-* `main`更新が公開サイトに反映されない。
-* Actions logを見ないと失敗に気づけない。
-* 日英対応検査や図生成失敗が放置される。
-* 手動再実行手順が決まっておらず復旧が遅れる。
-
-現時点では、サイト再生成失敗時の通知・再実行手順は未決定である。
-
-対策候補は以下である。
-
-* 公開workflowの失敗通知を有効にする。
-* `workflow_dispatch`による手動再実行を標準経路にする。
-* 失敗した検査、ファイル、パスをlogに明確に出す。
-* build artifactを保存する。
-* 公開後確認のチェックリストを6章に従って運用する。
-
-== 11.6 日英対応の同期負荷
-
-英語正本と日本語補助版を持つと、対応ページの欠落、更新漏れ、内容差分が発生する。
-
-リスクは以下である。
-
-* 草稿段階の片方更新が長く残る。
-* 公開時に対応ページ欠落でworkflowが失敗する。
-* 日本語補助版が英語正本の古い内容を説明し続ける。
-* 日英対応検査スクリプトをpublish workflowへ組み込まないと、決定済みの検査方針をCIで強制できない。
-* 翻訳内容の差分や更新鮮度までは、初期の検査範囲では検出できない。
-
-対策候補は以下である。
-
-* 草稿段階と公開・版確定時の要求水準を分ける。
-* 対応ページの相対パスとファイル名を揃える。
-* `:lang:`を必須メタデータにする。
-* `tools/check-language-pairs`をpublish workflowへ組み込む。
-* 内容差分の完全検出は初期範囲に含めず、まずページ対応と`:lang:`不一致を検査する。
-
-== 11.7 Antora UIの日英切り替え導線が未確定であるリスク
-
-日英版をAntora moduleで分ける場合、閲覧者が対応ページへ移動する導線を用意する必要がある。
-
-リスクは以下である。
-
-* 英語正本と日本語補助版を行き来しにくい。
-* 同じ対象文書の別言語版が別物に見える。
-* Antora標準UIのままだと、言語切り替えが十分でない可能性がある。
-* module構成とUI表示の関係が分かりにくくなる。
-
-現時点では、Antora UI上の日英切り替え導線は未決定である。
-
-対策候補は以下である。
-
-* ページ上部またはナビゲーションに対応言語ページへのリンクを置く。
-* UIカスタマイズが必要か確認する。
-* 最小構成では、各ページに手動の対応リンクを置く案も検討する。
-* 日英対応検査とリンク生成を連動できるか検討する。
-
-== 11.8 未決定事項一覧
-
-未決定事項はリスクそのものではないが、解決しないまま詳細設計や実装を進めると手戻り、公開失敗、運用事故につながりうる。そのため、現時点では技術的リスクと同じ章で一元管理する。
-
-[cols="1,3,3",options="header"]
+[cols="1,3,2",options="header"]
 |===
 | ID
 | 未決定事項
-| 影響
+| 主な担当
 
 | UC-1
-| private repositoryの文書をpublic GitHub Pagesに出してよいか判断する
-| 情報漏洩リスクとアクセス制御に影響する。
+| private repositoryの文書をpublic GitHub Pagesへ出してよいか。
+| サイト集約・公開
 
 | UC-2
-| docToolchainのAntora連携がbetaである点を検証する
-| 採用範囲、build手順、代替手段に影響する。
+| docToolchainのAntora連携をどこまで採用するか。
+| 文書構造・サイト集約
 
 | UC-3
-| サイト再生成用のGitHub Actions権限とトークン管理方針を決める
-| cross-repository workflow、secret管理、セキュリティに影響する。
+| サイト再生成用の権限とtoken / secretをどう管理するか。
+| 公開オーケストレーション
 
 | UC-4
-| サイト再生成失敗時の通知・再実行手順を決める
-| 運用負荷、障害発見、復旧手順に影響する。
+| サイト再生成失敗をどう通知し、誰がどう再実行するか。
+| 公開オーケストレーション
 
 | UC-5
-| Antora UI上の日英切り替え導線を決める
-| 閲覧者が英語正本と日本語補助版を行き来する操作に影響する。
+| Antora UI上の日英切り替え導線をどう提供するか。
+| 日英文書運用・サイト集約
 
 | UC-6
-| publish workflowでtools/check-language-pairsに渡すcontent root取得手順を決める
-| 実装済みの日英対応検査を公開workflowで実行できるかに影響する。
+| publish workflowが日英検査へ渡すcontent rootをどう取得するか。
+| 日英文書運用・公開オーケストレーション
 
 | UC-7
-| 日英対応ページの内容差分や更新鮮度を検査対象にするか決める
-| 翻訳の古さや内容差分をどこまでCIで扱うかに影響する。
+| 日英ページの内容差分や更新鮮度を検査するか。
+| 日英文書運用
 
 | UC-9
-| Structurizr view keyを変更する場合のJSONレイアウト移行手順を決める
-| 既存view key変更時に、手動レイアウトを失わず移行できるかに影響する。
+| view key変更時にJSON workspaceのレイアウトをどう移行するか。
+| 図生成・管理
 |===
+
+未決定事項の内容と影響は対応する子文書で管理し、
+具体的な着手候補だけを必要に応じて`inbox.md`で追跡する。

@@ -1,0 +1,52 @@
+= 3. コンテキストとスコープ
+:docstatus: draft
+:created: 2026-07-27
+:revdate: 2026-07-27
+:authors: F; Codex; ChatGPT
+:lang: ja
+
+== 3.1 外部要素
+
+[cols="1,2,3",options="header"]
+|===
+| 外部要素
+| 入力
+| 出力
+
+| 文書作成者
+| pull request、`main`への変更、手動再実行
+| 検査結果、公開結果、失敗情報
+
+| ソースリポジトリ
+| 文書、図、component設定、source側workflow
+| 検査結果、`repository_dispatch`
+
+| サイト用リポジトリ
+| dispatch、手動起動、playbook、共通検査
+| build artifact、Pages deploy、log
+
+| GitHub Actions
+| repository event、workflow定義、権限、secret
+| job状態、artifact、deployment
+
+| GitHub Pages
+| Pages artifact
+| 公開URLと静的サイト
+|===
+
+== 3.2 対象境界
+
+この文書は、各処理をどの順序で、どのrepositoryで、
+どの成功条件の後に実行するかを扱う。
+
+AsciiDocの書き方、Structurizr export、
+日英checkerのissue判定、Antora page生成の内部は扱わない。
+それらの処理が返す成功・失敗と、次の処理へ渡す入力だけを扱う。
+
+== 3.3 現在と目標
+
+現在、site側の`build.yml`と`publish.yml`は手動`workflow_dispatch`で動作する。
+図生成reusable workflowと日英checkerも個別に実装されている。
+
+一方、source側からsite側への`repository_dispatch`、
+site側の横断検査呼び出し、権限・token、失敗通知はend-to-endで未実装または未決定である。

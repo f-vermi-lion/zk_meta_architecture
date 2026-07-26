@@ -1,0 +1,74 @@
+= 6. ランタイムビュー
+:docstatus: draft
+:created: 2026-07-27
+:revdate: 2026-07-27
+:authors: F; Codex; ChatGPT
+:lang: ja
+
+== 6.1 ローカルbuild
+
+サイト用リポジトリで依存関係を導入し、Antora buildを実行する。
+
+[source,sh]
+----
+npm install
+npm run build
+----
+
+生成物は`build/site/`へ出力される。
+
+現在の通常playbookはremote `main`を読むため、
+このコマンドだけでは未pushのローカル草稿を確認できない。
+草稿確認では、remote sourceをローカルcontent sourceに置き換えた一時playbookなど、
+確認対象が明示されたauthoring用経路を使う。
+
+== 6.2 bootstrap build workflow
+
+. 保守者が`build.yml`を`workflow_dispatch`で起動する。
+. workflowがリポジトリをcheckoutし、Node.jsを準備する。
+. npm依存関係を導入し、`npm run build`を実行する。
+. `build/site`を`antora-site` artifactとしてuploadする。
+. 保守者がActions logとartifactを確認する。
+
+この経路はPages deploy、`repository_dispatch`、token / secret、
+日英対応検査を含まない初期確認用である。
+
+== 6.3 手動Pages公開
+
+. GitHub Pagesのpublishing sourceをGitHub Actionsに設定する。
+. 保守者が`publish.yml`を`workflow_dispatch`で起動する。
+. workflowがcheckout、Pages設定、Node.js設定、`npm ci`を行う。
+. `npm run build`で`.nojekyll`を含む`build/site`を生成する。
+. Pages artifactをuploadし、GitHub Pagesへdeployする。
+. 保守者がdeployment URL、Actions log、公開ページを確認する。
+
+初回公開日は2026-05-23、
+記録された公開URLは
+https://f-vermi-lion.github.io/zouchikikou-docs-site/meta-architecture/architecture-documentation-publishing-platform/index.html
+である。
+
+== 6.4 標準site処理
+
+目標とするsite側処理の内部順序は次のとおりである。
+
+. content sourcesを取得する。
+. 日英対応などの横断検査を実行する。
+. 文書が参照する生成済みassetを確認する。
+. Antora buildを実行する。
+. `build/site`をPages artifactとしてuploadする。
+. GitHub Pagesへdeployする。
+. artifact、log、deployment URLを残す。
+
+起動条件とsource側処理との接続は
+xref:architecture-documentation-publishing-platform/cross-repository-publishing-orchestration/06-runtime-view.adoc[公開オーケストレーションのランタイムビュー]を正本とする。
+
+== 6.5 公開後確認
+
+少なくとも次を確認する。
+
+* 更新ページが公開結果へ反映されている。
+* navigationから親文書と子文書へ辿れる。
+* xrefが意図したページを開く。
+* 表、code block、NOTE、画像が崩れていない。
+* 日英対応ページへの導線が、決定済みの範囲で存在する。
+* Actions logに見逃している失敗や警告がない。

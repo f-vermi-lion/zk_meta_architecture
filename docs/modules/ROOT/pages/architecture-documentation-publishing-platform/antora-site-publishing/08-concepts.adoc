@@ -1,0 +1,39 @@
+= 8. 横断的コンセプト
+:docstatus: draft
+:created: 2026-07-27
+:revdate: 2026-07-27
+:authors: F; Codex; ChatGPT
+:lang: ja
+
+== 8.1 playbookとcomponent descriptor
+
+各content sourceの`antora.yml`は、
+そのcomponentのname、title、version、navigationを定義する。
+
+サイト用リポジトリのplaybookは、
+サイト全体のtitle、start page、content sources、UI、出力先を定義する。
+component固有の情報をplaybookへ重複させず、
+サイト全体に属する選択だけをplaybookへ置く。
+
+== 8.2 UIとnavigation
+
+各moduleのnavigation fileはcontent sourceが所有する。
+サイト用リポジトリは共通UI bundleと補助ファイルを選ぶが、
+各文書のページ階層はcontent sourceのnavigationを尊重する。
+
+日英切り替え導線は未決定である。
+言語固有の要求は
+xref:architecture-documentation-publishing-platform/bilingual-document-operation-and-validation/11-technical-risks.adoc[日英運用の技術的リスク]で扱う。
+
+== 8.3 `.nojekyll`
+
+Antoraが生成したサイトをGitHub PagesがJekyllサイトとして再処理しないよう、
+playbookのsupplemental filesから`.nojekyll`を出力へ含める。
+
+== 8.4 build artifactと公開サイト
+
+`build/site`、一般build artifact、Pages artifact、GitHub Pages上のサイトは、
+同じ正本から異なる段階で生成される派生成果物である。
+
+artifactとlogは失敗調査や公開前確認に使うが、
+次回の文書編集やbuild入力には使わない。

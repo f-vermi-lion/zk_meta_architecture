@@ -1,0 +1,51 @@
+= 11. 技術的リスク
+:docstatus: draft
+:created: 2026-07-27
+:revdate: 2026-07-27
+:authors: F; Codex; ChatGPT
+:lang: ja
+
+== 11.1 remote content sourceとローカル草稿
+
+現在の通常playbookはremote `main`を取得する。
+そのbuildが成功しても、未pushの草稿が正しいことは証明しない。
+
+pull request前の確認では、remote sourceを対象worktreeへ置き換えた一時playbookを使い、
+生成siteに新規ページと変更内容が含まれることを確認する。
+恒久的なローカル執筆基盤は別途検討する。
+
+== 11.2 private文書のpublic公開
+
+private repositoryをpublic GitHub Pagesへ取り込むと、
+文書、図、artifact、logを通じて非公開情報が漏洩する可能性がある。
+
+private文書をpublic Pagesへ出してよいかは未決定である。
+初期playbookはpublic content sourceだけを扱う。
+公開範囲を広げる前に、content source、artifact、log、画像を含む情報境界を決める。
+
+== 11.3 cacheと依存関係
+
+Antoraは既定で利用者のcache directoryへ書き込む。
+読み取り専用環境では、文書に問題がなくてもcacheへの書き込みでbuildが失敗する。
+
+CIと制限環境では書き込み可能なcacheを明示する。
+Node.js、Antora、UI bundle、GitHub Actionsの更新は、
+lockfileと生成結果を確認できる変更単位で行う。
+
+== 11.4 UIと言語導線
+
+Antora default UIだけでは、英語正本と日本語補助版の対応関係を
+十分に示せない可能性がある。
+日英切り替えの位置、手動リンク、UIカスタマイズの要否は未決定である。
+
+決定するまでは、実装済みの基本navigationと、
+目標とする言語切り替えを混同しない。
+
+== 11.5 複数リポジトリ集約の成熟度
+
+現在のplaybookは一つのpublic content sourceを扱う初期構成である。
+複数リポジトリを追加すると、resource ID衝突、取得権限、
+branch / tag管理、横断検査、build時間の問題が増える。
+
+content sourceは一つずつ追加し、component名、version、navigation、
+xref、asset、検査結果を生成siteで確認する。

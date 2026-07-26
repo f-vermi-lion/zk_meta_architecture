@@ -1,0 +1,78 @@
+= 8. 横断的コンセプト
+:docstatus: draft
+:created: 2026-07-27
+:revdate: 2026-07-27
+:authors: F; Codex; ChatGPT
+:lang: ja
+
+== 8.1 公開状態
+
+[cols="1,3",options="header"]
+|===
+| 状態
+| 意味
+
+| 正本更新済み
+| source repositoryの`main`に文書・図・設定が反映されている。
+
+| source検査済み
+| source側の文書・図検査に成功している。
+
+| site build済み
+| 対象content sourcesからAntora buildに成功している。
+
+| deploy済み
+| build結果がGitHub Pagesへdeployされている。
+
+| 公開確認済み
+| 保守者が公開URL上の対象pageと関連成果物を確認している。
+|===
+
+前の状態が成立しても後の状態が自動的に成立したとはみなさない。
+
+== 8.2 処理契約
+
+各処理は、成功・失敗と調査に必要な情報を後続へ渡す。
+
+[cols="2,2,3",options="header"]
+|===
+| 処理
+| 成功時
+| 失敗時に残す情報
+
+| 文書検査
+| 検査対象に違反がない。
+| issue種別、page、rule。
+
+| 図生成検査
+| 生成SVGに未反映差分がない。
+| workspace、output directory、Git差分。
+
+| 日英検査
+| page対応と`:lang:`が正しい。
+| issue code、content root、module、relative path。
+
+| Antora build
+| `build/site`が生成される。
+| content source、resource ID、build log。
+
+| Pages deploy
+| deployment URLが得られる。
+| artifact、deployment job、GitHub Pages error。
+|===
+
+== 8.3 実装状態の表現
+
+次の三つを区別する。
+
+* 決定済み: 標準として採用する方針とインターフェースが決まっている。
+* 実装済み: repository内にcodeまたはworkflowが存在し、対象範囲のtestまたは実行結果がある。
+* 統合済み: 前後の処理と接続され、標準フローの中で実行される。
+
+個別toolが実装済みでも、publish workflowと接続されていなければ統合済みとはしない。
+
+== 8.4 手動経路
+
+手動再実行は自動化の例外的な別処理ではなく、
+同じsite処理へ入る別のtriggerである。
+これにより、障害復旧と設定変更後の確認で自動経路と同じ結果を得る。

@@ -1,0 +1,28 @@
+= 日英文書運用・検査
+:docstatus: draft
+:created: 2026-07-27
+:revdate: 2026-07-27
+:authors: F; Codex; ChatGPT
+:lang: ja
+
+この文書は、造智機巧のアーキテクチャ文書について、
+英語正本と日本語補助版を配置・更新し、公開時の構造的不一致を検出する方法を扱う。
+
+親文書: xref:architecture-documentation-publishing-platform/index.adoc[アーキテクチャ文書公開基盤]
+
+関連文書:
+
+* ページ、metadata、xrefの一般規則は xref:architecture-documentation-publishing-platform/document-structure-and-authoring-rules/index.adoc[文書構造・執筆規約]に従う。
+* 共通検査ツールの配置とサイトUIは xref:architecture-documentation-publishing-platform/antora-site-publishing/index.adoc[Antoraサイト集約・GitHub Pages公開基盤]で扱う。
+* publish workflowへの組み込みは xref:architecture-documentation-publishing-platform/cross-repository-publishing-orchestration/index.adoc[リポジトリ間公開オーケストレーション]で扱う。
+
+== 目次
+
+* xref:architecture-documentation-publishing-platform/bilingual-document-operation-and-validation/01-introduction-and-goals.adoc[1. 導入と目的]
+* xref:architecture-documentation-publishing-platform/bilingual-document-operation-and-validation/02-architecture-constraints.adoc[2. 制約]
+* xref:architecture-documentation-publishing-platform/bilingual-document-operation-and-validation/04-solution-strategy.adoc[4. ソリューション戦略]
+* xref:architecture-documentation-publishing-platform/bilingual-document-operation-and-validation/05-building-block-view.adoc[5. ビルディングブロックビュー]
+* xref:architecture-documentation-publishing-platform/bilingual-document-operation-and-validation/06-runtime-view.adoc[6. ランタイムビュー]
+* xref:architecture-documentation-publishing-platform/bilingual-document-operation-and-validation/08-concepts.adoc[8. 横断的コンセプト]
+* xref:architecture-documentation-publishing-platform/bilingual-document-operation-and-validation/10-quality-requirements.adoc[10. 品質要求]
+* xref:architecture-documentation-publishing-platform/bilingual-document-operation-and-validation/11-technical-risks.adoc[11. 技術的リスク]

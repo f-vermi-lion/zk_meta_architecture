@@ -1,0 +1,81 @@
+= 5. ビルディングブロックビュー
+:docstatus: draft
+:created: 2026-07-27
+:revdate: 2026-07-27
+:authors: F; Codex; ChatGPT
+:lang: ja
+
+== 5.1 文書配置
+
+[listing]
+----
+docs/
+  antora.yml
+  modules/
+    ROOT/
+      nav.adoc
+      pages/
+        architecture/
+          index.adoc
+    ja/
+      nav.adoc
+      pages/
+        architecture/
+          index.adoc
+----
+
+上の二つの`architecture/index.adoc`は対応ページである。
+
+== 5.2 検査ツール
+
+標準コマンドは次のとおりである。
+
+[source,sh]
+----
+tools/check-language-pairs <content-root>...
+----
+
+`<content-root>`には`antora.yml`を持つAntora content rootを渡す。
+複数のcontent rootを一度に指定できる。
+
+ツールは次を行う。
+
+. `antora.yml`からcomponent nameを読む。
+. `meta-architecture` componentなら検査対象外としてskipする。
+. `modules/ROOT/pages/**/*.adoc`と`modules/ja/pages/**/*.adoc`を相対pathで収集する。
+. 片方だけにあるpageを検出する。
+. 各pageの`:lang:`が期待値と一致するか検査する。
+. issueを安定した形式で出力し、終了codeを返す。
+
+== 5.3 issue形式
+
+[listing]
+----
+issue_code<TAB>content_root<TAB>module<TAB>relative_path<TAB>message
+----
+
+[cols="1,3",options="header"]
+|===
+| issue code
+| 意味
+
+| `missing_ja`
+| 英語正本に対応する日本語補助版がない。
+
+| `missing_en`
+| 日本語補助版に対応する英語正本がない。
+
+| `missing_lang`
+| pageに`:lang:`がない、または値が空である。
+
+| `lang_mismatch`
+| `ROOT`が`en`でない、または`ja`が`ja`でない。
+|===
+
+終了codeは、問題なしを`0`、検査違反ありを`1`、
+引数不正やcontent root不正など実行不能を`2`とする。
+
+== 5.4 実装状況
+
+`zouchikikou-docs-site/tools/check-language-pairs`と単体testは実装済みである。
+一方、publish workflowからcontent rootを取得してこのコマンドへ渡す処理は未実装である。

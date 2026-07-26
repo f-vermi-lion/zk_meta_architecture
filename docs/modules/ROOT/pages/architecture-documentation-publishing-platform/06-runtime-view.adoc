@@ -1,202 +1,44 @@
 = 6. ランタイムビュー
 :docstatus: draft
 :created: 2026-05-05
-:revdate: 2026-06-01
-:authors: F; ChatGPT
+:revdate: 2026-07-27
+:authors: F; ChatGPT; Codex
 :lang: ja
 
+== 6.1 文書変更から公開まで
 
-== 6.0 zouchikikou-docs-site初期build確認
+. 文書作成者が、文書本文、図定義、メタデータ、相互参照を更新する。
+. 文書と図を草稿として確認し、必要な派生成果物を更新する。
+. pull request前に検査とローカルサイトbuildを行い、対象ページと図の見た目を確認する。
+. 変更をレビューし、ソースリポジトリの`main`へ反映する。
+. source側workflowが文書・図の検査を行い、サイト用リポジトリへ再生成を依頼する。
+. site側workflowがcontent sourcesを取得し、横断検査とAntora buildを行う。
+. build結果をGitHub Pagesへdeployする。
+. 保守者がActions logと公開ページを確認する。
 
-このシナリオは、`zouchikikou-docs-site`作成直後に、公開deployなしでAntora buildだけを確認する流れである。
+各処理の詳細は次を参照する。
 
-=== 6.0.1 事前条件
+* xref:architecture-documentation-publishing-platform/document-structure-and-authoring-rules/06-runtime-view.adoc[文書の作成・更新]
+* xref:architecture-documentation-publishing-platform/c4-structurizr-diagram-management/06-runtime-view.adoc[図の作成・生成・確認]
+* xref:architecture-documentation-publishing-platform/antora-site-publishing/06-runtime-view.adoc[サイトbuild・Pages deploy]
+* xref:architecture-documentation-publishing-platform/bilingual-document-operation-and-validation/06-runtime-view.adoc[日英対応検査]
+* xref:architecture-documentation-publishing-platform/cross-repository-publishing-orchestration/06-runtime-view.adoc[リポジトリ間の起動・失敗・再実行]
 
-* `zouchikikou-docs-site`がpublicな骨組みリポジトリとして作成されている。
-* `README.md`、`antora-playbook.yml`、`package.json`、`.gitignore`、`.github/workflows/build.yml`、`tools/README.md`が配置されている。
-* `antora-playbook.yml`が`https://github.com/f-vermi-lion/zk_meta_architecture.git`の`main` branch、`start_path: docs`をcontent sourceとして参照している。
-* `antora-playbook.yml`で`runtime.fetch: true`を設定し、remote content sourceの更新をbuild時に取得する。
+== 6.2 手動確認
 
-=== 6.0.2 通常フロー
+自動化が未完成または失敗した場合でも、次の手動経路を確保する。
 
-. Fまたは保守者が、`zouchikikou-docs-site`の`build.yml`を手動実行する。
-. workflowが依存関係をインストールする。
-. workflowが`npm run build`でAntora buildを実行する。
-. Fまたは保守者がActions logとbuild結果を確認する。
+* 恒久的なローカルpreview経路が未整備の間は、一時playbookでローカルのcontent sourceを指定し、未pushの文書を確認する。
+* 図はStructurizr上の見た目と生成SVGの両方を確認する。
+* サイト用リポジトリの`workflow_dispatch`でbuildまたは公開を再実行する。
+* Actions log、artifact、公開URLを使って結果を確認する。
 
-=== 6.0.3 結果
+== 6.3 現在の実装境界
 
-* `zouchikikou-docs-site`でAntora buildを実行できる。
-* GitHub Pages deploy、`repository_dispatch`、token / secret利用なしで、最小の集約サイト生成を検証できる。
+現時点では、サイト用リポジトリの手動buildと手動GitHub Pages公開、
+日英対応検査コマンド、Structurizr図生成reusable workflowが実装されている。
 
-=== 6.0.4 初期build確認後のPages deploy有効化
-
-. Fまたは保守者が、`zouchikikou-docs-site`のGitHub Pages publishing sourceをGitHub Actionsにする。
-. Fまたは保守者が、`.github/workflows/publish.yml`を`main`へ反映する。
-. 初回deploy workflowは`workflow_dispatch`で手動実行する。
-. workflowが`npm run build`でAntora buildを実行する。
-. workflowが`actions/configure-pages@v5`でGitHub Pagesのdeployメタデータを設定する。
-. workflowが`actions/upload-pages-artifact@v4`で`build/site`をuploadする。
-. workflowが`actions/deploy-pages@v4`でGitHub Pagesへdeployする。
-. Fまたは保守者が、公開URLとActions logを確認する。
-
-Antora playbookは`.nojekyll`を生成物に含める。初回有効化では、`repository_dispatch`、cross-repository token / secret、private repositoryのcontent source、`tools/check-language-pairs`実行は含めない。
-
-2026-05-23に初回公開を行った。公開URLは、https://f-vermi-lion.github.io/zouchikikou-docs-site/meta-architecture/architecture-documentation-publishing-platform/index.html である。
-
-Fの確認では、公開ページはローカルbuild結果と大きな差がない。
-
-== 6.1 ソースリポジトリのmain更新から公開まで
-
-このシナリオは、文書作成者がソースリポジトリの`main`へ文書または図定義を反映した後、GitHub Pages上の公開サイトが更新されるまでの標準フローである。
-
-この標準フローは、`zouchikikou-docs-site`の初期build確認後に、Pages deploy、`repository_dispatch`、token / secret管理を有効化してから成立する。
-
-=== 6.1.1 事前条件
-
-* ソースリポジトリにarc42文書、Structurizr DSL、Antora component descriptorが配置されている。
-* `zouchikikou-docs-site`にAntora playbookと公開workflowが配置されている。
-* `zouchikikou-docs-site`の公開workflowが`repository_dispatch`を受け付ける。
-* 必要なGitHub Actions権限とtoken / secretが設定されている。
-
-=== 6.1.2 通常フロー
-
-. 文書作成者が、ソースリポジトリ内の`.adoc`または`.dsl`を更新する。
-. 変更をpull requestまたは直接pushで`main`へ反映する。
-. ソースリポジトリ側workflowが文書検査を実行する。
-. ソースリポジトリ側の`.github/workflows/diagrams.yml`が、必要な図生成と生成SVGの未反映差分検出を実行する。
-. ソースリポジトリ側workflowが、図生成CI成功後に`zouchikikou-docs-site`へ`repository_dispatch`を送る。
-. `zouchikikou-docs-site`の公開workflowが起動する。
-. 公開workflowがAntora playbookに従ってcontent sourcesを取得する。
-. 公開workflowがcheckout済みcontent rootを引数として`tools/check-language-pairs <content-root>...`などの共通検査を実行する。
-. 公開workflowが生成済み図の存在確認を行う。
-. 公開workflowがAntora buildを実行する。
-. 公開workflowが生成済み静的サイトをGitHub Pagesへdeployする。
-. 文書サイト閲覧者がGitHub Pages上の更新済みページを読む。
-
-=== 6.1.3 結果
-
-* GitHub Pages上の公開サイトに、更新された文書または図が反映されている。
-* Actions logに、検査、生成、build、deployの結果が残っている。
-* 必要に応じてbuild artifactが保存されている。
-
-== 6.2 サイト用リポジトリでの手動再生成
-
-このシナリオは、自動再生成が失敗した場合、またはサイト用リポジトリ側の設定変更後に、Fまたは保守者が公開workflowを手動再実行する流れである。
-
-=== 6.2.1 事前条件
-
-* サイト用リポジトリの公開workflowが`workflow_dispatch`を受け付ける。
-* 手動実行する利用者が、該当workflowを実行できる権限を持つ。
-
-=== 6.2.2 通常フロー
-
-. Fまたは保守者が、サイト用リポジトリの公開workflowを手動実行する。
-. 公開workflowが最新のcontent sourcesを取得する。
-. 公開workflowが日英対応検査、生成済み図の存在確認、Antora build、GitHub Pages deployを実行する。
-. Fまたは保守者が、Actions logと公開サイトを確認する。
-
-=== 6.2.3 結果
-
-* `repository_dispatch`なしでも、同じ公開処理を再実行できる。
-* 自動再生成失敗後の復旧経路が確保される。
-
-== 6.3 文書・図の変更に対する検査と生成
-
-このシナリオは、文書本文または図定義の変更が、公開可能な成果物に変換されるまでの検査・生成処理である。
-
-=== 6.3.1 文書変更時
-
-. `.adoc`ファイルが更新される。
-. 必須メタデータ、AsciiDoc構文、リンク、include、xrefを検査する。
-. 日英対応を要求する文書では、対応ページと`:lang:`を検査する。
-. Antora buildでHTML生成が成功することを確認する。
-
-=== 6.3.2 図変更時
-
-. `.dsl`ファイルが更新される。
-. Structurizr DSLの構文またはモデル整合性を検査する。
-. 手動レイアウトを使う図では、既存`workspace.json`のレイアウトを反映した状態で`workspace.json`を更新する。
-. DSL変更と対応する`workspace.json`更新が同じ変更単位に含まれていることを確認する。
-. Structurizr viewsに明示的で安定したview keyがあることを確認する。
-. view keyが`<view-type>-<target>[-<purpose>]`形式の英小文字kebab-caseであり、章番号や一時的な表示名を含まないことを確認する。
-. 生成対象を`find docs/modules -path '*/examples/diagrams/structurizr/workspace.json' -type f -print`で検出する。対象が0件なら図生成対象なしとして成功扱いにする。
-. `structurizr/structurizr:2026.05.22-playwright`で`workspace.json`を入力にし、Structurizrの`export -format svg`でサイト掲載用SVGを生成する。
-. Docker image tagを更新する場合は、月次確認または必要時の専用変更として扱い、tag文字列、生成SVG、関連文書を同じ変更単位に含める。
-. 生成SVGが`docs/modules/<module>/assets/images/diagrams/`に置かれ、同じ変更単位に含まれていることを確認する。
-. `git status --porcelain -- docs/modules/<module>/assets/images/diagrams`の出力が空であることを確認する。
-. arc42本文から参照される画像パスが存在することを確認する。
-. Antora buildで画像が取り込まれることを確認する。
-
-== 6.4 日英対応検査で失敗する場合
-
-日英対応検査は、公開workflowがcontent sourcesを取得した後、Antora buildの前に実行する。
-
-標準コマンド形式は、`tools/check-language-pairs <content-root>...`である。`<content-root>`には、`antora.yml`を持つAntora content rootを渡す。
-
-このコマンド本体は`zouchikikou-docs-site`に実装済みである。ただし、publish workflowでこのコマンドに渡すcheckout済みcontent rootをどう取得するかは未決定である。
-
-=== 6.4.1 失敗条件
-
-日英対応検査は、少なくとも以下の場合に失敗扱いにする。
-
-* 英語正本のページに対応する日本語補助版ページがない。
-* 日本語補助版のページに対応する英語正本ページがない。
-* `ROOT`側のページに`:lang: en`がない。
-* `ja`側のページに`:lang: ja`がない。
-
-ただし、`meta_architecture`自体は日本語運用のため、この必須検査の対象外にする。
-
-検査違反のissue codeは、`missing_ja`、`missing_en`、`missing_lang`、`lang_mismatch`とする。
-
-issue出力形式は、`issue_code<TAB>content_root<TAB>module<TAB>relative_path<TAB>message`のタブ区切り行とする。
-
-=== 6.4.2 失敗時の扱い
-
-. 公開workflowを失敗させる。
-. 欠落または不一致のある相対パスとissue codeをlogに出す。
-. GitHub Pagesへのdeployは実行しない。
-. 文書作成者が欠落ページまたは`:lang:`を修正する。
-. 修正後、`main`更新または`workflow_dispatch`で再生成する。
-
-終了コードは、問題なしを`0`、検査違反ありを`1`、引数不正やcontent root不正など実行不能を`2`とする。
-
-== 6.5 図生成で失敗する場合
-
-図生成は、Structurizr DSL/JSON、DSLからJSONへの同期状態、Playwrightを含む実行環境、出力先、参照パスのいずれかが壊れると失敗する。
-
-=== 6.5.1 失敗条件
-
-図生成は、少なくとも以下の場合に失敗扱いにする。
-
-* Structurizr DSLの構文が不正である。
-* `!include`の参照先が存在しない。
-* 手動レイアウトを使う図で、`workspace.json`がDSL変更を反映していない。
-* view keyが暗黙生成のまま、または命名規則に沿っておらず、レイアウトを安定して対応付けられない。
-* 期待するSVGを生成できない。
-* `git status --porcelain -- docs/modules/<module>/assets/images/diagrams`に出力があり、再生成されたSVGに未反映の差分が残っている。
-* arc42本文が参照する画像パスに生成物がない。
-* Antora buildで画像が取り込めない。
-
-=== 6.5.2 失敗時の扱い
-
-. 公開workflowを失敗させる。
-. 失敗したDSLファイル、生成コマンド、出力先、参照元ページ、`git status --short`と`git diff`の結果をlogに出す。
-. GitHub Pagesへのdeployは実行しない。
-. 文書作成者がDSL、include、出力先、参照パスを修正する。
-. 修正後、`main`更新または`workflow_dispatch`で再生成する。
-
-== 6.6 公開後確認
-
-公開後確認は、GitHub Pagesへdeployされた結果が、文書作成者の意図通りに読めることを確認する作業である。
-
-確認対象は以下である。
-
-* 更新したページが公開サイトに反映されている。
-* ナビゲーションから該当ページへ辿れる。
-* `xref`が壊れていない。
-* 図が表示される。
-* 日英対応ページの導線がある。
-* Actions logに失敗や警告が残っていない。
-
-公開後確認で問題が見つかった場合は、該当するソースリポジトリまたはサイト用リポジトリを修正し、再度公開workflowを実行する。
+一方、`repository_dispatch`によるend-to-endの自動再生成、
+日英対応検査のpublish workflowへの組み込み、
+失敗通知とtoken / secret管理は未完成または未決定である。
+子文書では、実装済みの初期経路と目標とする標準経路を区別して記述する。

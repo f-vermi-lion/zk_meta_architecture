@@ -1,350 +1,70 @@
 = 5. ビルディングブロックビュー
 :docstatus: draft
 :created: 2026-05-05
-:revdate: 2026-06-01
-:authors: F; ChatGPT
+:revdate: 2026-07-27
+:authors: F; ChatGPT; Codex
 :lang: ja
 
+== 5.1 全体構成
 
-== 5.1 Whitebox: アーキテクチャ文書公開基盤
+次は構成要素間の流れを示すテキスト概要であり、図の正本ではない。
 
-アーキテクチャ文書公開基盤は、複数のソースリポジトリにある文書正本を、専用サイトリポジトリで集約し、GitHub Pagesへ公開する仕組みである。
-
-本章では、対象システム内部の主要な構成要素と責務を整理する。
-
-=== 5.1.1 全体構成図
-
-[source,text]
+[listing]
 ----
-┌──────────────────────────────┐
-│        ソースリポジトリ群        │
-│  arc42 / AsciiDoc / DSL / CI  │
-└───────────────┬──────────────┘
-                │ main更新
-                │ repository_dispatch
-                ▼
-┌──────────────────────────────┐
-│       サイト用リポジトリ        │
-│ playbook / UI / publish CI    │
-│ common tools                  │
-└───────────────┬──────────────┘
-                │ content sources取得
-                │ 検査・図生成・Antora build
-                ▼
-┌──────────────────────────────┐
-│       生成・検査ツール群        │
-│ Antora / docToolchain /       │
-│ Structurizr / check scripts   │
-└───────────────┬──────────────┘
-                │ static site / artifacts / logs
-                ▼
-┌──────────────────────────────┐
-│          公開成果物            │
-│ GitHub Pages / generated      │
-│ diagrams / build artifacts    │
-└──────────────────────────────┘
+文書作成者
+    |
+    v
+ソースリポジトリ群
+  | 文書正本 / 図正本 / source側検査
+  |
+  | main更新 / 再生成依頼
+  v
+サイト用リポジトリ
+  | content sources / 横断検査 / Antora build / Pages deploy
+  v
+GitHub Pages
+  |
+  v
+文書サイト閲覧者
 ----
 
-=== 5.1.2 構成要素一覧
+== 5.2 構成要素
 
-[cols="1,2,3",options="header"]
+[cols="2,3,2",options="header"]
 |===
 | 構成要素
-| 主な責務
-| 備考
+| 責務
+| 詳細
 
-| ソースリポジトリ
-| 文書本文、図定義、Antora component descriptor、必要なsource側workflowを保持する。
-| 文書正本の置き場。
+| 文書構造・執筆規約
+| 各ソースリポジトリに置く文書正本の構造、識別子、編集規則を定める。
+| xref:architecture-documentation-publishing-platform/document-structure-and-authoring-rules/05-building-block-view.adoc[子文書]
 
-| サイト用リポジトリ
-| 複数リポジトリの文書を集約し、公開workflowを実行する。
-| Antora playbookと共通UIの置き場。
+| C4／Structurizr図生成・管理基盤
+| 図モデル、レイアウト付きexport入力、生成SVG、図生成CIを管理する。
+| xref:architecture-documentation-publishing-platform/c4-structurizr-diagram-management/05-building-block-view.adoc[子文書]
 
-| 生成・検査ツール
-| 文書検査、日英対応検査、図生成、Antora buildを行う。
-| 既存ツールを優先して使い、足りない部分だけ補助スクリプトを作る。
+| Antoraサイト集約・GitHub Pages公開基盤
+| content sourcesを集約し、静的サイトを生成して公開する。
+| xref:architecture-documentation-publishing-platform/antora-site-publishing/05-building-block-view.adoc[子文書]
 
-| 公開成果物
-| 閲覧者向けの静的サイト、生成済み図、build artifact、logを提供する。
-| 正本ではなく派生成果物。
+| 日英文書運用・検査
+| 言語別moduleと対応ページを管理し、公開時の構造的不一致を検出する。
+| xref:architecture-documentation-publishing-platform/bilingual-document-operation-and-validation/05-building-block-view.adoc[子文書]
+
+| リポジトリ間公開オーケストレーション
+| source側処理とsite側処理をイベントで接続し、再実行と失敗の境界を定める。
+| xref:architecture-documentation-publishing-platform/cross-repository-publishing-orchestration/05-building-block-view.adoc[子文書]
+
+| 外部実行・公開基盤
+| GitHub、GitHub Actions、GitHub Pages、Antora、Structurizrを提供する。
+| この基盤の構成要素ではなく、利用する外部システム。
 |===
 
-== 5.2 ソースリポジトリ
-
-ソースリポジトリは、個々のシステムまたはサブシステムの文書正本を持つ。
-
-ソースリポジトリは、サイト全体の公開構成を決める場所ではなく、そのリポジトリに属する文書・図・補助ファイルを管理する場所である。
-
-=== 5.2.1 arc42文書
-
-arc42文書は、Antora標準構成の`docs/modules/<module>/pages/`配下に置く。
-
-章ファイルは、`NN-chapter-slug.adoc`形式にする。
-
-例:
-
-[source,text]
-----
-docs/modules/ROOT/pages/
-  index.adoc
-  01-introduction-and-goals.adoc
-  02-architecture-constraints.adoc
-  03-context-and-scope.adoc
-----
-
-英語正本と日本語補助版を持つ文書では、同じcomponent内のmoduleで言語を分ける。
-
-[source,text]
-----
-docs/modules/ROOT/pages/  # 英語正本
-docs/modules/ja/pages/    # 日本語補助版
-----
-
-=== 5.2.2 図ソースとStructurizr DSL / JSON workspace
-
-図ソースは、対応するAntora module配下の`examples/diagrams/`に置く。公開画像は、対応するAntora module配下の`assets/images/diagrams/`に置く。
-
-C4/Structurizrの標準配置は、対応するAntora module配下の`examples/diagrams/structurizr/`とする。
-
-[source,text]
-----
-docs/modules/ROOT/examples/diagrams/structurizr/
-  workspace.dsl
-  workspace.json
-  model.dsl   # optional
-  views.dsl   # optional
-  styles.dsl  # optional
-----
-
-`workspace.json`は、手動レイアウトを含むStructurizr JSON workspaceである。モデル正本ではなく、Structurizrの見た目を再現するためのレイアウト付きexport入力として管理する。
-
-標準では、1つのAntora moduleにつき1つのStructurizr workspaceを置く。標準入口は`workspace.dsl`である。小規模なうちはDSLを分割せず、分割が必要になった場合は`model.dsl`、`views.dsl`、`styles.dsl`を`examples/diagrams/structurizr/`直下に置き、`workspace.dsl`から相対パスで`!include`する。さらに大きい場合だけ、`model/`や`views/`配下へ細分化する。
-
-`!include`は、`examples/diagrams/structurizr/`配下のDSLソースツリー内で相対参照が完結するようにする。`pages/`、`partials/`、`assets/images/`、別module、リポジトリ外ファイルは`!include`対象にしない。
-
-モデル変更は必ず`workspace.dsl`から始める。手動レイアウトを使う図では、既存`workspace.json`のレイアウトを反映した状態で`workspace.json`を更新し、DSL変更とJSON更新を同じ変更単位で扱う。
-
-レイアウトだけを調整する場合は、`workspace.json`の変更だけを許容する。ただし、`workspace.json`は手編集せず、StructurizrのUIまたは公式ツールのmerge/export結果として更新する。
-
-レイアウト保持のため、Structurizr viewsには明示的で安定したview keyを付ける。
-
-view keyは`<view-type>-<target>[-<purpose>]`形式の英小文字kebab-caseにする。`view-type`の標準語彙は、`system-context`、`container`、`component`、`dynamic`、`deployment`、`filtered`、`image`、`custom`である。
-
-`target`と`purpose`は、対象システム、コンテナ、シナリオなどを表す安定したslugにする。例は`system-context-docs-site`、`container-docs-site`、`dynamic-publish-flow`、`deployment-docs-site-production`である。arc42章番号や一時的な表示名はview keyに入れない。
-
-既存view keyの変更は、`workspace.json`に保持した手動レイアウトを失うリスクがあるため原則として避ける。
-
-=== 5.2.3 Antora component descriptor
-
-各ソースリポジトリのAntora content rootには、`docs/antora.yml`を置く。
-
-`antora.yml`は、component名、title、version、navigation fileを定義する。
-
-文書に独立した版番号を持たせないcomponentでは、`version: ~`を使う。
-
-=== 5.2.4 ソースリポジトリ側workflow
-
-ソースリポジトリ側workflowは、以下を担う。
-
-* pushまたはpull request時の文書検査
-* 必要に応じた図生成
-* `main`更新後のサイト用リポジトリへの再生成依頼
-
-Structurizr図生成CI workflowは、図を持つ各ソースリポジトリの`.github/workflows/diagrams.yml`に置く。図生成の実処理は、`f-vermi-lion/github-workflows`のreusable workflowとして共通化する。呼び出し側の標準YAMLテンプレートは`docs/modules/ROOT/examples/github-actions/diagrams.yml`に置く。起動条件は、`pull_request`、`main`への`push`、手動の`workflow_dispatch`とする。初期標準では`paths` filterを使わず、workflow内のworkspace自動検出で図生成対象なしを成功扱いにする。
-
-サイト用リポジトリへの再生成依頼は、`repository_dispatch`を標準にする。
-
-ただし、token / secret管理、権限範囲、private repositoryからpublic Pagesへ公開する場合の扱いは、未決定事項として残る。
-
-== 5.3 サイト用リポジトリ
-
-サイト用リポジトリは、統合サイトを生成してGitHub Pagesへ公開する中心である。
-
-標準名は`zouchikikou-docs-site`とし、この決定後すぐ作成する。
-
-初期リポジトリはpublicな骨組みとして作成する。ただし、private repositoryの文書は初期content sourceに含めない。
-
-各ソースリポジトリに散らばる文書正本を、Antora playbookのcontent sourcesとして取得する。
-
-初期の最小ファイルセットは以下である。
-
-[source,text]
-----
-zouchikikou-docs-site/
-  README.md
-  antora-playbook.yml
-  package.json
-  .gitignore
-  .github/
-    workflows/
-      build.yml
-  tools/
-    README.md
-----
-
-=== 5.3.1 Antora playbook
-
-Antora playbookは、どのリポジトリ、ブランチ、start pathから文書を取得するかを定義する。
-
-[source,yaml]
-----
-content:
-  sources:
-    - url: https://github.com/f-vermi-lion/zk_meta_architecture.git
-      branches: main
-      start_path: docs
-----
-
-content sourceとして取り込む各ソースリポジトリのbranchとstart pathは、`zouchikikou-docs-site`の初期構成時に確定する。
-
-=== 5.3.2 公開workflow
-
-公開workflowは、`repository_dispatch`と`workflow_dispatch`を受け付ける。
-
-ただし、初期`.github/workflows/build.yml`はbootstrap用の手動build workflowとし、`workflow_dispatch`のみを受け付ける。初期workflowは`npm run build`でAntora buildを確認し、GitHub Pages deploy、`repository_dispatch`、token / secret利用、`tools/check-language-pairs`実行は含めない。
-
-初期build確認後のPages deploy workflowは、`.github/workflows/publish.yml`に置き、`workflow_dispatch`で手動起動する。workflowは`npm run build`で生成した`build/site`をPages artifactとしてuploadし、GitHub Pagesへdeployする。
-
-Pages deployには、GitHub公式の`actions/configure-pages@v5`、`actions/upload-pages-artifact@v4`、`actions/deploy-pages@v4`を使う。初回有効化では、`repository_dispatch`、cross-repository token / secret、private repositoryのcontent source、`tools/check-language-pairs`実行は含めない。
-
-GitHub PagesがAntora生成物をJekyllとして処理しないよう、Antora playbookから`.nojekyll`を生成物に含める。
-
-公開workflowの主な責務は以下である。
-
-. content sourcesを取得する。
-. 日英対応検査などの共通検査を実行する。
-. 生成済み図の存在確認を行う。
-. Antora buildを実行する。
-. 生成済み静的サイトをGitHub Pagesへdeployする。
-. build artifactとlogを残す。
-
-=== 5.3.3 共通UI
-
-共通UIは、Antoraで生成するサイトの見た目とナビゲーションの共通要素を担う。
-
-日英切り替え導線は未決定である。少なくとも、英語正本と日本語補助版の対応ページを行き来できる導線を用意する必要がある。
-
-=== 5.3.4 共通検査ツール
-
-サイト用リポジトリは、複数ソースリポジトリ横断で使う検査ツールを持つ。
-
-現時点で標準化されているコマンド名は、日英対応検査の`tools/check-language-pairs`である。
-
-標準コマンド形式は、`tools/check-language-pairs <content-root>...`とする。
-
-`<content-root>`には、`antora.yml`を持つAntora content rootを渡す。代表例は、checkout済みの`docs`ディレクトリである。
-
-このコマンドは、content sources取得後、Antora build前に実行する。
-
-== 5.4 生成・検査ツール
-
-生成・検査ツールは、既存ツールを優先して使う。
-
-独自実装は、既存ツールで賄えない検査、接続、運用補助に限定する。
-
-=== 5.4.1 Antora
-
-Antoraは、AsciiDoc文書を複数リポジトリから集約し、静的サイトを生成する。
-
-この基盤では、Antoraを以下に使う。
-
-* content sourcesによる複数リポジトリ取り込み
-* component / module / page構造による文書整理
-* `xref`によるページ間参照
-* navigation fileによるサイト内導線
-* GitHub PagesにdeployするHTML生成
-
-=== 5.4.2 docToolchain
-
-docToolchainは、arc42文書運用、AsciiDoc処理、図連携などの補助に使う候補である。
-
-ただし、docToolchainのAntora連携は検証対象であり、現時点ではすべての公開処理をdocToolchainに寄せるとは決めない。
-
-=== 5.4.3 Structurizr
-
-Structurizrは、C4図モデルの正本をDSLとして扱い、サイト掲載用の図を生成するために使う。
-
-標準生成経路は、Structurizr DSL/JSONからStructurizrの`export -format svg`で直接SVGを生成する方式にする。
-
-この経路では、Structurizrのブラウザベースレンダラで見た目を決め、生成したSVGをAntora assetsとして配置する。手動レイアウトを再現する場合は、`workspace.json`を`export -format svg -workspace <path>`の入力にする。
-
-CI上の標準実行環境は、Playwright依存を含むStructurizr Docker imageを第一候補にする。
-
-Structurizr図生成CI workflowは、各ソースリポジトリの`.github/workflows/diagrams.yml`に置き、`pull_request`、`main`への`push`、`workflow_dispatch`で起動する。図生成の実処理は`f-vermi-lion/github-workflows`の`.github/workflows/structurizr-diagrams.yml`で共通化する。`pull_request`ではmerge前に生成SVGの未反映差分を検出し、`main`への`push`ではサイト再生成依頼前に図資産が反映済みであることを確認する。`workflow_dispatch`は、失敗後の再確認や環境更新後の手動検証に使う。
-
-呼び出し側の標準YAMLテンプレートは以下である。
-
-[source,yaml]
-----
-include::example$github-actions/diagrams.yml[]
-----
-
-標準Docker imageは`structurizr/structurizr:2026.05.22-playwright`とする。各ソースリポジトリrootで、以下の標準コマンドにより`workspace.json`からSVGを生成する。
-
-Docker image tagは日付付き`-playwright` tagを固定し、`latest`や未修飾tagは使わない。tag更新は、月次確認または必要時の専用変更として手動で行い、tag文字列、生成SVG、関連文書を同じ変更単位に含める。
-
-[source,sh]
-----
-docker run --rm -v "$PWD:/usr/local/structurizr" structurizr/structurizr:2026.05.22-playwright export -format svg -workspace docs/modules/<module>/examples/diagrams/structurizr/workspace.json -output docs/modules/<module>/assets/images/diagrams
-----
-
-生成対象は`find docs/modules -path '*/examples/diagrams/structurizr/workspace.json' -type f -print`で自動検出する。対象が0件の場合は、図生成対象なしとして成功扱いにする。
-
-生成SVGは、`docs/modules/<module>/assets/images/diagrams/`に置き、Antora assetとしてリポジトリ管理する。arc42本文からは`image::diagrams/<file>.svg[]`で参照する。
-
-SVG export後の未反映差分は、`git status --porcelain -- docs/modules/<module>/assets/images/diagrams`で検出する。出力がある場合、CIは失敗扱いにし、`git status --short -- docs/modules/<module>/assets/images/diagrams`と`git diff -- docs/modules/<module>/assets/images/diagrams`をlogに出す。
-
-=== 5.4.4 日英対応検査スクリプト
-
-日英対応検査スクリプトは、英語正本と日本語補助版の対応関係を検査する。
-
-標準コマンド名は、`tools/check-language-pairs`とする。
-
-検査対象は、造智機巧本体のアーキテクチャ文書であり、`meta_architecture`自体は日本語運用のため対象外とする。
-
-実装言語はPython 3とし、標準ライブラリのみを使う。
-
-`zouchikikou-docs-site`の`tools/check-language-pairs`として実装済みである。
-
-`antora.yml`の`name`が`meta-architecture`であるcontent rootは、検査対象外としてskipする。
-
-検査違反は、`missing_ja`、`missing_en`、`missing_lang`、`lang_mismatch`のいずれかのissue codeを持つ行として出力する。
-
-issue出力形式は、`issue_code<TAB>content_root<TAB>module<TAB>relative_path<TAB>message`のタブ区切り行とする。
-
-終了コードは、問題なしを`0`、検査違反ありを`1`、引数不正やcontent root不正など実行不能を`2`とする。
-
-publish workflowでこのコマンドへ渡すcontent rootの取得手順は未決定であり、11章の未決定事項として扱う。
-
-初期範囲では、翻訳内容の差分、更新鮮度、日英リンクの存在は検査しない。
-
-== 5.5 公開成果物
-
-公開成果物は、文書正本ではなく、文書正本から生成される派生成果物である。
-
-=== 5.5.1 GitHub Pagesサイト
-
-GitHub Pagesサイトは、閲覧者向けの公開結果である。
-
-生成済みHTML、CSS、JavaScript、画像などを含む。
-
-=== 5.5.2 生成済み図
-
-生成済み図は、図ソースから生成または書き出したSVGである。C4図ではStructurizr DSL/JSONから直接生成する。
-
-arc42本文からは、AsciiDocの`image::diagrams/<file>.svg[]`で参照する。
-
-PNGは必要時の補助出力に留める。
-
-生成済みSVGは派生成果物であり、直接編集して正本化しない。
-
-生成済み図は、公開サイトでAntoraが読むassetとしてリポジトリ管理する。図モデルまたはレイアウトを変更した場合は、対応する生成SVGも同じ変更単位に含める。
-
-未反映差分はソースリポジトリ側CIの`git status --porcelain -- docs/modules/<module>/assets/images/diagrams`で検出する。
-
-=== 5.5.3 build artifact / log
-
-build artifactとlogは、公開結果の確認、失敗時の原因調査、再実行判断に使う。
-
-サイト再生成失敗に気づけないことは技術的リスクであるため、通知・再実行手順と合わせて扱う。
+== 5.3 責務の境界
+
+* 文書本文と図モデルの所有者はソースリポジトリである。
+* サイト全体のcontent source、UI、build、deployの所有者はサイト用リポジトリである。
+* source側検査は個別リポジトリ内で完結させ、複数リポジトリ横断の検査はサイト用リポジトリで行う。
+* 公開HTML、生成SVG、artifact、logは派生成果物であり、正本と区別する。
+* 各子文書は自領域の詳細を正本とし、他領域の詳細は`xref`で参照する。

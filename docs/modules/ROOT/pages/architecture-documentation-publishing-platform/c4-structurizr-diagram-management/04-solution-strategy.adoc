@@ -1,0 +1,56 @@
+= 4. ソリューション戦略
+:docstatus: draft
+:created: 2026-07-27
+:revdate: 2026-07-27
+:authors: F; Codex; ChatGPT
+:lang: ja
+
+== 4.1 意味・見た目・公開画像を分ける
+
+[cols="1,3",options="header"]
+|===
+| 対象
+| 役割
+
+| Structurizr DSL
+| C4要素、関係、view、styleを定義するモデル正本。
+
+| Structurizr JSON workspace
+| 手動レイアウトを含むSVG export入力。モデル正本ではない。
+
+| 生成SVG
+| AntoraとGitHub Pagesで表示する派生成果物。
+
+| AsciiDoc本文
+| 図の目的、読み方、前提を説明し、生成SVGを参照する文書正本。
+|===
+
+この分離により、モデルは差分レビュー可能なDSLで管理しながら、
+Structurizrのブラウザベースレンダラで調整した見た目を公開画像へ反映する。
+
+== 4.2 一つのmoduleを一つのworkspaceから始める
+
+標準では一つのAntora moduleにつき一つのStructurizr workspaceを置く。
+小規模な間は`workspace.dsl`へ集約し、
+大きくなったときだけ`model.dsl`、`views.dsl`、`styles.dsl`へ分ける。
+
+== 4.3 source側で生成する
+
+図生成は図正本を持つソースリポジトリで行う。
+サイト用リポジトリは生成済みSVGをcontent sourceから取得し、
+標準経路では図を再生成しない。
+
+共通の処理は`f-vermi-lion/github-workflows`のreusable workflowへ置き、
+各ソースリポジトリは薄いcaller workflowから利用する。
+
+== 4.4 再生成差分を検査する
+
+CIは各moduleの`workspace.json`を自動検出してSVGを再生成する。
+生成後のasset directoryにGit差分または未追跡ファイルがあれば、
+生成物が変更へ含まれていないものとして失敗させる。
+
+== 4.5 見た目を成果物として確認する
+
+図の編集では、文と図の内容を並行して考え、
+Structurizr上で図を目視し、説明本文と生成SVGへ反映する。
+pull request前に少なくとも一度、ローカル内容から生成したAntoraページでも図を確認する。

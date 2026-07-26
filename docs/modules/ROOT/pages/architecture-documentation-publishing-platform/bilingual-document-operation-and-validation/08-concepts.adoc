@@ -1,0 +1,66 @@
+= 8. 横断的コンセプト
+:docstatus: draft
+:created: 2026-07-27
+:revdate: 2026-07-27
+:authors: F; Codex; ChatGPT
+:lang: ja
+
+== 8.1 正本と補助版
+
+英語正本は、日英内容が衝突した場合の判断基準である。
+日本語補助版はFと日本語話者の理解を助けるために持つ。
+
+補助版は省略可能な単なる機械翻訳ではなく、
+公開時と版確定時には正本と対応するpageとして維持する。
+
+== 8.2 対応page
+
+対応は、module名を除いたpageの相対pathで定義する。
+
+[cols="1,2",options="header"]
+|===
+| 英語正本
+| 日本語補助版
+
+| `modules/ROOT/pages/index.adoc`
+| `modules/ja/pages/index.adoc`
+
+| `modules/ROOT/pages/system/05-building-block-view.adoc`
+| `modules/ja/pages/system/05-building-block-view.adoc`
+|===
+
+title、見出し、本文の文字列一致は対応条件に含めない。
+
+== 8.3 言語metadata
+
+`:lang:`はpage自身の言語を表す必須metadataである。
+moduleの位置だけから暗黙推定せず、page headerへ明示する。
+
+Antora component `version`、`:revdate:`、`:docstatus:`はそれぞれ別の意味を持ち、
+言語の識別には使わない。
+
+== 8.4 草稿と公開
+
+[cols="1,2,2",options="header"]
+|===
+| 状態
+| page対応
+| 検査
+
+| 草稿
+| 一時的に片方だけでもよい。
+| 編集者が未対応を追跡する。公開gateとしては要求しない。
+
+| 公開・版確定
+| 日英両方を要求する。
+| page欠落と`:lang:`不一致をCI失敗にする。
+|===
+
+`:docstatus:`と公開workflowの関係を自動判定する仕組みは現時点で定めていない。
+
+== 8.5 検査対象外component
+
+`meta_architecture`は日本語で運用するため、
+`antora.yml`の`name`が`meta-architecture`であるcontent rootをskipする。
+このskipは検査実装の仕様であり、
+日本語pageを`ROOT`へ置く現在の構成を違反にしないために必要である。

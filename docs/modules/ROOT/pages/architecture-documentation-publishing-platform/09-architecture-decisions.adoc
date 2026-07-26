@@ -1,138 +1,55 @@
 = 9. アーキテクチャ決定
 :docstatus: draft
 :created: 2026-05-05
-:revdate: 2026-06-01
-:authors: F; ChatGPT
+:revdate: 2026-07-27
+:authors: F; ChatGPT; Codex
 :lang: ja
 
+== 9.1 有効な決定と担当文書
 
-== 9.1 現在有効な決定
-
-現在有効な決定は、リポジトリ内の`decisions/`に置く。
-
-この章は、決定内容の全文を重複して持つのではなく、現在のarc42本文と決定ファイルの対応を示す索引として扱う。
-
-[cols="1,3,2",options="header"]
+[cols="2,2,3",options="header"]
 |===
 | 決定ファイル
-| 主な決定内容
-| 関連章
-
-| `decisions/architecture_documentation_platform.md`
-| 対象システム名、含むもの、含まないもの、基本構成。
-| 3章、4章、5章
+| 主に説明する文書
+| 決定の要約
 
 | `decisions/architecture_documents.md`
-| arc42、Antora標準構成、章ファイル命名規則、相互参照方針。
-| 4章、5章、8章、12章
-
-| `decisions/architecture_document_publication.md`
-| GitHub Pages公開、専用サイトリポジトリ、repository_dispatch / workflow_dispatch。
-| 4章、5章、6章、10章、11章
-
-| `decisions/architecture_diagrams.md`
-| 図ソースと公開画像の分離、C4/Structurizrの標準配置、JSON workspaceによるレイアウト管理、直接SVG生成、Docker image tag更新方針、図生成CIの共通化、DSL分割と`!include`配置規則。
-| 4章、5章、6章、8章、11章
-
-| `decisions/architecture_document_languages.md`
-| 英語正本・日本語補助版、Antora moduleによる日英分離、日英対応検査。
-| 4章、5章、6章、8章、10章、11章
+| xref:architecture-documentation-publishing-platform/document-structure-and-authoring-rules/index.adoc[文書構造・執筆規約]
+| arc42、AsciiDoc、Antora標準構成、階層的文書、命名、xref / includeを使う。
 
 | `decisions/architecture_document_metadata.md`
-| AsciiDocヘッダ属性としての文書メタデータ、必須項目、記法。
-| 8章、10章、12章
+| xref:architecture-documentation-publishing-platform/document-structure-and-authoring-rules/08-concepts.adoc[文書メタデータ]
+| タイトル、状態、作成日、更新日、著者、言語をページ属性として持つ。
+
+| `decisions/architecture_diagrams.md`
+| xref:architecture-documentation-publishing-platform/c4-structurizr-diagram-management/index.adoc[図生成・管理]
+| C4図はStructurizr DSLを正本とし、JSON workspaceを使ってSVGを生成する。
+
+| `decisions/architecture_documentation_platform.md`
+| xref:architecture-documentation-publishing-platform/index.adoc[本親文書]
+| 文書正本を各ソースリポジトリへ置き、専用サイトリポジトリで集約する。
+
+| `decisions/architecture_document_publication.md`
+| xref:architecture-documentation-publishing-platform/antora-site-publishing/index.adoc[サイト集約・公開] /
+xref:architecture-documentation-publishing-platform/cross-repository-publishing-orchestration/index.adoc[公開オーケストレーション]
+| Antoraでサイトを生成し、GitHub ActionsからGitHub Pagesへ公開する。
+
+| `decisions/architecture_document_languages.md`
+| xref:architecture-documentation-publishing-platform/bilingual-document-operation-and-validation/index.adoc[日英文書運用・検査]
+| 英語を正本、日本語を補助版とし、moduleと検査で対応を管理する。
 |===
 
-== 9.2 現時点の主要決定要約
+== 9.2 決定記録
 
-対象システムは、「各リポジトリ内の文書正本」と「専用サイトリポジトリのAntora集約・公開設定」からなる文書公開基盤と定義する。
+判断経緯は`decision_records/`に置く。
+文書形式・配置、日英module、図の正本・レイアウト・生成経路・CI・Docker image更新など、
+現在有効な決定の背景を必要な場合に参照する。
 
-ソースリポジトリ側は「文書を書く場所」、専用サイトリポジトリ側は「集めて公開する場所」とする。
+子文書は決定内容を実際の構成と手順へ展開するが、
+決定そのものを変更する場合は先に対応する`decisions/`を更新する。
 
-専用サイトリポジトリの標準名は`zouchikikou-docs-site`とし、この決定後すぐ作成する。
+== 9.3 未決定事項
 
-各ソースリポジトリの`main`更新後は、`zouchikikou-docs-site`へ`repository_dispatch`で再生成を依頼する。`zouchikikou-docs-site`の公開workflowは`repository_dispatch`と手動の`workflow_dispatch`を受け付ける。
-
-初回のGitHub Pages deployは、`zouchikikou-docs-site`の`.github/workflows/publish.yml`を`workflow_dispatch`で手動実行する。workflowはAntora build結果の`build/site`を`actions/upload-pages-artifact@v4`でPages artifactとしてuploadし、`actions/deploy-pages@v4`でGitHub Pagesへdeployする。Antora playbookは`.nojekyll`を生成物に含める。`repository_dispatch`、cross-repository token / secret、private repositoryの取り込み、共通検査ツール実行は別段階で有効化する。
-
-2026-05-23時点の初回公開URLは、https://f-vermi-lion.github.io/zouchikikou-docs-site/meta-architecture/architecture-documentation-publishing-platform/index.html である。
-
-日本語版・英語版は同一component内のAntora moduleで分ける。英語正本は`ROOT` module、日本語補助版は`ja` moduleに置き、対応するページはmodule配下の相対パスとファイル名を揃える。
-
-公開時と版確定時のCIでは、英語正本`docs/modules/ROOT/pages/**/*.adoc`と日本語補助版`docs/modules/ja/pages/**/*.adoc`の対応ページ欠落、および`:lang:`不一致を失敗扱いにする。`meta_architecture`自体は日本語運用のため、この日英必須検査の対象外にする。
-
-日英対応検査の標準コマンドは、専用サイトリポジトリ内の`tools/check-language-pairs`とする。このコマンドは、公開workflowがcontent sourcesを取得した後、Antora buildの前に実行する。
-
-図ソースと公開画像は分離して管理する。C4図ではStructurizr DSLをモデル正本とし、手動レイアウトを含むJSON workspaceからSVGを生成する。Structurizr図生成CI、共通reusable workflow、Docker image tag、生成SVG差分検出、DSL分割規則の詳細は`decisions/architecture_diagrams.md`で管理する。
-
-標準配置の具体例は、8.2で管理する。
-
-== 9.3 判断経緯を残した決定記録
-
-判断経緯は、リポジトリ内の`decision_records/`に置く。
-
-decision recordは、現在有効な決定そのものではなく、なぜその決定にしたかを説明する履歴である。
-
-[cols="1,3,2",options="header"]
-|===
-| 決定記録ファイル
-| 主な内容
-| 関連する現在有効な決定
-
-| `decision_records/architecture_document_format_revision.md`
-| arc42本文をMarkdown前提からAsciiDocとGitHub Pages前提へ改めた理由。
-| `architecture_documents.md`, `architecture_document_publication.md`
-
-| `decision_records/architecture_document_layout_revision.md`
-| arc42文書ディレクトリの連番をやめ、章番号を章ファイルへ移した理由。
-| `architecture_documents.md`
-
-| `decision_records/architecture_documentation_platform_from_docs.md`
-| docs草稿からアーキテクチャ文書公開基盤の方針へ進めた理由。
-| `architecture_documentation_platform.md`, `architecture_document_publication.md`
-
-| `decision_records/architecture_document_languages.md`
-| 造智機巧のアーキテクチャ文書を英語正本・日本語補助版にした理由。
-| `architecture_document_languages.md`
-
-| `decision_records/architecture_document_language_antora_modules.md`
-| 日英版をAntora moduleで分ける理由。
-| `architecture_document_languages.md`
-
-| `decision_records/structurizr_direct_svg_generation.md`
-| Structurizr直接SVG生成を標準経路にする理由。
-| `architecture_diagrams.md`
-
-| `decision_records/structurizr_diagram_layout_json.md`
-| Structurizr図のレイアウト情報をJSONで管理する理由。
-| `architecture_diagrams.md`
-
-| `decision_records/structurizr_dsl_include_structure.md`
-| Structurizr DSLの分割単位と`!include`配置規則を決めた理由。
-| `architecture_diagrams.md`
-
-| `decision_records/structurizr_diagram_ci_workflow.md`
-| Structurizr図生成CI workflowの配置と起動条件を決めた理由。
-| `architecture_diagrams.md`, `architecture_document_publication.md`
-
-| `decision_records/structurizr_docker_image_tag_update_policy.md`
-| Structurizr Docker image tagの更新方針を決めた理由。
-| `architecture_diagrams.md`, `architecture_document_publication.md`
-
-| `decision_records/diagram_source_layout_tool_neutral.md`
-| 図ソース配置をtool-neutralに分離した理由。
-| `architecture_diagrams.md`
-|===
-
-== 9.4 未決定事項との関係
-
-未決定事項は、11.8の未決定事項一覧と11章の技術的リスクで管理する。
-
-未決定事項が解決したら、以下のいずれかに反映する。
-
-* 現在有効な方針として`decisions/`へ反映する。
-* 判断経緯を残す価値が高い場合は`decision_records/`を追加する。
-* arc42本文の関連章を更新する。
-* 必要なら`inbox.md`または`tasks.md`から該当項目を削除・完了にする。
-
-この章では、未決定事項を決定済みのように扱わない。
+未決定事項は、決定済みの標準と同じ文体で確定事項として書かない。
+対応する子文書の11章と`inbox.md`で管理し、
+解決後に決定、必要な決定記録、文書、taskの状態をまとめて更新する。
