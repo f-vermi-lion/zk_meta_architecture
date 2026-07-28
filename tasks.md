@@ -57,3 +57,4 @@
 - [x] 分割した親子文書をAntoraでビルドし、生成サイトの見た目を確認する
 - [x] 執筆中のローカルファイルを公開サイト相当の見た目でブラウザ閲覧できる経路を実装する
 - [x] 日本語の単語文字に隣接するAsciiDocの一重バッククォートを二重バッククォートへ修正する
+- [x] zouchikikou-docs-siteでjs-yaml 4.3.0をoverrideし、npm auditとAntora buildで検証する
