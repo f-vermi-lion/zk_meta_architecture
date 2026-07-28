@@ -9,15 +9,15 @@
 
 * アーキテクチャ文書の構成にはarc42を使う。
 * 本文の標準形式はAsciiDocとする。
-* 文書は各ソースリポジトリの`docs/`をAntora content rootとして配置する。
-* `docs/antora.yml`をcomponent descriptorとする。
-* 文書本文は`docs/modules/<module>/pages/`、再利用断片は`partials/`、画像などは`assets/`に置く。
-* GitHub上の`README.md`は入口として残すが、arc42本文の正本にはしない。
+* 文書は各ソースリポジトリの``docs/``をAntora content rootとして配置する。
+* ``docs/antora.yml``をcomponent descriptorとする。
+* 文書本文は``docs/modules/<module>/pages/``、再利用断片は``partials/``、画像などは``assets/``に置く。
+* GitHub上の``README.md``は入口として残すが、arc42本文の正本にはしない。
 
 == 2.2 文書の分割
 
 * 単一のarc42へ全体とすべての詳細を詰め込まず、必要に応じて階層的な複数のarc42へ分ける。
-* 独立したarc42文書は、それぞれ専用のpage directoryと`index.adoc`を持つ。
+* 独立したarc42文書は、それぞれ専用のpage directoryと``index.adoc``を持つ。
 * 子文書は親文書のdirectory配下へネストし、親文書から辿れるようにする。
 * 一つのpage groupに複数の独立したarc42本文を混在させない。
 * arc42の章は必要なものだけを置いてよく、空の章ファイルは作らない。

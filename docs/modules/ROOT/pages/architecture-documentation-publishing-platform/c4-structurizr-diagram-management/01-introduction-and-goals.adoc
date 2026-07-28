@@ -20,7 +20,7 @@ pull requestでそれらを同じ変更単位として確認できる状態を�
 * Structurizr DSLによるC4モデルとview
 * Structurizr JSON workspaceに保持する手動レイアウト
 * SVG exportとAntora assetへの配置
-* view keyとDSL `!include`の規則
+* view keyとDSL ``!include``の規則
 * source側の図生成reusable workflowと未反映差分検出
 * 文書と図を一緒に草稿化し、見た目を確認する手順
 

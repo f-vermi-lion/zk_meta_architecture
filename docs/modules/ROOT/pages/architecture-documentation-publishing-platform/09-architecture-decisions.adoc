@@ -41,15 +41,15 @@ xref:architecture-documentation-publishing-platform/cross-repository-publishing-
 
 == 9.2 決定記録
 
-判断経緯は`decision_records/`に置く。
+判断経緯は``decision_records/``に置く。
 文書形式・配置、日英module、図の正本・レイアウト・生成経路・CI・Docker image更新など、
 現在有効な決定の背景を必要な場合に参照する。
 
 子文書は決定内容を実際の構成と手順へ展開するが、
-決定そのものを変更する場合は先に対応する`decisions/`を更新する。
+決定そのものを変更する場合は先に対応する``decisions/``を更新する。
 
 == 9.3 未決定事項
 
 未決定事項は、決定済みの標準と同じ文体で確定事項として書かない。
-対応する子文書の11章と`inbox.md`で管理し、
+対応する子文書の11章と``inbox.md``で管理し、
 解決後に決定、必要な決定記録、文書、taskの状態をまとめて更新する。

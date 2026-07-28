@@ -14,7 +14,7 @@
 | 出力
 
 | 文書作成者
-| pull request、`main`への変更、手動再実行
+| pull request、``main``への変更、手動再実行
 | 検査結果、公開結果、失敗情報
 
 | ソースリポジトリ
@@ -45,8 +45,8 @@ AsciiDocの書き方、Structurizr export、
 
 == 3.3 現在と目標
 
-現在、site側の`build.yml`と`publish.yml`は手動`workflow_dispatch`で動作する。
+現在、site側の``build.yml``と``publish.yml``は手動``workflow_dispatch``で動作する。
 図生成reusable workflowと日英checkerも個別に実装されている。
 
-一方、source側からsite側への`repository_dispatch`、
+一方、source側からsite側への``repository_dispatch``、
 site側の横断検査呼び出し、権限・token、失敗通知はend-to-endで未実装または未決定である。

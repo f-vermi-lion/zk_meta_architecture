@@ -7,7 +7,7 @@
 
 == 2.1 リポジトリ
 
-* 統合サイト用の標準リポジトリ名は`zouchikikou-docs-site`とする。
+* 統合サイト用の標準リポジトリ名は``zouchikikou-docs-site``とする。
 * 各ソースリポジトリは統合用Antora playbookを持たない。
 * playbook、共通UI、site側workflow、横断検査ツールはサイト用リポジトリへ置く。
 * 初期構成はpublicな骨組みとし、private repositoryをcontent sourceに含めない。
@@ -18,10 +18,10 @@
 * 公開用content sourceを使う標準buildコマンドは``npm run build``とする。
 * 執筆中のローカルworktreeを使うbuildコマンドは``npm run build:local``とする。
 * buildとlocalhostでの配信を連続実行するコマンドは``npm run preview``とする。
-* 生成先は`build/site`とする。
+* 生成先は``build/site``とする。
 * 公開先はGitHub Pagesとする。
 * Pages publishing sourceにはGitHub Actionsを使う。
-* Pagesへuploadする生成物には`.nojekyll`を含める。
+* Pagesへuploadする生成物には``.nojekyll``を含める。
 * 標準経路では、サイト用リポジトリでStructurizr SVGを再生成しない。
 
 == 2.3 正本

@@ -12,11 +12,11 @@ Antoraサイト集約・GitHub Pages公開基盤は、
 
 ソースリポジトリへ統合サイト固有の設定を分散させず、
 サイト全体のcontent sources、UI、build、deployを
-専用の`zouchikikou-docs-site`で管理する。
+専用の``zouchikikou-docs-site``で管理する。
 
 == 1.2 対象
 
-* `zouchikikou-docs-site`リポジトリ
+* ``zouchikikou-docs-site``リポジトリ
 * Antora playbookとnpm build
 * content sourcesの集約
 * Antora UI、navigation、`.nojekyll`

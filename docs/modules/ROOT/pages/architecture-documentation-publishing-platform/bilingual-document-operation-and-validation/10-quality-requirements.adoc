@@ -14,20 +14,20 @@
 | 受け入れ条件
 
 | 対応する日本語pageがない
-| checkerが`missing_ja`を出す。
-| 終了code `1`となり、relative pathから欠落pageを特定できる。
+| checkerが``missing_ja``を出す。
+| 終了code ``1``となり、relative pathから欠落pageを特定できる。
 
 | `ROOT` pageの言語が誤っている
-| checkerが`lang_mismatch`を出す。
-| 期待値`en`と実際値がmessageに含まれる。
+| checkerが``lang_mismatch``を出す。
+| 期待値``en``と実際値がmessageに含まれる。
 
 | 不正なcontent rootを渡す
 | checkerが実行不能として扱う。
-| 終了code `2`となり、標準エラーから対象pathを判断できる。
+| 終了code ``2``となり、標準エラーから対象pathを判断できる。
 
-| `meta_architecture`を検査する
+| ``meta_architecture``を検査する
 | component nameによりskipする。
-| 日本語だけの`ROOT` pageが日英違反にならない。
+| 日本語だけの``ROOT`` pageが日英違反にならない。
 
 | 公開前に日英対応を確認する
 | checker、Antora build、生成siteの目視を行う。
@@ -39,7 +39,7 @@
 日英構成の変更は、少なくとも次を満たしたとき完了とする。
 
 * 対応pageの相対pathとfile nameが一致する。
-* `ROOT`に`:lang: en`、`ja`に`:lang: ja`がある。
-* 公開対象ではcheckerが終了code `0`になる。
+* ``ROOT``に``:lang: en``、``ja``に``:lang: ja``がある。
+* 公開対象ではcheckerが終了code ``0``になる。
 * 両moduleのnavigationとxrefを確認している。
 * 生成siteで正本・補助版の表示を確認している。

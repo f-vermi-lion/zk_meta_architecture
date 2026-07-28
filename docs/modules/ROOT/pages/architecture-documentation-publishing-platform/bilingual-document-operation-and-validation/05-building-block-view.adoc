@@ -24,7 +24,7 @@ docs/
           index.adoc
 ----
 
-上の二つの`architecture/index.adoc`は対応ページである。
+上の二つの``architecture/index.adoc``は対応ページである。
 
 == 5.2 検査ツール
 
@@ -35,16 +35,16 @@ docs/
 tools/check-language-pairs <content-root>...
 ----
 
-`<content-root>`には`antora.yml`を持つAntora content rootを渡す。
+``<content-root>``には``antora.yml``を持つAntora content rootを渡す。
 複数のcontent rootを一度に指定できる。
 
 ツールは次を行う。
 
-. `antora.yml`からcomponent nameを読む。
+. ``antora.yml``からcomponent nameを読む。
 . `meta-architecture` componentなら検査対象外としてskipする。
-. `modules/ROOT/pages/**/*.adoc`と`modules/ja/pages/**/*.adoc`を相対pathで収集する。
+. ``modules/ROOT/pages/**/*.adoc``と``modules/ja/pages/**/*.adoc``を相対pathで収集する。
 . 片方だけにあるpageを検出する。
-. 各pageの`:lang:`が期待値と一致するか検査する。
+. 各pageの``:lang:``が期待値と一致するか検査する。
 . issueを安定した形式で出力し、終了codeを返す。
 
 == 5.3 issue形式
@@ -66,16 +66,16 @@ issue_code<TAB>content_root<TAB>module<TAB>relative_path<TAB>message
 | 日本語補助版に対応する英語正本がない。
 
 | `missing_lang`
-| pageに`:lang:`がない、または値が空である。
+| pageに``:lang:``がない、または値が空である。
 
 | `lang_mismatch`
-| `ROOT`が`en`でない、または`ja`が`ja`でない。
+| ``ROOT``が``en``でない、または``ja``が``ja``でない。
 |===
 
-終了codeは、問題なしを`0`、検査違反ありを`1`、
-引数不正やcontent root不正など実行不能を`2`とする。
+終了codeは、問題なしを``0``、検査違反ありを``1``、
+引数不正やcontent root不正など実行不能を``2``とする。
 
 == 5.4 実装状況
 
-`zouchikikou-docs-site/tools/check-language-pairs`と単体testは実装済みである。
+``zouchikikou-docs-site/tools/check-language-pairs``と単体testは実装済みである。
 一方、publish workflowからcontent rootを取得してこのコマンドへ渡す処理は未実装である。

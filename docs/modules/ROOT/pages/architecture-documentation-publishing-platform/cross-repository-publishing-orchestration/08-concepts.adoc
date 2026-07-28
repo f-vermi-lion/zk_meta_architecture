@@ -13,7 +13,7 @@
 | 意味
 
 | 正本更新済み
-| source repositoryの`main`に文書・図・設定が反映されている。
+| source repositoryの``main``に文書・図・設定が反映されている。
 
 | source検査済み
 | source側の文書・図検査に成功している。
@@ -49,11 +49,11 @@
 | workspace、output directory、Git差分。
 
 | 日英検査
-| page対応と`:lang:`が正しい。
+| page対応と``:lang:``が正しい。
 | issue code、content root、module、relative path。
 
 | Antora build
-| `build/site`が生成される。
+| ``build/site``が生成される。
 | content source、resource ID、build log。
 
 | Pages deploy

@@ -11,20 +11,20 @@
 * 日本語版は補助版とする。
 * 公開時と版確定時には日英両版を揃える。
 * 草稿段階では片方だけの更新を許容する。
-* `meta_architecture`自体は日本語単独運用とし、日英必須検査の対象外とする。
+* ``meta_architecture``自体は日本語単独運用とし、日英必須検査の対象外とする。
 
 == 2.2 Antora配置
 
 * 日英版は同一component内の別moduleに置く。
-* 英語正本は`docs/modules/ROOT/`に置く。
-* 日本語補助版は`docs/modules/ja/`に置く。
+* 英語正本は``docs/modules/ROOT/``に置く。
+* 日本語補助版は``docs/modules/ja/``に置く。
 * 対応ページはmodule配下の相対pathとfile nameを揃える。
-* 英語pageは`:lang: en`、日本語pageは`:lang: ja`を明示する。
-* component名やAntora `version`を言語差分の表現に使わない。
+* 英語pageは``:lang: en``、日本語pageは``:lang: ja``を明示する。
+* component名やAntora ``version``を言語差分の表現に使わない。
 
 == 2.3 検査
 
-* 公開時と版確定時は、対応ページ欠落と`:lang:`不一致を失敗にする。
-* 検査コマンドはサイト用リポジトリの`tools/check-language-pairs`とする。
+* 公開時と版確定時は、対応ページ欠落と``:lang:``不一致を失敗にする。
+* 検査コマンドはサイト用リポジトリの``tools/check-language-pairs``とする。
 * 実装はPython 3標準ライブラリだけを使う。
 * 初期範囲では翻訳内容の差分、更新鮮度、言語リンクの存在を検査しない。

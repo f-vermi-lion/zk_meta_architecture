@@ -54,7 +54,7 @@ AIツール本体、翻訳品質の完全保証を含めない。
 
 . ソースリポジトリで文書、図、設定を変更する。
 . source側workflowが、担当する正本と派生成果物を検査する。
-. `main`更新後、サイト用リポジトリへ再生成を依頼する。
+. ``main``更新後、サイト用リポジトリへ再生成を依頼する。
 . サイト用リポジトリがcontent sourcesを取得し、横断検査とAntora buildを行う。
 . GitHub Actionsが生成サイトをGitHub Pagesへdeployする。
 . 閲覧者がHTTPSで公開サイトを読む。

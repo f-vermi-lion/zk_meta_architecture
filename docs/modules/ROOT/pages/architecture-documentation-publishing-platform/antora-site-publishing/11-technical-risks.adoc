@@ -7,7 +7,7 @@
 
 == 11.1 remote content sourceとローカル草稿
 
-現在の通常playbookはremote `main`を取得する。
+現在の通常playbookはremote ``main``を取得する。
 そのbuildが成功しても、未pushの草稿が正しいことは証明しない。
 
 pull request前の確認では、``npm run preview``または``npm run build:local``を使い、

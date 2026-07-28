@@ -37,7 +37,7 @@ reusable workflowが実装されていても、
 各ソースリポジトリにcaller、workspace、生成SVGがなければend-to-endでは動作しない。
 
 「共通処理が存在する」「callerを配置した」「実際の図で成功した」を別々の状態として記録する。
-現時点の`meta_architecture`は共通workflowの説明例を持つが、実際のworkspaceとcallerを持たない。
+現時点の``meta_architecture``は共通workflowの説明例を持つが、実際のworkspaceとcallerを持たない。
 
 == 11.5 目視不足
 

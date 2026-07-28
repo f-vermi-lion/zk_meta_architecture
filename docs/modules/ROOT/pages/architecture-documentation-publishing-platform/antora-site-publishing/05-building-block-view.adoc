@@ -48,7 +48,7 @@ zouchikikou-docs-site/
 
 | bootstrap build
 | `.github/workflows/build.yml`
-| 手動でbuildし、`build/site`を一般artifactとして保存する。
+| 手動でbuildし、``build/site``を一般artifactとして保存する。
 
 | Pages publish
 | `.github/workflows/publish.yml`
@@ -64,16 +64,16 @@ zouchikikou-docs-site/
 
 | 静的サイト
 | `build/site`
-| HTML、CSS、JavaScript、画像、`.nojekyll`を含む派生成果物。
+| HTML、CSS、JavaScript、画像、``.nojekyll``を含む派生成果物。
 |===
 
 == 5.3 現在のplaybook
 
 現在の初期playbookは、
-`https://github.com/f-vermi-lion/zk_meta_architecture.git`の`main`、
-`start_path: docs`を一つのcontent sourceとして取得する。
-`runtime.fetch: true`でremote content sourceの更新を取得し、
-出力先を`build/site`とする。
+``https://github.com/f-vermi-lion/zk_meta_architecture.git``の``main``、
+``start_path: docs``を一つのcontent sourceとして取得する。
+``runtime.fetch: true``でremote content sourceの更新を取得し、
+出力先を``build/site``とする。
 
 執筆用playbookは、隣接する``meta_architecture`` repositoryに
 ``branches: HEAD``と``start_path: docs``を指定する。
@@ -84,11 +84,11 @@ zouchikikou-docs-site/
 
 == 5.4 Pages公開
 
-publish workflowは、最小権限として`contents: read`、`pages: write`、
-`id-token: write`を持つ。
+publish workflowは、最小権限として``contents: read``、`pages: write`、
+``id-token: write``を持つ。
 `actions/configure-pages@v5`、`actions/upload-pages-artifact@v4`、
-`actions/deploy-pages@v4`を使う。
+``actions/deploy-pages@v4``を使う。
 
-現在のworkflowは`workflow_dispatch`だけを受け付ける。
-`repository_dispatch`は
+現在のworkflowは``workflow_dispatch``だけを受け付ける。
+``repository_dispatch``は
 xref:architecture-documentation-publishing-platform/cross-repository-publishing-orchestration/05-building-block-view.adoc[公開オーケストレーション]の目標構成であり、まだsite workflowへ実装されていない。

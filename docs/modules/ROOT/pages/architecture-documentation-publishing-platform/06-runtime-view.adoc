@@ -10,7 +10,7 @@
 . 文書作成者が、文書本文、図定義、メタデータ、相互参照を更新する。
 . 文書と図を草稿として確認し、必要な派生成果物を更新する。
 . pull request前に検査とローカルサイトbuildを行い、対象ページと図の見た目を確認する。
-. 変更をレビューし、ソースリポジトリの`main`へ反映する。
+. 変更をレビューし、ソースリポジトリの``main``へ反映する。
 . source側workflowが文書・図の検査を行い、サイト用リポジトリへ再生成を依頼する。
 . site側workflowがcontent sourcesを取得し、横断検査とAntora buildを行う。
 . build結果をGitHub Pagesへdeployする。
@@ -30,7 +30,7 @@
 
 * サイト用リポジトリで``npm run preview``を実行し、ローカルworktreeの未push文書をブラウザで確認する。
 * 図はStructurizr上の見た目と生成SVGの両方を確認する。
-* サイト用リポジトリの`workflow_dispatch`でbuildまたは公開を再実行する。
+* サイト用リポジトリの``workflow_dispatch``でbuildまたは公開を再実行する。
 * Actions log、artifact、公開URLを使って結果を確認する。
 
 == 6.3 現在の実装境界
@@ -39,7 +39,7 @@
 ローカルworktreeを使うpreview、日英対応検査コマンド、
 Structurizr図生成reusable workflowが実装されている。
 
-一方、`repository_dispatch`によるend-to-endの自動再生成、
+一方、``repository_dispatch``によるend-to-endの自動再生成、
 日英対応検査のpublish workflowへの組み込み、
 失敗通知とtoken / secret管理は未完成または未決定である。
 子文書では、実装済みの初期経路と目標とする標準経路を区別して記述する。

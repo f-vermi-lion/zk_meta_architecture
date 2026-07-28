@@ -9,7 +9,7 @@
 
 ソースリポジトリは自分の文書正本と最小限の検査・生成設定を持つ。
 統合サイト全体の構成、content sourceの列挙、共通UI、
-GitHub Pages deployは`zouchikikou-docs-site`へ集約する。
+GitHub Pages deployは``zouchikikou-docs-site``へ集約する。
 
 これにより、ソース側を「文書を書く場所」、
 サイト側を「集めて公開する場所」として分ける。
@@ -24,11 +24,11 @@ component、module、page、partial、asset、navigationを使って統合する
 
 . publicな一つのcontent sourceを手動workflowでbuildする。
 . build結果をartifactとして確認する。
-. 手動`workflow_dispatch`でGitHub Pagesへ公開する。
+. 手動``workflow_dispatch``でGitHub Pagesへ公開する。
 . 横断検査と複数content sourceを追加する。
 . リポジトリ間オーケストレーションを有効化する。
 
-初期経路で未使用の`repository_dispatch`、private repository、
+初期経路で未使用の``repository_dispatch``、private repository、
 token / secret、日英検査を、実装済みとして扱わない。
 
 == 4.4 生成物を再利用しない

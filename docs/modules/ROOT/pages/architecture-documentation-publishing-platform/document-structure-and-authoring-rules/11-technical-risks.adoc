@@ -24,12 +24,12 @@ renameが必要な場合は、全xrefと公開URLへの影響を同じ変更で�
 
 == 11.4 ローカル草稿を確認できない
 
-現在の`zouchikikou-docs-site/antora-playbook.yml`はremote `main`をcontent sourceとして読む。
-そのままの`npm run build`が成功しても、未pushの草稿を確認した証拠にはならない。
+現在の``zouchikikou-docs-site/antora-playbook.yml``はremote ``main``をcontent sourceとして読む。
+そのままの``npm run build``が成功しても、未pushの草稿を確認した証拠にはならない。
 
-pull request前の確認では、ローカルの`meta_architecture`をcontent sourceにした一時playbookなど、
+pull request前の確認では、ローカルの``meta_architecture``をcontent sourceにした一時playbookなど、
 確認対象が明示された経路を使う。
-恒久的なローカル執筆基盤の初期機能は未決定であり、`inbox.md`で別途扱う。
+恒久的なローカル執筆基盤の初期機能は未決定であり、``inbox.md``で別途扱う。
 
 == 11.5 検査の不足
 

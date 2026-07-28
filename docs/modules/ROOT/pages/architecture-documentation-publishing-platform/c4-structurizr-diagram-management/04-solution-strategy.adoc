@@ -31,8 +31,8 @@ Structurizrのブラウザベースレンダラで調整した見た目を公開
 == 4.2 一つのmoduleを一つのworkspaceから始める
 
 標準では一つのAntora moduleにつき一つのStructurizr workspaceを置く。
-小規模な間は`workspace.dsl`へ集約し、
-大きくなったときだけ`model.dsl`、`views.dsl`、`styles.dsl`へ分ける。
+小規模な間は``workspace.dsl``へ集約し、
+大きくなったときだけ``model.dsl``、`views.dsl`、``styles.dsl``へ分ける。
 
 == 4.3 source側で生成する
 
@@ -40,12 +40,12 @@ Structurizrのブラウザベースレンダラで調整した見た目を公開
 サイト用リポジトリは生成済みSVGをcontent sourceから取得し、
 標準経路では図を再生成しない。
 
-共通の処理は`f-vermi-lion/github-workflows`のreusable workflowへ置き、
+共通の処理は``f-vermi-lion/github-workflows``のreusable workflowへ置き、
 各ソースリポジトリは薄いcaller workflowから利用する。
 
 == 4.4 再生成差分を検査する
 
-CIは各moduleの`workspace.json`を自動検出してSVGを再生成する。
+CIは各moduleの``workspace.json``を自動検出してSVGを再生成する。
 生成後のasset directoryにGit差分または未追跡ファイルがあれば、
 生成物が変更へ含まれていないものとして失敗させる。
 

@@ -8,12 +8,12 @@
 == 6.1 文書と図を更新する
 
 . 変更する説明と、図で示す対象・関係・viewを一緒に考える。
-. C4モデルの変更を`workspace.dsl`またはそこからincludeするDSLへ入れる。
-. 手動レイアウトを使う場合は、既存`workspace.json`のレイアウトを反映した状態でモデルを同期する。
+. C4モデルの変更を``workspace.dsl``またはそこからincludeするDSLへ入れる。
+. 手動レイアウトを使う場合は、既存``workspace.json``のレイアウトを反映した状態でモデルを同期する。
 . Structurizr UIまたは公式ツールを使って配置を調整し、図を目視する。
-. `workspace.json`を公式のmerge / export結果として更新する。テキストエディタで手編集しない。
+. ``workspace.json``を公式のmerge / export結果として更新する。テキストエディタで手編集しない。
 . JSON workspaceからSVGを生成する。
-. AsciiDocの説明と`image::diagrams/<file>.svg[]`参照を更新する。
+. AsciiDocの説明と``image::diagrams/<file>.svg[]``参照を更新する。
 . DSL、JSON、SVG、本文の差分を確認する。
 . ローカル内容を使ってAntora buildし、少なくともpull request前に一度、生成ページ上の図と説明を目視する。
 
@@ -47,7 +47,7 @@ find docs/modules \
 ----
 
 対象が0件なら図生成対象なしとして成功扱いにする。
-検出した各workspaceは、同じmoduleの`assets/images/diagrams/`へ出力する。
+検出した各workspaceは、同じmoduleの``assets/images/diagrams/``へ出力する。
 
 == 6.3 未反映差分を検出する
 
@@ -70,11 +70,11 @@ git diff -- docs/modules/<module>/assets/images/diagrams
 
 == 6.4 workflowの起動
 
-caller workflowは`pull_request`、`main`への`push`、`workflow_dispatch`で起動する。
+caller workflowは``pull_request``、``main``への``push``、``workflow_dispatch``で起動する。
 
 * pull requestでは、merge前に生成SVGの未反映差分を検出する。
 * `main` pushでは、サイト再生成依頼より前に図資産が反映済みであることを確認する。
-* `workflow_dispatch`は、失敗後やDocker image更新後の再確認に使う。
+* ``workflow_dispatch``は、失敗後やDocker image更新後の再確認に使う。
 
 後続の再生成依頼は
 xref:architecture-documentation-publishing-platform/cross-repository-publishing-orchestration/06-runtime-view.adoc[公開オーケストレーションのランタイムビュー]で扱う。
@@ -86,4 +86,4 @@ export修正の取り込みが必要な場合に専用変更として更新す�
 
 更新時は、tag文字列、workflow、生成SVG、関連文書を同じ変更単位にする。
 生成に失敗する、またはSVG差分を判断できない場合は現行tagを維持し、
-具体的な論点を`inbox.md`へ戻す。
+具体的な論点を``inbox.md``へ戻す。

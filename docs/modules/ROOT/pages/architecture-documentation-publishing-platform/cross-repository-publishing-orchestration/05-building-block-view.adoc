@@ -27,7 +27,7 @@
 
 | dispatch sender
 | 各ソースリポジトリ
-| `main`上の検査成功後、サイト用リポジトリへ再生成を依頼する。未実装。
+| ``main``上の検査成功後、サイト用リポジトリへ再生成を依頼する。未実装。
 
 | site publish workflow
 | `zouchikikou-docs-site`
@@ -35,7 +35,7 @@
 
 | 日英checker
 | `zouchikikou-docs-site/tools`
-| content rootの日英page対応と`:lang:`を検査する。toolは実装済み、workflow接続は未実装。
+| content rootの日英page対応と``:lang:``を検査する。toolは実装済み、workflow接続は未実装。
 
 | Antora build
 | `zouchikikou-docs-site`
@@ -67,8 +67,8 @@ workflow_dispatch
   -> Pages deploy
 ----
 
-上の`main push`経路は目標状態であり、
-現在のsite workflowは`repository_dispatch`を受け付けない。
+上の``main push``経路は目標状態であり、
+現在のsite workflowは``repository_dispatch``を受け付けない。
 
 == 5.3 成果物
 

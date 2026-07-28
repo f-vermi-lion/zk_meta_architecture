@@ -40,8 +40,8 @@ docs/modules/<module>/
 | C4モデル、view、styleの標準入口と正本。
 
 | 分割DSL
-| `model.dsl`、`views.dsl`、`styles.dsl`など
-| workspaceが大きい場合に、関心ごとに分割して`!include`する。
+| `model.dsl`、`views.dsl`、``styles.dsl``など
+| workspaceが大きい場合に、関心ごとに分割して``!include``する。
 
 | JSON workspace
 | `workspace.json`
@@ -52,7 +52,7 @@ docs/modules/<module>/
 | ページに埋め込み、公開する。
 
 | caller workflow
-| 各ソースリポジトリの`.github/workflows/diagrams.yml`
+| 各ソースリポジトリの``.github/workflows/diagrams.yml``
 | pull request、`main` push、手動実行から共通処理を呼び出す。
 
 | reusable workflow
@@ -67,7 +67,7 @@ docs/modules/<module>/
 == 5.3 実装状況
 
 reusable workflowとcaller例は実装済みである。
-初期標準ではcallerにGitHub Actionsの`paths` filterを設けず、
+初期標準ではcallerにGitHub Actionsの``paths`` filterを設けず、
 reusable workflow内のworkspace自動検出で対象0件を成功扱いにする。
 
 [source,yaml]
@@ -75,8 +75,8 @@ reusable workflow内のworkspace自動検出で対象0件を成功扱いにす�
 include::example$github-actions/diagrams.yml[]
 ----
 
-一方、`meta_architecture`には現在、実際の`workspace.dsl`、
-`workspace.json`、生成SVG、`.github/workflows/diagrams.yml`はない。
+一方、``meta_architecture``には現在、実際の``workspace.dsl``、
+`workspace.json`、生成SVG、``.github/workflows/diagrams.yml``はない。
 したがって、共通基盤の実装済みと、このcontent sourceへの適用済みを区別する。
 
 == 5.4 文書への埋め込み

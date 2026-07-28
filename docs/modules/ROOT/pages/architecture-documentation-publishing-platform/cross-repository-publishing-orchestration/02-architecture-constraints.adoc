@@ -8,8 +8,8 @@
 == 2.1 起動方式
 
 * source側のpull requestでは検査を行うが、deployやsiteへのdispatchを行わない。
-* 標準の自動再生成契機は、source側`main`更新後の`repository_dispatch`とする。
-* site側の公開workflowは、自動再生成に加えて手動の`workflow_dispatch`を持つ。
+* 標準の自動再生成契機は、source側``main``更新後の``repository_dispatch``とする。
+* site側の公開workflowは、自動再生成に加えて手動の``workflow_dispatch``を持つ。
 * source側は担当する文書・図の検査に成功した後で再生成を依頼する。
 
 == 2.2 処理配置

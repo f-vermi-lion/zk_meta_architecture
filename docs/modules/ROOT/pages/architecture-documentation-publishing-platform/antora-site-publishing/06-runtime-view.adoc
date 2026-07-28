@@ -15,7 +15,7 @@ npm install
 npm run build
 ----
 
-生成物は`build/site/`へ出力される。
+生成物は``build/site/``へ出力される。
 このコマンドは通常playbookからremote ``main``を読むため、
 未pushのローカル草稿の確認には使わない。
 
@@ -44,10 +44,10 @@ serverを動かしたまま文書を更新した場合は、別terminalで
 
 == 6.3 bootstrap build workflow
 
-. 保守者が`build.yml`を`workflow_dispatch`で起動する。
+. 保守者が``build.yml``を``workflow_dispatch``で起動する。
 . workflowがリポジトリをcheckoutし、Node.jsを準備する。
-. npm依存関係を導入し、`npm run build`を実行する。
-. `build/site`を`antora-site` artifactとしてuploadする。
+. npm依存関係を導入し、``npm run build``を実行する。
+. ``build/site``を``antora-site`` artifactとしてuploadする。
 . 保守者がActions logとartifactを確認する。
 
 この経路はPages deploy、`repository_dispatch`、token / secret、
@@ -56,9 +56,9 @@ serverを動かしたまま文書を更新した場合は、別terminalで
 == 6.4 手動Pages公開
 
 . GitHub Pagesのpublishing sourceをGitHub Actionsに設定する。
-. 保守者が`publish.yml`を`workflow_dispatch`で起動する。
-. workflowがcheckout、Pages設定、Node.js設定、`npm ci`を行う。
-. `npm run build`で`.nojekyll`を含む`build/site`を生成する。
+. 保守者が``publish.yml``を``workflow_dispatch``で起動する。
+. workflowがcheckout、Pages設定、Node.js設定、``npm ci``を行う。
+. ``npm run build``で``.nojekyll``を含む``build/site``を生成する。
 . Pages artifactをuploadし、GitHub Pagesへdeployする。
 . 保守者がdeployment URL、Actions log、公開ページを確認する。
 
@@ -75,7 +75,7 @@ https://f-vermi-lion.github.io/zouchikikou-docs-site/meta-architecture/architect
 . 日英対応などの横断検査を実行する。
 . 文書が参照する生成済みassetを確認する。
 . Antora buildを実行する。
-. `build/site`をPages artifactとしてuploadする。
+. ``build/site``をPages artifactとしてuploadする。
 . GitHub Pagesへdeployする。
 . artifact、log、deployment URLを残す。
 

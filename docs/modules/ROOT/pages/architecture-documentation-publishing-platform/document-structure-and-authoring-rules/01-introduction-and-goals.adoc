@@ -22,7 +22,7 @@ Antora上の識別子とリンクを安定させ、
 * Antora content root、component、module、page、partial、assetの配置
 * 文書・ディレクトリ・章ファイルの命名
 * ページメタデータ
-* `xref`と`include`による接続・再利用
+* ``xref``と``include``による接続・再利用
 * 文書を作成、分割、更新、確認する手順
 
 図モデルと生成手順、日英対応検査、サイト公開workflowの内部は扱わず、

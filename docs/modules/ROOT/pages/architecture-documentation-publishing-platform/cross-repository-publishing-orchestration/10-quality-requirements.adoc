@@ -22,10 +22,10 @@
 | content root、issue code、pageをsite側logから判断できる。
 
 | 自動dispatchが失敗する
-| 保守者が`workflow_dispatch`から同じsite処理を再実行する。
+| 保守者が``workflow_dispatch``から同じsite処理を再実行する。
 | 自動・手動で検査、build、deployの内容が一致する。
 
-| `main`は更新されたが公開に失敗する
+| ``main``は更新されたが公開に失敗する
 | 正本更新と公開状態を別に記録する。
 | 古い公開siteを新しい正本と誤認せず、再実行対象を判断できる。
 
@@ -43,7 +43,7 @@
 end-to-end公開の実装は、少なくとも次を満たしたとき完了とする。
 
 * source側検査成功後だけdispatchする。
-* site workflowが`repository_dispatch`と`workflow_dispatch`の両方を受け付ける。
+* site workflowが``repository_dispatch``と``workflow_dispatch``の両方を受け付ける。
 * 横断検査がAntora build前に実行される。
 * 失敗時にPages deployを行わない。
 * 権限とsecretの範囲が決定・実装されている。

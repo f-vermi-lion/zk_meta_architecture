@@ -13,7 +13,7 @@
 | 役割
 | 更新条件
 
-| `workspace.dsl`とinclude先
+| ``workspace.dsl``とinclude先
 | モデル正本
 | 要素、関係、view、styleを変えるとき。
 
@@ -31,24 +31,24 @@
 |===
 
 モデル変更では4種類をまとめて確認する。
-レイアウトだけの変更では`workspace.json`と生成SVGの変更を許容する。
+レイアウトだけの変更では``workspace.json``と生成SVGの変更を許容する。
 
 == 8.2 DSLの分割とinclude
 
-小規模な間は`workspace.dsl`へ集約する。
-分割が必要になった場合は、同じ`structurizr/`directory直下の
-`model.dsl`、`views.dsl`、`styles.dsl`を`workspace.dsl`から相対`!include`する。
+小規模な間は``workspace.dsl``へ集約する。
+分割が必要になった場合は、同じ``structurizr/``directory直下の
+`model.dsl`、`views.dsl`、``styles.dsl``を``workspace.dsl``から相対``!include``する。
 
-さらに大きい場合だけ`model/`、`views/`などへ細分化する。
-`!include`はStructurizr DSL source tree内で完結させ、
+さらに大きい場合だけ``model/``、``views/``などへ細分化する。
+``!include``はStructurizr DSL source tree内で完結させ、
 `pages/`、`partials/`、`assets/images/`、別module、リポジトリ外を参照しない。
 
 == 8.3 view key
 
 すべてのviewに明示的で安定したkeyを付ける。
-形式は`<view-type>-<target>[-<purpose>]`の英小文字kebab-caseとする。
+形式は``<view-type>-<target>[-<purpose>]``の英小文字kebab-caseとする。
 
-標準の`view-type`は次のとおりである。
+標準の``view-type``は次のとおりである。
 
 * `system-context`
 * `container`
@@ -59,14 +59,14 @@
 * `image`
 * `custom`
 
-`target`と`purpose`には対象システム、コンテナ、シナリオなどの安定したslugを使う。
-例は`system-context-docs-site`、`container-docs-site`、
-`dynamic-publish-flow`、`deployment-docs-site-production`である。
+``target``と``purpose``には対象システム、コンテナ、シナリオなどの安定したslugを使う。
+例は``system-context-docs-site``、`container-docs-site`、
+`dynamic-publish-flow`、``deployment-docs-site-production``である。
 
 arc42章番号、一時的な表示名、表示順をkeyへ含めない。
 
 == 8.4 他形式の図
 
-公開画像の共通配置は`assets/images/diagrams/`とする。
-C4/Structurizr以外の図ソースは`examples/diagrams/<format>/`のように形式別に分け、
+公開画像の共通配置は``assets/images/diagrams/``とする。
+C4/Structurizr以外の図ソースは``examples/diagrams/<format>/``のように形式別に分け、
 実際に採用するときに正本、生成、CI検査を定める。

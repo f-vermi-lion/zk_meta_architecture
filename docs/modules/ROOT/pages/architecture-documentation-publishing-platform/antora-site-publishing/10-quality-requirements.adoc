@@ -15,10 +15,10 @@
 
 | 初期サイトをbuildする
 | publicな一つのcontent sourceを取得し、Antoraで静的サイトを生成する。
-| `npm run build`が成功し、`build/site`にstart pageとnavigationが生成される。
+| ``npm run build``が成功し、``build/site``にstart pageとnavigationが生成される。
 
 | 手動でPagesへ公開する
-| `workflow_dispatch`からbuild、artifact upload、deployを行う。
+| ``workflow_dispatch``からbuild、artifact upload、deployを行う。
 | deployment URLが得られ、公開ページが生成結果と一致する。
 
 | content sourceを追加する
@@ -40,7 +40,7 @@
 
 * playbookが対象content sourceとstart pageを解決できる。
 * Antora buildにwarning以上の未確認事項がない。
-* 生成siteに`.nojekyll`が含まれる。
+* 生成siteに``.nojekyll``が含まれる。
 * navigationと主要xrefを生成HTMLで確認している。
 * 執筆内容の変更では、``npm run build:local``が未commitの対象ファイルを取り込むことを確認している。
 * publish変更ではPages artifactと権限を確認している。

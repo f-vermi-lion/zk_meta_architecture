@@ -15,7 +15,7 @@ site側が公開時点の全content sourceを一貫して検査できるよう�
 
 == 4.2 eventで疎結合に接続する
 
-source側の`main`更新後に`repository_dispatch`で再生成を依頼する。
+source側の``main``更新後に``repository_dispatch``で再生成を依頼する。
 site側はsource repositoryのworkflow実装へ直接依存せず、
 再生成イベントを入口に最新content sourcesからsiteを作る。
 
@@ -24,7 +24,7 @@ payloadだけを文書正本として扱わず、site buildはplaybookが指定�
 
 == 4.3 自動経路と手動経路を同じ処理へ集約する
 
-`repository_dispatch`と`workflow_dispatch`は同じsite build / deploy jobを起動する。
+``repository_dispatch``と``workflow_dispatch``は同じsite build / deploy jobを起動する。
 手動経路を別の簡略処理にせず、
 自動失敗後にも同じ検査と公開を再実行できるようにする。
 

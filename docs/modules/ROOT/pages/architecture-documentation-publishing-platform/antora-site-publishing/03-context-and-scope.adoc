@@ -51,7 +51,7 @@
 
 * 各content sourceの文書内容と図モデル
 * source側workflowの内部
-* `repository_dispatch`を送る権限とイベント設計
+* ``repository_dispatch``を送る権限とイベント設計
 * 翻訳内容の品質
 * GitHub、Antora、ブラウザの製品本体
 * PDF、Word、Confluenceなどへの本格出力

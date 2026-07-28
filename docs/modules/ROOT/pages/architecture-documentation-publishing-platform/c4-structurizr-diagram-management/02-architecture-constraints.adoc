@@ -15,15 +15,15 @@
 
 == 2.2 配置
 
-* 図ソースは対応するAntora moduleの`examples/diagrams/`へ置く。
-* Structurizr固有ファイルは`examples/diagrams/structurizr/`へ置く。
-* 公開画像は`assets/images/diagrams/`へ置く。
+* 図ソースは対応するAntora moduleの``examples/diagrams/``へ置く。
+* Structurizr固有ファイルは``examples/diagrams/structurizr/``へ置く。
+* 公開画像は``assets/images/diagrams/``へ置く。
 * 生成SVGは派生成果物だが、Antoraが読むassetとしてリポジトリ管理する。
 
 == 2.3 更新
 
-* モデル変更は`workspace.dsl`から始める。
+* モデル変更は``workspace.dsl``から始める。
 * 手動レイアウトを使う変更では、DSL、更新したJSON workspace、生成SVG、説明本文を同じ変更単位で扱う。
-* `workspace.json`をテキストエディタで手編集しない。
+* ``workspace.json``をテキストエディタで手編集しない。
 * 既存view keyは、レイアウトとの対応を壊すおそれがあるため原則として変更しない。
-* CIでは日付付きの`-playwright` Docker image tagを固定し、`latest`や未修飾tagを使わない。
+* CIでは日付付きの``-playwright`` Docker image tagを固定し、``latest``や未修飾tagを使わない。

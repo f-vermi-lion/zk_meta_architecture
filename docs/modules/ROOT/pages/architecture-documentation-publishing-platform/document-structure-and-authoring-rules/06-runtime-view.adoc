@@ -8,18 +8,18 @@
 == 6.1 新しい文書を作る
 
 . 文書が説明する対象と、親文書またはcomponent内での位置を決める。
-. `pages/`配下へ安定したslugのdirectoryを作り、`index.adoc`を置く。
+. ``pages/``配下へ安定したslugのdirectoryを作り、``index.adoc``を置く。
 . 必要なarc42章だけを章ファイルとして作る。
 . 全ページへ必須メタデータを設定する。
-. 親文書の本文とnavigationから新しい文書へ`xref`する。
-. 子文書のindexから親文書と直接関係する文書へ`xref`する。
+. 親文書の本文とnavigationから新しい文書へ``xref``する。
+. 子文書のindexから親文書と直接関係する文書へ``xref``する。
 . ローカル内容をcontent sourceにしたAntora buildを実行し、生成HTMLを確認する。
 
 == 6.2 文書を更新する
 
 . 変更内容が全体の責務か、特定の子文書の詳細かを判断する。
 . 詳細の正本となる一つのページを更新し、他ページには要約とリンクだけを残す。
-. `:revdate:`を更新し、必要なら`:docstatus:`を変更する。
+. ``:revdate:``を更新し、必要なら``:docstatus:``を変更する。
 . navigation、xref、include、画像参照への影響を確認する。
 . 図を変更する場合は
 xref:architecture-documentation-publishing-platform/c4-structurizr-diagram-management/06-runtime-view.adoc[図の更新フロー]を同時に行う。
@@ -37,7 +37,7 @@ xref:architecture-documentation-publishing-platform/bilingual-document-operation
 * 変更時に関係のない大量の文脈を読まなければならない。
 
 分割後は、親に境界と関係を残し、移した詳細を親から削除する。
-元の公開入口として使われる親の`index.adoc`とresource IDは維持する。
+元の公開入口として使われる親の``index.adoc``とresource IDは維持する。
 
 == 6.4 検査の現状
 

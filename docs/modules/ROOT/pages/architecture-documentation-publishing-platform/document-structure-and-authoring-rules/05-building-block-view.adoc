@@ -36,8 +36,8 @@ docs/
       assets/
 ----
 
-`meta_architecture`自体は日本語単独運用のため、
-現在は`ROOT` moduleに日本語ページを置く。
+``meta_architecture``自体は日本語単独運用のため、
+現在は``ROOT`` moduleに日本語ページを置く。
 造智機巧本体の日英配置は
 xref:architecture-documentation-publishing-platform/bilingual-document-operation-and-validation/05-building-block-view.adoc[日英文書運用・検査]で定める。
 
@@ -88,7 +88,7 @@ xref:architecture-documentation-publishing-platform/bilingual-document-operation
 
 == 5.3 他領域との接続
 
-* 図ソースは`examples/diagrams/`、公開画像は`assets/images/diagrams/`に置く。
+* 図ソースは``examples/diagrams/``、公開画像は``assets/images/diagrams/``に置く。
 * サイト用リポジトリはcontent rootをplaybookのcontent sourceとして取得する。
-* 日英版を持つcomponentは`ROOT`と`ja`で対応するpage pathを揃える。
+* 日英版を持つcomponentは``ROOT``と``ja``で対応するpage pathを揃える。
 * source側workflowは文書固有の検査、site側workflowは横断検査とAntora buildを担当する。

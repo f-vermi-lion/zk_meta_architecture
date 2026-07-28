@@ -11,7 +11,7 @@
 親子関係はdirectoryのネストで表し、子slugに親文書名を繰り返さない。
 directory名へarc42章番号や表示順を含めない。
 
-章ファイル名は`NN-chapter-slug.adoc`形式とする。
+章ファイル名は``NN-chapter-slug.adoc``形式とする。
 標準slugは次のとおりである。
 
 * `01-introduction-and-goals`
@@ -27,7 +27,7 @@ directory名へarc42章番号や表示順を含めない。
 * `11-technical-risks`
 * `12-glossary`
 
-`index.adoc`は文書トップ、`README.md`はGitHub上の入口であり、章ファイルとして扱わない。
+``index.adoc``は文書トップ、``README.md``はGitHub上の入口であり、章ファイルとして扱わない。
 
 == 8.2 ページメタデータ
 
@@ -49,33 +49,33 @@ directory名へarc42章番号や表示順を含めない。
 | 規則
 
 | タイトル
-| 1行目の`= Title`で記述する。
+| 1行目の``= Title``で記述する。
 
 | `:docstatus:`
-| `draft`、`reviewed`、`published`のいずれか。
+| `draft`、`reviewed`、``published``のいずれか。
 
 | `:created:`
-| 初回作成日。`YYYY-MM-DD`形式。
+| 初回作成日。``YYYY-MM-DD``形式。
 
 | `:revdate:`
-| 最新更新日。`YYYY-MM-DD`形式。
+| 最新更新日。``YYYY-MM-DD``形式。
 
 | `:authors:`
-| 著者を`;`区切りで並べる。
+| 著者を``;``区切りで並べる。
 
 | `:lang:`
-| 英語は`en`、日本語は`ja`。
+| 英語は``en``、日本語は``ja``。
 |===
 
-文書独自の明示的なversion番号は持たず、`:revnumber:`は使わない。
-`antora.yml`の`version`はcomponent versionであり、文書本文の版番号ではない。
-独立した版番号を持たないcomponentでは`version: ~`を使う。
+文書独自の明示的なversion番号は持たず、``:revnumber:``は使わない。
+``antora.yml``の``version``はcomponent versionであり、文書本文の版番号ではない。
+独立した版番号を持たないcomponentでは``version: ~``を使う。
 
 == 8.3 相互参照
 
-Antoraページ間の参照は`xref`を基本にする。
+Antoraページ間の参照は``xref``を基本にする。
 このcomponentでは、navigationと本文の書き方を揃えるため、
-moduleの`pages/` rootからのresource IDを使う。
+moduleの``pages/`` rootからのresource IDを使う。
 
 [source,asciidoc]
 ----
@@ -89,14 +89,14 @@ xref:architecture-documentation-publishing-platform/document-structure-and-autho
 == 8.4 includeとpartial
 
 ページの一部として同じ内容を再利用する場合は、
-対応するmoduleの`partials/`へ断片を置き、AsciiDoc `include`で取り込む。
+対応するmoduleの``partials/``へ断片を置き、AsciiDoc ``include``で取り込む。
 
-別の独立文書を読ませる場合は、pageをincludeせず`xref`で移動させる。
+別の独立文書を読ませる場合は、pageをincludeせず``xref``で移動させる。
 includeされた断片だけを読まないと意味が通じないpageや、
 同じ決定を複数pageへコピーする構成を避ける。
 
 == 8.5 文書状態
 
-`draft`は検討・編集可能な草稿、`reviewed`は内容をレビューした状態、
-`published`は公開対象として承認した状態を表す。
-GitHub Pagesへ生成された事実だけで`:docstatus:`を`published`へ変更しない。
+``draft``は検討・編集可能な草稿、``reviewed``は内容をレビューした状態、
+``published``は公開対象として承認した状態を表す。
+GitHub Pagesへ生成された事実だけで``:docstatus:``を``published``へ変更しない。

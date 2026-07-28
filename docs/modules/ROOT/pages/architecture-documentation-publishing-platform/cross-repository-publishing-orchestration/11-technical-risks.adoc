@@ -21,11 +21,11 @@ workflowが失敗しても保守者が気づかなければ、
 
 通知方法、通知先、確認担当、再実行手順は未決定である。
 少なくとも失敗した処理、content root、file、commandをlogへ残し、
-`workflow_dispatch`から再実行できるようにする。
+``workflow_dispatch``から再実行できるようにする。
 
 == 11.3 event契約
 
-`repository_dispatch`のevent type、payload、送信元の識別、
+``repository_dispatch``のevent type、payload、送信元の識別、
 重複eventや短時間の連続更新の扱いが未確定である。
 
 site buildはpayload内の文書を正本にせず、
@@ -43,10 +43,10 @@ site workflowが日英checkerへ渡せるcheckout済みcontent rootを
 
 == 11.5 reusable workflowの参照
 
-図生成callerは初期例でreusable workflowを`@main`参照する。
+図生成callerは初期例でreusable workflowを``@main``参照する。
 upstream変更が複数sourceへ同時に影響する可能性がある。
 
-tagまたはreleaseへ固定する運用方針は未決定であり、`inbox.md`で扱う。
+tagまたはreleaseへ固定する運用方針は未決定であり、``inbox.md``で扱う。
 固定方法を決めるまでは、共通workflow変更時にcallerと生成結果への影響を確認する。
 
 == 11.6 private content source

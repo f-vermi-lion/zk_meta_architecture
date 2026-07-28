@@ -23,7 +23,7 @@
 | コードと、その対象に属する文書・図の正本、Antora設定、source側workflowを置くリポジトリ。
 
 | サイト用リポジトリ
-| Antora playbook、UI、共通検査、公開workflowを持つリポジトリ。標準名は`zouchikikou-docs-site`。
+| Antora playbook、UI、共通検査、公開workflowを持つリポジトリ。標準名は``zouchikikou-docs-site``。
 
 | 正本
 | 後続の編集、検査、生成の基準となる一次成果物。
@@ -35,10 +35,10 @@
 | Antora playbookが文書を取得するGitリポジトリ、branch、tag、start pathの指定。
 
 | Antora component
-| `antora.yml`で識別される文書群の単位。
+| ``antora.yml``で識別される文書群の単位。
 
 | Antora module
-| component内の文書区分。この基盤では英語正本に`ROOT`、日本語補助版に`ja`を使う。
+| component内の文書区分。この基盤では英語正本に``ROOT``、日本語補助版に``ja``を使う。
 
 | Structurizr DSL
 | C4モデルとviewをテキストで定義するDSL。この基盤ではC4図モデルの正本。
@@ -53,5 +53,5 @@
 | GitHub Actions workflowを手動実行するイベント。
 
 | 日英対応検査
-| 英語正本と日本語補助版のページ欠落、および`:lang:`不一致を検出する検査。
+| 英語正本と日本語補助版のページ欠落、および``:lang:``不一致を検出する検査。
 |===
