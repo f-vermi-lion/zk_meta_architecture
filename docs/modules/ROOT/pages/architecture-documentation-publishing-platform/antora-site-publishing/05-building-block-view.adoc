@@ -1,7 +1,7 @@
 = 5. ビルディングブロックビュー
 :docstatus: draft
 :created: 2026-07-27
-:revdate: 2026-07-27
+:revdate: 2026-07-28
 :authors: F; Codex; ChatGPT
 :lang: ja
 
@@ -12,6 +12,7 @@
 zouchikikou-docs-site/
   README.md
   antora-playbook.yml
+  antora-playbook-local.yml
   package.json
   package-lock.json
   .gitignore
@@ -35,11 +36,15 @@ zouchikikou-docs-site/
 
 | Antora playbook
 | `antora-playbook.yml`
-| site title、start page、content sources、UI、出力先を定義する。
+| 公開用のsite title、start page、remote content sources、UI、出力先を定義する。
 
-| npm build
+| 執筆用Antora playbook
+| `antora-playbook-local.yml`
+| 公開用と同じsiteとUIを使い、隣接するローカルworktreeをcontent sourceにする。
+
+| npm build / preview
 | `package.json` / `package-lock.json`
-| Antora CLIとsite generatorの依存関係を固定し、`npm run build`を提供する。
+| Antora CLI、site generator、静的HTTP serverの依存関係を固定し、公開build、ローカルbuild、previewを提供する。
 
 | bootstrap build
 | `.github/workflows/build.yml`
@@ -70,8 +75,12 @@ zouchikikou-docs-site/
 `runtime.fetch: true`でremote content sourceの更新を取得し、
 出力先を`build/site`とする。
 
-これはpublicな最小構成の実装であり、
-複数リポジトリ集約と未pushローカル草稿のpreviewが完成したことを意味しない。
+執筆用playbookは、隣接する``meta_architecture`` repositoryに
+``branches: HEAD``と``start_path: docs``を指定する。
+これにより現在のworktreeにある未commitの文書を同じUIでbuildする。
+
+どちらも一つのcontent sourceだけを扱う現在の構成であり、
+複数リポジトリ集約が完成したことを意味しない。
 
 == 5.4 Pages公開
 

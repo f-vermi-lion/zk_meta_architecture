@@ -2,4 +2,4 @@
 - Antora UI上の日英切り替え導線を決める
 - publish workflowでtools/check-language-pairsに渡すcontent root取得手順を決める
 - github-workflowsのreusable workflowをtag/releaseで固定参照する運用方針を決める
-- ローカルで閲覧できるようにする
+- zouchikikou-docs-siteのnpm auditでAntora経由のjs-yamlに報告される脆弱性の対応可否を調べる

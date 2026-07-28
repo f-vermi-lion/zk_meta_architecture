@@ -1,7 +1,7 @@
 = 1. 導入と目的
 :docstatus: draft
 :created: 2026-07-27
-:revdate: 2026-07-27
+:revdate: 2026-07-28
 :authors: F; Codex; ChatGPT
 :lang: ja
 
@@ -21,6 +21,7 @@ Antoraサイト集約・GitHub Pages公開基盤は、
 * content sourcesの集約
 * Antora UI、navigation、`.nojekyll`
 * 手動build workflowとGitHub Pages publish workflow
+* ローカルworktreeを使う執筆preview
 * `build/site`、artifact、公開サイト
 
 source側検査、図生成、日英検査の仕様、
@@ -41,6 +42,9 @@ source側検査、図生成、日英検査の仕様、
 
 | 再現可能
 | lockfile、playbook、workflowから同じ静的サイトを生成できる。
+
+| ローカルで確認可能
+| 未commitの文書を公開用と同じUIでbuildし、ブラウザで確認できる。
 
 | 公開結果を追跡できる
 | build artifact、Actions log、Pages URLから結果を確認できる。

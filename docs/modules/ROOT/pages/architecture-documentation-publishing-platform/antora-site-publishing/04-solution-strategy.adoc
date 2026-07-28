@@ -1,7 +1,7 @@
 = 4. ソリューション戦略
 :docstatus: draft
 :created: 2026-07-27
-:revdate: 2026-07-27
+:revdate: 2026-07-28
 :authors: F; Codex; ChatGPT
 :lang: ja
 
@@ -36,3 +36,10 @@ token / secret、日英検査を、実装済みとして扱わない。
 サイトbuildはcontent sourcesから毎回生成する。
 公開HTMLを次回buildの入力や文書正本にせず、
 playbookと各content sourceを再現可能な入力として扱う。
+
+== 4.5 公開用と執筆用の入力を分ける
+
+公開用playbookはremoteの``main``、執筆用playbookはローカルrepositoryの
+現在のworktreeをcontent sourceにする。
+両者のsite、UI、supplemental files、出力先は揃え、
+入力元を明示したまま同等の見た目を生成する。

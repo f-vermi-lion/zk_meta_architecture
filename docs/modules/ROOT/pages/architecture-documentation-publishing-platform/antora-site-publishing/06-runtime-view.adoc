@@ -1,11 +1,11 @@
 = 6. ランタイムビュー
 :docstatus: draft
 :created: 2026-07-27
-:revdate: 2026-07-27
+:revdate: 2026-07-28
 :authors: F; Codex; ChatGPT
 :lang: ja
 
-== 6.1 ローカルbuild
+== 6.1 公開用content sourceのbuild
 
 サイト用リポジトリで依存関係を導入し、Antora buildを実行する。
 
@@ -16,13 +16,33 @@ npm run build
 ----
 
 生成物は`build/site/`へ出力される。
+このコマンドは通常playbookからremote ``main``を読むため、
+未pushのローカル草稿の確認には使わない。
 
-現在の通常playbookはremote `main`を読むため、
-このコマンドだけでは未pushのローカル草稿を確認できない。
-草稿確認では、remote sourceをローカルcontent sourceに置き換えた一時playbookなど、
-確認対象が明示されたauthoring用経路を使う。
+== 6.2 執筆中のローカルpreview
 
-== 6.2 bootstrap build workflow
+``meta_architecture/``と``zouchikikou-docs-site/``を同じdirectoryの直下に置き、
+サイト用リポジトリで次を実行する。
+
+[source,sh]
+----
+npm install
+npm run preview
+----
+
+``antora-playbook-local.yml``は、隣接する``meta_architecture`` repositoryの
+現在のworktreeを``branches: HEAD``で選ぶ。
+Antoraは未commitのファイルを含むローカル内容から``build/site/``を生成し、
+静的HTTP serverが``127.0.0.1:8080``で配信する。
+
+Windowsのブラウザでは``http://localhost:8080``を開く。
+VS Codeでは``Simple Browser: Show``を実行し、同じURLを入力する。
+終了するときはterminalで``Ctrl+C``を入力する。
+
+serverを動かしたまま文書を更新した場合は、別terminalで
+``npm run build:local``を実行し、build完了後にブラウザをreloadする。
+
+== 6.3 bootstrap build workflow
 
 . 保守者が`build.yml`を`workflow_dispatch`で起動する。
 . workflowがリポジトリをcheckoutし、Node.jsを準備する。
@@ -33,7 +53,7 @@ npm run build
 この経路はPages deploy、`repository_dispatch`、token / secret、
 日英対応検査を含まない初期確認用である。
 
-== 6.3 手動Pages公開
+== 6.4 手動Pages公開
 
 . GitHub Pagesのpublishing sourceをGitHub Actionsに設定する。
 . 保守者が`publish.yml`を`workflow_dispatch`で起動する。
@@ -47,7 +67,7 @@ npm run build
 https://f-vermi-lion.github.io/zouchikikou-docs-site/meta-architecture/architecture-documentation-publishing-platform/index.html
 である。
 
-== 6.4 標準site処理
+== 6.5 標準site処理
 
 目標とするsite側処理の内部順序は次のとおりである。
 
@@ -62,7 +82,7 @@ https://f-vermi-lion.github.io/zouchikikou-docs-site/meta-architecture/architect
 起動条件とsource側処理との接続は
 xref:architecture-documentation-publishing-platform/cross-repository-publishing-orchestration/06-runtime-view.adoc[公開オーケストレーションのランタイムビュー]を正本とする。
 
-== 6.5 公開後確認
+== 6.6 公開後確認
 
 少なくとも次を確認する。
 

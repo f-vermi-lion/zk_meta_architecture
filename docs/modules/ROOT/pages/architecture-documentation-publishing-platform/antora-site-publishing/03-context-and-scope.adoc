@@ -1,7 +1,7 @@
 = 3. コンテキストとスコープ
 :docstatus: draft
 :created: 2026-07-27
-:revdate: 2026-07-27
+:revdate: 2026-07-28
 :authors: F; Codex; ChatGPT
 :lang: ja
 
@@ -18,8 +18,8 @@
 | 文書、図、component設定をcontent sourceとして提供する。
 
 | サイト保守者
-| `npm run build`、`workflow_dispatch`、Actions UI
-| buildと公開を起動し、結果を確認する。
+| `npm run build`、`npm run preview`、`workflow_dispatch`、Actions UI
+| 公開用build、ローカルpreview、公開を起動し、結果を確認する。
 
 | Antora
 | playbook、component descriptor、module resource
@@ -43,6 +43,7 @@
 * content sourceの選択と取得
 * サイトtitle、start page、UI、出力先
 * Antora build
+* ローカルworktreeを使う執筆preview
 * GitHub Pages artifactとdeploy
 * 公開サイトの基本navigation
 

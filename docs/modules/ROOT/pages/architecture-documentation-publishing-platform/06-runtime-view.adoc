@@ -1,7 +1,7 @@
 = 6. ランタイムビュー
 :docstatus: draft
 :created: 2026-05-05
-:revdate: 2026-07-27
+:revdate: 2026-07-28
 :authors: F; ChatGPT; Codex
 :lang: ja
 
@@ -28,7 +28,7 @@
 
 自動化が未完成または失敗した場合でも、次の手動経路を確保する。
 
-* 恒久的なローカルpreview経路が未整備の間は、一時playbookでローカルのcontent sourceを指定し、未pushの文書を確認する。
+* サイト用リポジトリで``npm run preview``を実行し、ローカルworktreeの未push文書をブラウザで確認する。
 * 図はStructurizr上の見た目と生成SVGの両方を確認する。
 * サイト用リポジトリの`workflow_dispatch`でbuildまたは公開を再実行する。
 * Actions log、artifact、公開URLを使って結果を確認する。
@@ -36,7 +36,8 @@
 == 6.3 現在の実装境界
 
 現時点では、サイト用リポジトリの手動buildと手動GitHub Pages公開、
-日英対応検査コマンド、Structurizr図生成reusable workflowが実装されている。
+ローカルworktreeを使うpreview、日英対応検査コマンド、
+Structurizr図生成reusable workflowが実装されている。
 
 一方、`repository_dispatch`によるend-to-endの自動再生成、
 日英対応検査のpublish workflowへの組み込み、

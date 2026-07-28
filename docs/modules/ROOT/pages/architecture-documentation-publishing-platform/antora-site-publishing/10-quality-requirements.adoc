@@ -1,7 +1,7 @@
 = 10. 品質要求
 :docstatus: draft
 :created: 2026-07-27
-:revdate: 2026-07-27
+:revdate: 2026-07-28
 :authors: F; Codex; ChatGPT
 :lang: ja
 
@@ -30,8 +30,8 @@
 | 失敗した処理と入力content sourceを判断できる。
 
 | pull request前に表示を確認する
-| ローカルcontent sourceを使う一時playbookからサイトを生成する。
-| 未pushの変更を含む親・子ページ、リンク、表、図を目視できる。
+| ``npm run preview``でローカルworktreeからサイトを生成し、localhostで配信する。
+| WindowsのブラウザまたはVS Codeから、未pushの変更を含む親・子ページ、リンク、表、図を目視できる。
 |===
 
 == 10.2 完了条件
@@ -42,4 +42,5 @@
 * Antora buildにwarning以上の未確認事項がない。
 * 生成siteに`.nojekyll`が含まれる。
 * navigationと主要xrefを生成HTMLで確認している。
+* 執筆内容の変更では、``npm run build:local``が未commitの対象ファイルを取り込むことを確認している。
 * publish変更ではPages artifactと権限を確認している。

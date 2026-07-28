@@ -1,7 +1,7 @@
 = 11. 技術的リスク
 :docstatus: draft
 :created: 2026-07-27
-:revdate: 2026-07-27
+:revdate: 2026-07-28
 :authors: F; Codex; ChatGPT
 :lang: ja
 
@@ -10,9 +10,10 @@
 現在の通常playbookはremote `main`を取得する。
 そのbuildが成功しても、未pushの草稿が正しいことは証明しない。
 
-pull request前の確認では、remote sourceを対象worktreeへ置き換えた一時playbookを使い、
+pull request前の確認では、``npm run preview``または``npm run build:local``を使い、
+執筆用playbookが対象worktreeの``HEAD``を選んだことと、
 生成siteに新規ページと変更内容が含まれることを確認する。
-恒久的なローカル執筆基盤は別途検討する。
+remote sourceを使う``npm run build``と取り違えない。
 
 == 11.2 private文書のpublic公開
 

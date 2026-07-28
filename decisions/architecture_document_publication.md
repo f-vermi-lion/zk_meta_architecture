@@ -22,6 +22,15 @@
 - 生成された静的サイトをGitHub Pagesへdeployする。
 - 公開後はGitHub Pages上のページとActions logで結果を確認する。
 
+## ローカル執筆preview
+- 公開用buildの`antora-playbook.yml`と、執筆用buildの`antora-playbook-local.yml`を`zouchikikou-docs-site`に置く。
+- 公開用の`npm run build`はremote content sourceの`main`を使い、執筆用の`npm run build:local`は隣接するローカルの`meta_architecture` repositoryを使う。
+- 執筆用playbookは`branches: HEAD`を指定し、現在のworktreeにある未commitの変更をbuild対象にする。
+- 執筆用と公開用のplaybookでは、content sourceの場所とbranch以外のsite、UI、supplemental files、出力先を揃え、公開用と基本的に同じ見た目にする。
+- `npm run preview`は執筆用build後に`build/site`を`127.0.0.1:8080`で配信する。
+- WindowsのブラウザまたはVS CodeのSimple Browserから`http://localhost:8080`を開いて確認する。
+- preview serverを動かしたまま再buildする場合は、別terminalで`npm run build:local`を実行し、ブラウザをreloadする。
+
 ## 初期build workflow
 - `zouchikikou-docs-site`の初期`.github/workflows/build.yml`は、bootstrap用の手動build workflowとして扱う。
 - 初期`build.yml`は`workflow_dispatch`のみを受け付け、`npm run build`でAntora buildを確認する。

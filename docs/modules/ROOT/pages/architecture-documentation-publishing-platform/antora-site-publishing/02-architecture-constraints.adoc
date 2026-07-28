@@ -1,7 +1,7 @@
 = 2. 制約
 :docstatus: draft
 :created: 2026-07-27
-:revdate: 2026-07-27
+:revdate: 2026-07-28
 :authors: F; Codex; ChatGPT
 :lang: ja
 
@@ -15,7 +15,9 @@
 == 2.2 buildと公開
 
 * サイト生成の中心はAntoraとする。
-* npmの標準buildコマンドは`npm run build`とする。
+* 公開用content sourceを使う標準buildコマンドは``npm run build``とする。
+* 執筆中のローカルworktreeを使うbuildコマンドは``npm run build:local``とする。
+* buildとlocalhostでの配信を連続実行するコマンドは``npm run preview``とする。
 * 生成先は`build/site`とする。
 * 公開先はGitHub Pagesとする。
 * Pages publishing sourceにはGitHub Actionsを使う。
